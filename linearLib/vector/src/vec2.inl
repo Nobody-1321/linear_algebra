@@ -11,10 +11,6 @@ namespace line {
     vec<2, T>::vec(const vec<2, T>& v) : x(v.x), y(v.y) {}
 
     template<IsNumber T>
-    template<IsNumber U>
-    vec<2, T>::vec(const vec<2, U>& v) : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) {}
-
-    template<IsNumber T>
     vec<2, T>& vec<2, T>::operator=(const vec<2, T>& v) {
         
         if (this != &v) {
@@ -22,14 +18,6 @@ namespace line {
             y = v.y;
         }
 
-        return *this;
-    }
-
-    template<IsNumber T>
-    template<IsNumber U>
-    vec<2, T>& vec<2, T>::operator=(const vec<2, U>& v) {
-        x = static_cast<T>(v.x);
-        y = static_cast<T>(v.y);
         return *this;
     }
 
@@ -55,7 +43,7 @@ namespace line {
 
     template<IsNumber T>
     vec<2, T> vec<2, T>::operator / (const T& t) const{
-        return vec<2, T>(static_cast<T>(x / t), static_cast<T>(y / t));
+        return vec<2, T>(x / t,y / t);
     }
 
     template<IsNumber T>
@@ -71,18 +59,13 @@ namespace line {
     }
 
     template<IsNumber T>
-    size_t vec<2, T>::size() const {
+    int vec<2, T>::size() const {
         return 2;
     }
 
     template<IsNumber U>
     vec<2, U> operator / (const U& t, const vec<2, U>& v) {
-        return vec<2, U>(static_cast<U>(v.x / t), static_cast<U>(v.y / t));
-    }
-
-    template<IsNumber U, IsNumber V>
-    vec<2, U> operator / (const V& t, const vec<2, U>& v) {
-        return vec<2, U>(static_cast<U>(v.x / t), static_cast<U>(v.y / t));
+        return vec<2, U>(v.x / t, v.y / t);
     }
 
     template<IsNumber U>
@@ -90,8 +73,4 @@ namespace line {
         return vec<2, U>(v.x * t, v.y * t);
     }
 
-    template<IsNumber U, IsNumber V>
-    vec<2, U> operator * (const V& t, const vec<2, U>& v) {
-        return vec<2, U>(static_cast<U>(v.x * t), static_cast<U>(v.y * t));
-    }
 }

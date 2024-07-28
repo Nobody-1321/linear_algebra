@@ -23,6 +23,7 @@ public:
 };
 
 
+
 // Clase Fixture con plantilla
 template <typename VecType>
 class Fixture_Vec3 : public ::testing::Test {
@@ -47,7 +48,6 @@ void test_copy_v(const Vec &vec1, const Vec & expected) {
 
 template <typename Vec>
 void test_assign_v(const Vec &vec1, const Vec & expected) {
-    Vec vec2 = vec1;
     bool are_equal = false;
 
     for (int i = 0; i < vec1.size(); i++) {
