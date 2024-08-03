@@ -1,16 +1,19 @@
-#include "setup.hpp"
-#include "types.hpp"
+#pragma once
+
+#include "setup_vec.hpp"
+#include "types_vec.hpp"
 #include <stdexcept>
 #include <stdint.h>
 #include <iostream>
 
 namespace line{
  
-    template<IsNumber T> 
+    template<IsNumberV T> 
     struct vec<4, T>{
         
         using value_type = T;
-        
+        using type = vec<4, T>;
+
          T x,  y, z, w;
 
         // constructors 
@@ -33,17 +36,23 @@ namespace line{
         vec<4, T> operator / (const T& t) const;
         
 
-        bool operator == (const vec<4, T>& v) const; 
-        T operator [] (const int& i) const;         
+        bool operator == (const vec<4, T>& v) const;
+
+        const T& operator [] (const int& i) const;         
+        T& operator [] (const int& i);
+
+        
         int size() const;
 
     };
 
-    template<IsNumber U>
-    vec<4, U> operator/(const U& t, const vec<3, U>& v);
-
-    template<IsNumber U>
-    vec<4, U> operator*(const U& t, const vec<3, U>& v);
+    //investigar sobre el tema
+    template<IsNumberV U>
+    vec<4, U> operator/(const U& t, const vec<4, U>& v);
+    //vec<4, U> operator/(const U& t, const vec<3, U>& v); bug por ambiguedad
+    template<IsNumberV U>
+    vec<4, U> operator*(const U& t, const vec<4, U>& v);
+    //vec<4, U> operator*(const U& t, const vec<3, U>& v); bbug por ambiguedad. 
 };
 
 #include "../src/vec4.inl"

@@ -1,16 +1,18 @@
 #pragma once
-#include "setup.hpp"
-#include "types.hpp"
+#include "setup_vec.hpp"
+#include "types_vec.hpp"
 #include <stdexcept>
 #include <stdint.h>
 #include <iostream>
 
 namespace line{
  
-    template<IsNumber T> 
+    template<IsNumberV T> 
     struct vec<2, T>{
         
         using value_type = T;
+        using type = vec<2, T>;
+        
 
         T x, y;
 
@@ -29,16 +31,17 @@ namespace line{
         
         bool operator==(const vec<2, T>& v) const; 
 
-        T operator [] (const int& i) const;         
+        const T& operator [] (const int& i) const;         
+        T& operator [] (const int& i);         
 
         int size() const;
 
     };
 
-    template<IsNumber U>
+    template<IsNumberV U>
     vec<2, U> operator/(const U& t, const vec<2, U>& v);
 
-    template<IsNumber U>
+    template<IsNumberV U>
     vec<2, U> operator*(const U& t, const vec<2, U>& v);
 };
 

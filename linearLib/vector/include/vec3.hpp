@@ -1,15 +1,18 @@
-#include "setup.hpp"
-#include "types.hpp"
+#pragma once
+
+#include "setup_vec.hpp"
+#include "types_vec.hpp"
 #include <stdexcept>
 #include <stdint.h>
 #include <iostream>
 
 namespace line{
  
-    template<IsNumber T> 
+    template<IsNumberV T> 
     struct vec<3, T>{
         
         using value_type = T;
+        using type = vec<3, T>;
         
          T x,  y, z;
 
@@ -32,17 +35,20 @@ namespace line{
         
 
         bool operator == (const vec<3, T>& v) const; 
-        T operator [] (const int& i) const;         
+        
+        const T& operator [] (const int& i) const ;
+        T& operator [] (const int& i);
+         
         int size() const;
 
     };
 
 
-    template<IsNumber U>
+    template<IsNumberV U>
     vec<3, U> operator/(const U& t, const vec<3, U>& v);
 
-    template<IsNumber U>
-    vec<3, U> operator*(const U& t, const vec<3, U>& v);
+    template<IsNumberV U>
+    vec<3, U> operator * (const U& t, const vec<3, U>& v);
 };
 
 #include "../src/vec3.inl"

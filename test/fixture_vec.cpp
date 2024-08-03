@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <vec2.hpp>
-#include <types.hpp>
-#include <setup.hpp>
+#include <types_vec.hpp>
+#include <setup_vec.hpp>
 
 template<typename U>
 struct TestValues {
@@ -22,11 +22,16 @@ public:
     using Vec = typename VecType::type;
 };
 
-
-
 // Clase Fixture con plantilla
 template <typename VecType>
 class Fixture_Vec3 : public ::testing::Test {
+public: 
+    using Vec = typename VecType::type;
+};
+
+// Clase Fixture con plantilla
+template <typename VecType>
+class Fixture_Vec4 : public ::testing::Test {
 public: 
     using Vec = typename VecType::type;
 };
