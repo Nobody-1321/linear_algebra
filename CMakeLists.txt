@@ -5,15 +5,13 @@ project(HelloWorld)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-if(MSVC) # Para Visual Studio
-    add_compile_options(/W4 /WX)
-else() # Para GCC y Clang
-    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
-endif()
+message(STATUS "CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
+
+add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/linearLib)
-
 
 option(BUILD_TESTS "Build the tests" )
 

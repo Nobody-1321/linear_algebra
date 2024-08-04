@@ -16,10 +16,9 @@ namespace line{
 
         T x, y;
 
+        //constructors
         vec(T x, T y);  
-
         vec(const vec<2, T>& v); 
-
         vec<2, T>& operator = (const vec<2, T>& v); 
 
         // arithmetic operators
@@ -29,8 +28,10 @@ namespace line{
         vec<2, T> operator * (const T& t) const; 
         vec<2, T> operator / (const T& t) const;
         
+        // comparison operators
         bool operator==(const vec<2, T>& v) const; 
 
+        // index operator
         const T& operator [] (const int& i) const;         
         T& operator [] (const int& i);         
 

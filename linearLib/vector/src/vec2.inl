@@ -21,6 +21,7 @@ namespace line {
         return *this;
     }
 
+    // arithmetic operators
     template<IsNumberV T>
     vec<2, T> vec<2, T>::operator + (const vec<2, T>& v) const {
         return vec<2, T>(x + v.x, y + v.y);
@@ -48,11 +49,13 @@ namespace line {
         return vec<2, T>(x / t,y / t);
     }
 
+    // comparison operators
     template<IsNumberV T>
     bool vec<2, T>::operator==(const vec<2, T>& v) const {
         return this->x == v.x && this->y == v.y;
     }
 
+    // index operator
     template<IsNumberV T>
     const T & vec<2, T>::operator [] (const int& i) const {
         if (i == 0) return this->x;

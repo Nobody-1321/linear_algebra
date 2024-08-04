@@ -18,14 +18,9 @@ namespace line{
 
         // constructors 
         vec(T x, T y , T z , T w);
-    
         vec(const vec<4, T>& v); 
-
         vec(const vec<2, T>& v, T z, T w);
-        
         vec(const vec<3, T>& v, T w);
-
-        // assignment operators
         vec<4, T>& operator = (const vec<4, T>& v); 
 
         // arithmetic operators
@@ -36,8 +31,10 @@ namespace line{
         vec<4, T> operator / (const T& t) const;
         
 
+        // comparison operators
         bool operator == (const vec<4, T>& v) const;
 
+        // index operator
         const T& operator [] (const int& i) const;         
         T& operator [] (const int& i);
 
@@ -46,7 +43,6 @@ namespace line{
 
     };
 
-    //investigar sobre el tema
     template<IsNumberV U>
     vec<4, U> operator/(const U& t, const vec<4, U>& v);
     //vec<4, U> operator/(const U& t, const vec<3, U>& v); bug por ambiguedad

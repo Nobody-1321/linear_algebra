@@ -15,8 +15,6 @@ namespace line {
     template<IsNumberV T>
     vec<4, T>::vec(const vec<3, T>& v, T w) : x(v.x), y(v.y), z(v.z) , w(w) {}
 
-
-    // assignment operators
     template<IsNumberV T>
     vec<4, T>& vec<4, T>::operator=(const vec<4, T>& v) {
         
@@ -58,11 +56,13 @@ namespace line {
         return vec<4, T>(x / t, y / t, z / t, w / t);
     }
 
+    // comparison operators
     template<IsNumberV T>
     bool vec<4, T>::operator == (const vec<4, T>& v) const {
         return (x == v.x) && (y == v.y) && (z == v.z) && (w == v.w);
     }
 
+    // index operator
     template<IsNumberV T>
     const T&  vec<4, T>::operator [] (const int& i) const {
         if (i == 0) return this->x;
