@@ -4,7 +4,8 @@
 #include <stdexcept>
 #include <stdint.h>
 #include <iostream>
-
+#include "../../iterator/include/iterator_vec.hpp"
+#include <type_traits>
 namespace line{
  
     template<IsNumberV T> 
@@ -12,10 +13,11 @@ namespace line{
         
         using value_type = T;
         using type = vec<2, T>;
-        
+        using length = std::integral_constant<length_t, 2>;
+
 
         T x, y;
-
+        
         //constructors
         vec(T x, T y);  
         vec(const vec<2, T>& v); 
@@ -36,7 +38,17 @@ namespace line{
         T& operator [] (const int& i);         
 
         int size() const;
+        
+        T* data(){return &x;};
 
+        using iterator = line::iterator<T>;
+        using const_iterator = line::iterator<const T>;
+
+        iterator begin();// { return iterator(&x); }
+        iterator end();// { return iterator(&y + 1); }
+
+        const_iterator begin() const;// { return const_iterator(&x); }
+        const_iterator end() const; //{ return const_iterator(&y + 1); }
     };
 
     template<IsNumberV U>

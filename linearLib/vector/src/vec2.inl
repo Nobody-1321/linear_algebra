@@ -75,6 +75,28 @@ namespace line {
         return 2;
     }
 
+    //iterator
+
+    template<IsNumberV T>
+    vec<2, T>::iterator vec<2, T>::begin() {
+        return iterator(&x);
+    }
+
+    template<IsNumberV T>
+    vec<2, T>::iterator vec<2, T>::end() {
+        return iterator(&y + 1);
+    }
+
+    template<IsNumberV T>
+    vec<2, T>::const_iterator vec<2, T>::begin() const {
+        return const_iterator(&x);
+    }
+
+    template<IsNumberV T>
+    vec<2, T>::const_iterator vec<2, T>::end() const {
+        return const_iterator(&y + 1);
+    }
+
     template<IsNumberV U>
     vec<2, U> operator / (const U& t, const vec<2, U>& v) {
         if (t == 0) throw std::invalid_argument("In vec2 division by zero");
