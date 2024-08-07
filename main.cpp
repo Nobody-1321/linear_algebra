@@ -2,6 +2,9 @@
 #include <vector>
 #include <vec2.hpp>  
 #include <vec3.hpp>   
+#include <vec4.hpp>
+#include <vec.hpp>
+#include <iterator_vec.hpp>
 
 template<typename Iter>
 void check_iterator_traits() {
@@ -20,10 +23,20 @@ int main() {
     using namespace line;
     using namespace std;
 
-    line::vec<3, int> v1(1, 2, 3);
+    line::vec<10, int> v1{1, 2, 3, 4, 5};
+    line::iterator<optional<int>> it = v1.begin();
 
-    cout << v1[0] << " " << v1[1] << " " << v1[2] << endl;
-    cout << v1.at(0) << " " << v1.at(4) << " " << v1.at(2) << endl;
+    cout << it->has_value() << endl << endl;
+
+    for (auto e : v1) {
+        cout << e.value_or(9) << " ";
+    }
+//    cout << v1[0].value() << " " << v1[1].value() << " " << v1[2].value() << " " << v1[3].value() << " " << v1[4].value() << endl;
+
+
+
+//    cout << v1[0] << " " << v1[1] << " " << v1[2] << " " << v1[3] << endl;
+//    cout << v1.at(0) << " " << v1.at(4) << " " << v1.at(2) << " " << v1.at(3) << endl;
     
   
   /*  using namespace std;

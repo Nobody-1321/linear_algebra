@@ -9,6 +9,28 @@ namespace line
     }
 
     template <length_t L, IsNumberV T>
+    vec<L, T>::vec(const std::initializer_list<T> &l)
+    {
+        if (l.size() <= L)
+        {
+            // Copiar elementos desde la lista
+            std::copy(l.begin(), l.end(), data_v.begin());
+
+            // Llenar el resto con ceros si la lista es más pequeña
+            if (l.size() < L)
+            {
+                std::fill(data_v.begin() + l.size(), data_v.end(), std::nullopt);
+            }
+        }
+        else
+        {
+            // Copiar solo los primeros L elementos si la lista es más grande
+            std::copy(l.begin(), l.begin() + L, data_v.begin());
+        }
+    }
+
+
+    template <length_t L, IsNumberV T>
     template <length_t M>
     vec<L, T>::vec(const vec<M, T> &v)
     {
@@ -30,19 +52,8 @@ namespace line
         }
     }
 
-    // Operadores de índice
     template <length_t L, IsNumberV T>
-    const typename vec<L, T>::optional_type &vec<L, T>::operator[](const int &i) const
-    {
-        if (i >= 0 && i < L)
-        {
-            return data_v[i];
-        }
-        else
-        {
-            throw std::out_of_range("Index out of range");
-        }
-    }
+    vec<L, T>::vec(const vec<L, T> &v) : data_v(v.data_v) {}
 
     template <length_t L, IsNumberV T>
     vec<L, T> &vec<L, T>::operator=(const vec<L, T> &v)
@@ -54,28 +65,31 @@ namespace line
         return *this;
     }
 
+
+    // Operadores de índice
     template <length_t L, IsNumberV T>
-    vec<L, T>::vec(const vec<L, T> &v) : data_v(v.data_v) {}
+    const typename vec<L, T>::optional_type &vec<L, T>::operator[](const std::size_t &i) const
+    {
+        return data_v[i];
+    }
 
     template <length_t L, IsNumberV T>
-    typename vec<L, T>::optional_type &vec<L, T>::operator[](const int &i)
+    typename vec<L, T>::optional_type &vec<L, T>::operator[](const std::size_t &i)
     {
-        if (i >= 0 && i < L)
-        {
-            return data_v[i];
-        }
-        else
-        {
-            throw std::out_of_range("Index out of range");
-        }
+        return data_v[i];
     }
 
     // functions
-
     template <length_t L, IsNumberV T>
-    int vec<L, T>::size() const
+    std::size_t vec<L, T>::size() const
     {
         return L;
+    }
+
+    template <length_t L, IsNumberV T>
+    typename vec<L, T>::optional_type *vec<L, T>::data()
+    {
+        return data_v.data();
     }
 
 

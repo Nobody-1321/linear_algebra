@@ -44,7 +44,7 @@ namespace line {
 
     template<IsNumberV T>
     vec<2, T> vec<2, T>::operator / (const T& t) const {
-        if (t == 0) throw std::invalid_argument("Division by zero");
+        if (t == 0) throw std::invalid_argument("Division by zero not allowed");
 
         return vec<2, T>(x / t,y / t);
     }
@@ -118,7 +118,7 @@ namespace line {
 
     template<IsNumberV U>
     vec<2, U> operator / (const U& t, const vec<2, U>& v) {
-        if (t == 0) throw std::invalid_argument("In vec2 division by zero");
+        if (t == 0) throw std::invalid_argument("Division by zero not allowed");
         
         return vec<2, U>(v.x / t, v.y / t);
     }

@@ -51,7 +51,7 @@ namespace line {
 
     template<IsNumberV T>
     vec<4, T> vec<4, T>::operator / (const T& t) const{
-        if (t == 0) throw std::invalid_argument("In vec4 division by zero");
+        if (t == 0) throw std::invalid_argument("Division by zero not allowed");
         
         return vec<4, T>(x / t, y / t, z / t, w / t);
     }
@@ -64,31 +64,41 @@ namespace line {
 
     // index operator
     template<IsNumberV T>
-    const T&  vec<4, T>::operator [] (const int& i) const {
-        if (i == 0) return this->x;
-        if (i == 1) return this->y;
-        if (i == 2) return this->z;
-        if (i == 3) return this->w;
-        throw std::out_of_range("In vec3 __index ("+ std::to_string(i) + ") is out of range");
+    const T&  vec<4, T>::operator [] (const std::size_t& i) const {
+        return *(&x + i);
     }
 
     template<IsNumberV T>
-    T&  vec<4, T>::operator [] (const int& i){
-        if (i == 0) return this->x;
-        if (i == 1) return this->y;
-        if (i == 2) return this->z;
-        if (i == 3) return this->w;
-        throw std::out_of_range("In vec3 __index ("+ std::to_string(i) + ") is out of range");
+    T&  vec<4, T>::operator [] (const size_t& i){
+        return *(&x + i);
     }
  
     template<IsNumberV T>
-    int vec<4, T>::size() const {
+    std::size_t vec<4, T>::size() const {
         return 4;
     }
 
     template<IsNumberV T>
     T* vec<4, T>::data(){
         return &x;
+    }
+
+    template<IsNumberV T>
+    const T& vec<4, T>::at(const std::size_t& i) const {
+        if(i < 4){
+            return *(&x + i);
+        }
+
+        throw std::out_of_range("Index out of range");
+    }
+
+    template<IsNumberV T>
+    T& vec<4, T>::at(const std::size_t& i){
+        if(i < 4){
+            return *(&x + i);
+        }
+
+        throw std::out_of_range("Index out of range");
     }
 
     template<IsNumberV T>
@@ -113,7 +123,7 @@ namespace line {
 
     template<IsNumberV U>
     vec<4, U> operator/(const U& t, const vec<4, U>& v){
-        if(t == 0) throw std::invalid_argument("In vec4 division by zero");
+        if(t == 0) throw std::invalid_argument("Division by zero not allowed");
    
         return vec<4, U>(v.x / t, v.y / t, v.z / t, v.w / t);
     }

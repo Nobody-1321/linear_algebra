@@ -14,8 +14,9 @@ namespace line{
         using value_type = T;
         using type = vec<4, T>;
         using length = std::integral_constant<length_t, 4>;
+        using iterator = line::iterator<T>;
+        using const_iterator = line::const_iterator<T>;
 
-         T x,  y, z, w;
 
         // constructors 
         vec(T x, T y , T z , T w);
@@ -36,22 +37,22 @@ namespace line{
         bool operator == (const vec<4, T>& v) const;
 
         // index operator
-        const T& operator [] (const int& i) const;         
-        T& operator [] (const int& i);
+        const T& operator [] (const std::size_t& i) const;         
+        T& operator [] (const std::size_t& i);
 
-        
-        int size() const;
-
+        // functions 
+        std::size_t size() const;
         T* data();
-
-        using iterator = line::iterator<T>;
-        using const_iterator = line::const_iterator<T>;
+        const T& at(const std::size_t& i) const;
+        T& at(const std::size_t& i);
 
         iterator begin();
         iterator end();
 
         const_iterator cbegin() const;
         const_iterator cend() const;
+        
+        T x,  y, z, w;
     };
 
     template<IsNumberV U>
