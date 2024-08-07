@@ -1,4 +1,3 @@
-// iterator.h
 #pragma once
 
 #include <iterator>
@@ -16,29 +15,30 @@ struct iterator {
 
     pointer ptr;
 
-    iterator(pointer ptr) : ptr(ptr) {}
+    iterator(pointer ptr);
 
-    reference operator*() const { return *ptr; }
-    pointer operator->() { return ptr; }
+    reference operator*() const;
+    pointer operator->();
 
-    iterator& operator++() { ++ptr; return *this; }
-    iterator operator++(int) { iterator temp = *this; ++(*this); return temp; }
+    iterator& operator++();
+    iterator operator++(int);
 
-    iterator& operator--() { --ptr; return *this; }
-    iterator operator--(int) { iterator temp = *this; --(*this); return temp; }
+    iterator& operator--();
+    iterator operator--(int);
 
-    iterator operator+(difference_type n) const { return iterator(ptr + n); }
-    iterator operator-(difference_type n) const { return iterator(ptr - n); }
-    difference_type operator-(const iterator& other) const { return ptr - other.ptr; }
+    iterator operator+(difference_type n) const;
+    iterator operator-(difference_type n) const;
+    difference_type operator-(const iterator& other) const;
 
-    bool operator==(const iterator& other) const { return ptr == other.ptr; }
-    bool operator!=(const iterator& other) const { return ptr != other.ptr; }
+    bool operator==(const iterator& other) const;
+    bool operator!=(const iterator& other) const;
 
-    bool operator<(const iterator& other) const { return ptr < other.ptr; }
-    bool operator<=(const iterator& other) const { return ptr <= other.ptr; }
-    bool operator>(const iterator& other) const { return ptr > other.ptr; }
-    bool operator>=(const iterator& other) const { return ptr >= other.ptr; }
-
+    bool operator<(const iterator& other) const;
+    bool operator<=(const iterator& other) const;
+    bool operator>(const iterator& other) const;
+    bool operator>=(const iterator& other) const;
 };
 
 } // namespace line
+
+#include "../src/iterator_vec.inl"

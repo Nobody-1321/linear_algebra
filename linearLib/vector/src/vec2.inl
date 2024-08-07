@@ -1,4 +1,4 @@
-
+#include "../include/vec2.hpp"
 
 namespace line {
 
@@ -44,7 +44,7 @@ namespace line {
 
     template<IsNumberV T>
     vec<2, T> vec<2, T>::operator / (const T& t) const {
-        if (t == 0) throw std::invalid_argument("In vec2 division by zero");
+        if (t == 0) throw std::invalid_argument("Division by zero");
 
         return vec<2, T>(x / t,y / t);
     }
@@ -57,26 +57,45 @@ namespace line {
 
     // index operator
     template<IsNumberV T>
-    const T & vec<2, T>::operator [] (const int& i) const {
-        if (i == 0) return this->x;
-        if (i == 1) return this->y;
-        throw std::out_of_range("In vec2 __index ("+ std::to_string(i) + ") is out of range");
+    const T & vec<2, T>::operator [] (const std::size_t& i) const {
+        return *(&x + i);
     }
 
     template<IsNumberV T>
-    T & vec<2, T>::operator [] (const int& i)  {
-        if (i == 0) return this->x;
-        if (i == 1) return this->y;
-        throw std::out_of_range("In vec2 __index ("+ std::to_string(i) + ") is out of range");
+    T & vec<2, T>::operator [] (const std::size_t& i)  {
+        return *(&x + i);
     }
 
+    // functions    
     template<IsNumberV T>
-    int vec<2, T>::size() const {
+    std::size_t vec<2, T>::size() const {
         return 2;
     }
 
-    //iterator
+    template<IsNumberV T>
+    T* vec<2, T>::data() {
+        return &x;
+    }
 
+    template<IsNumberV T>
+    const T& vec<2, T>::at(const std::size_t& i) const {
+        if ( i < 2) {
+            return *(&x + i);
+        } 
+        
+        throw std::out_of_range("Index out of range");
+    }
+
+    template<IsNumberV T>
+    T& vec<2, T>::at(const std::size_t& i) {
+        if ( i < 2) {
+            return *(&x + i);
+        } 
+
+        throw std::out_of_range("Index out of range");
+    }
+
+    //iterator
     template<IsNumberV T>
     vec<2, T>::iterator vec<2, T>::begin() {
         return iterator(&x);
@@ -88,12 +107,12 @@ namespace line {
     }
 
     template<IsNumberV T>
-    vec<2, T>::const_iterator vec<2, T>::begin() const {
+    vec<2, T>::const_iterator vec<2, T>::cbegin() const {
         return const_iterator(&x);
     }
 
     template<IsNumberV T>
-    vec<2, T>::const_iterator vec<2, T>::end() const {
+    vec<2, T>::const_iterator vec<2, T>::cend() const {
         return const_iterator(&y + 1);
     }
 

@@ -13,6 +13,7 @@ namespace line{
         
         using value_type = T;
         using type = vec<4, T>;
+        using length = std::integral_constant<length_t, 4>;
 
          T x,  y, z, w;
 
@@ -41,6 +42,16 @@ namespace line{
         
         int size() const;
 
+        T* data();
+
+        using iterator = line::iterator<T>;
+        using const_iterator = line::const_iterator<T>;
+
+        iterator begin();
+        iterator end();
+
+        const_iterator cbegin() const;
+        const_iterator cend() const;
     };
 
     template<IsNumberV U>

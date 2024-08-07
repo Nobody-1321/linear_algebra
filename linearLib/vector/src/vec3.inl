@@ -60,24 +60,62 @@ namespace line {
 
     // index operator
     template<IsNumberV T>
-    const T& vec<3, T>::operator [] (const int& i) const {
-        if (i == 0) return this->x;
-        if (i == 1) return this->y;
-        if (i == 2) return this->z;
-        throw std::out_of_range("In vec3 __index ("+ std::to_string(i) + ") is out of range");
+    const T& vec<3, T>::operator [] (const std::size_t& i) const {
+        return *(&x + i);
     }
 
     template<IsNumberV T>
-    T& vec<3, T>::operator [] (const int& i) {
-        if (i == 0) return this->x;
-        if (i == 1) return this->y;
-        if (i == 2) return this->z;
-        throw std::out_of_range("In vec3 __index ("+ std::to_string(i) + ") is out of range");
+    T& vec<3, T>::operator [] (const std::size_t& i) {
+        return *(&x + i);
     }
 
+    // functions
     template<IsNumberV T>
-    int vec<3, T>::size() const {
+    std::size_t vec<3, T>::size() const {
         return 3;
+    }
+
+    template<IsNumberV T>
+    T* vec<3, T>::data() {
+        return &x;
+    }
+
+    template<IsNumberV T>
+    const T& vec<3, T>::at(const std::size_t& i) const {
+        if ( i < 3) {
+            return *(&x + i);
+        } 
+        
+        throw std::out_of_range("Index out of range");   
+    }
+
+    template<IsNumberV T>
+    T& vec<3, T>::at(const std::size_t& i) {
+        if ( i < 3) {
+            return *(&x + i);
+        } 
+        
+        throw std::out_of_range("Index out of range");   
+    }
+
+    template<IsNumberV T>
+    typename vec<3, T>::iterator vec<3, T>::begin() {
+        return iterator(&x);
+    }
+
+    template<IsNumberV T>
+    typename vec<3, T>::iterator vec<3, T>::end() {
+        return iterator(&z + 1);
+    }
+
+    template<IsNumberV T>
+    typename vec<3, T>::const_iterator vec<3, T>::cbegin() const {
+        return const_iterator(&x);
+    }
+
+    template<IsNumberV T>
+    typename vec<3, T>::const_iterator vec<3, T>::cend() const {
+        return const_iterator(&z + 1);
     }
 
     template<IsNumberV U>
