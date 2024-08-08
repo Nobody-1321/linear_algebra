@@ -27,6 +27,7 @@ add_library(lineal SHARED ${MAIN_SOURCE_FILES})
 target_include_directories(lineal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/vector/include)
 target_include_directories(lineal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/matrix/include)
 target_include_directories(lineal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/iterator/include)
+target_include_directories(lineal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/detail)
 
 
 

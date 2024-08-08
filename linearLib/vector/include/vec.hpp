@@ -1,17 +1,14 @@
 #pragma once
-#include "setup_vec.hpp"
-#include "types_vec.hpp"
-#include <stdexcept>
+
+#include <optional>
 #include <array>
-#include <stdint.h>
-#include <iostream>
 #include "../../iterator/include/iterator_vec.hpp"
 #include "../../iterator/include/iterator_cvec.hpp"
-#include <type_traits>
-#include <optional>
+#include "../../detail/setup_vec.hpp"
+
 
 namespace line{
-    template<length_t L, IsNumberV T> 
+    template<length_t L, IsNumber T> 
     struct vec{
         
         using value_type = T;
@@ -30,7 +27,9 @@ namespace line{
         template<length_t M>
         vec(const vec<M, T>& v);
         vec(const vec<L, T>& v);
+        vec(vec<L, T>&& v) noexcept;
         vec<L, T>& operator = (const vec<L, T>& v);
+        vec<L, T>& operator = (vec<L, T>&& v) noexcept;
 
         // index operator
         const optional_type& operator [] (const std::size_t& i) const;
@@ -39,6 +38,8 @@ namespace line{
         // functions
         std::size_t size() const;
         optional_type* data();
+        const optional_type& at(const std::size_t& i) const;
+        optional_type& at(const std::size_t& i);
 
 
         // iterators
@@ -47,7 +48,9 @@ namespace line{
 
         const_iterator cbegin() const;
         const_iterator cend() const;
-        
+       
+       ~vec(); 
+       
         private:
         array_type data_v;   
     };

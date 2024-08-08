@@ -1,14 +1,12 @@
 #pragma once
 
-#include "setup_vec.hpp"
-#include "types_vec.hpp"
-#include <stdexcept>
-#include <stdint.h>
-#include <iostream>
+#include "../../iterator/include/iterator_vec.hpp"
+#include "../../iterator/include/iterator_cvec.hpp"
+#include "../../detail/setup_vec.hpp"
 
 namespace line{
  
-    template<IsNumberV T> 
+    template<IsNumber T> 
     struct vec<4, T>{
         
         using value_type = T;
@@ -23,7 +21,9 @@ namespace line{
         vec(const vec<4, T>& v); 
         vec(const vec<2, T>& v, T z, T w);
         vec(const vec<3, T>& v, T w);
+        vec(vec<4, T>&& v) noexcept;
         vec<4, T>& operator = (const vec<4, T>& v); 
+        vec<4, T>& operator = (vec<4, T>&& v) noexcept;
 
         // arithmetic operators
         vec<4, T> operator + (const vec<4, T>& v) const; 
@@ -51,16 +51,16 @@ namespace line{
 
         const_iterator cbegin() const;
         const_iterator cend() const;
-        
+
+       ~vec();
+
         T x,  y, z, w;
     };
 
-    template<IsNumberV U>
+    template<IsNumber U>
     vec<4, U> operator/(const U& t, const vec<4, U>& v);
-    //vec<4, U> operator/(const U& t, const vec<3, U>& v); bug por ambiguedad
-    template<IsNumberV U>
+    template<IsNumber U>
     vec<4, U> operator*(const U& t, const vec<4, U>& v);
-    //vec<4, U> operator*(const U& t, const vec<3, U>& v); bbug por ambiguedad. 
 };
 
 #include "../src/vec4.inl"

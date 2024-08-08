@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <vec2.hpp>
 #include <types_vec.hpp>
 #include <setup_vec.hpp>
 
@@ -42,7 +41,7 @@ void test_copy_v(const Vec &vec1, const Vec & expected) {
     Vec vec2(vec1);
     bool are_equal = false;
 
-    for (int i = 0; i < vec1.size(); i++) {
+    for (std::size_t i = 0; i < vec1.size(); i++) {
         are_equal = vec1[i] == expected[i];
         if (!are_equal) break;
     }
@@ -55,7 +54,7 @@ template <typename Vec>
 void test_assign_v(const Vec &vec1, const Vec & expected) {
     bool are_equal = false;
 
-    for (int i = 0; i < vec1.size(); i++) {
+    for (std::size_t i = 0; i < vec1.size(); i++) {
         are_equal = vec1[i] == expected[i];
         if (!are_equal) break;
     }
@@ -69,7 +68,7 @@ void test_add_v(const Vec &vec1, const Vec &vec2, const Vec & expected) {
     Vec vec3 = vec1 + vec2;
     bool are_equal = false;
 
-    for (int i = 0; i < vec1.size(); i++) {
+    for (std::size_t i = 0; i < vec1.size(); i++) {
         are_equal = vec3[i] == expected[i];
         if (!are_equal) break;
     }
@@ -83,7 +82,7 @@ void test_sub_v(const Vec &vec1, const Vec &vec2, const Vec & expected) {
     Vec vec3 = vec1 - vec2;
     bool are_equal = false;
 
-    for (int i = 0; i < vec1.size(); i++) {
+    for (std::size_t i = 0; i < vec1.size(); i++) {
         are_equal = vec3[i] == expected[i];
         if (!are_equal) break;
     }
@@ -97,7 +96,7 @@ void test_mul_v(const Vec &vec1, const Vec &vec2, const Vec & expected) {
     Vec vec3 = vec1 * vec2;
     bool are_equal = false;
 
-    for (int i = 0; i < vec1.size(); i++) {
+    for (std::size_t i = 0; i < vec1.size(); i++) {
         are_equal = vec3[i] == expected[i];
         if (!are_equal) break;
     }
@@ -111,7 +110,7 @@ void test_mul_scalar_v(const Vec &vec1, const typename Vec::value_type & scalar,
     Vec vec2 = vec1 * scalar;
     bool are_equal = false;
 
-    for (int i = 0; i < vec1.size(); i++) {
+    for (std::size_t i = 0; i < vec1.size(); i++) {
         are_equal = vec2[i] == expected[i];
         if (!are_equal) break;
     }

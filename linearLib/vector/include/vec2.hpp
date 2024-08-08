@@ -1,16 +1,15 @@
 #pragma once
-#include "setup_vec.hpp"
-#include "types_vec.hpp"
-#include <stdexcept>
-#include <stdint.h>
-#include <iostream>
+
 #include "../../iterator/include/iterator_vec.hpp"
 #include "../../iterator/include/iterator_cvec.hpp"
-#include <type_traits>
-namespace line{
- 
-    template<IsNumberV T> 
-    struct vec<2, T>{
+#include "../../detail/setup_vec.hpp"
+
+namespace line
+{
+
+    template <IsNumber T>
+    struct vec<2, T>
+    {
 
         using value_type = T;
         using type = vec<2, T>;
@@ -18,46 +17,51 @@ namespace line{
         using iterator = line::iterator<T>;
         using const_iterator = line::const_iterator<T>;
 
-      
-        //constructors
-        vec(T x, T y);  
-        vec(const vec<2, T>& v); 
-        vec<2, T>& operator = (const vec<2, T>& v); 
+        // constructors
+        vec(T x, T y);
+        vec(const vec<2, T> &v);
+        vec(vec<2, T> &&v) noexcept;
+        vec<2, T> &operator=(const vec<2, T> &v);
+        vec<2, T> &operator=(vec<2, T> &&v) noexcept;
+
 
         // arithmetic operators
-        vec<2, T> operator + (const vec<2, T>& v) const; 
-        vec<2, T> operator - (const vec<2, T>& v) const; 
-        vec<2, T> operator * (const vec<2, T>& v) const; 
-        vec<2, T> operator * (const T& t) const; 
-        vec<2, T> operator / (const T& t) const;
-        
+        vec<2, T> operator+(const vec<2, T> &v) const;
+        vec<2, T> operator-(const vec<2, T> &v) const;
+        vec<2, T> operator*(const vec<2, T> &v) const;
+        vec<2, T> operator*(const T &t) const;
+        vec<2, T> operator/(const T &t) const;
+
         // comparison operators
-        bool operator==(const vec<2, T>& v) const; 
+        bool operator==(const vec<2, T> &v) const;
 
         // index operator
-        const T& operator [] (const std::size_t& i) const;         
-        T& operator [] (const std::size_t& i);         
+        const T &operator[](const std::size_t &i) const;
+        T &operator[](const std::size_t &i);
 
         // functions
         std::size_t size() const;
-        T* data();
-        const T& at(const std::size_t& i) const;
-        T& at(const std::size_t& i); 
+        T *data();
+        const T &at(const std::size_t &i) const;
+        T &at(const std::size_t &i);
 
         iterator begin();
-        iterator end();  
+        iterator end();
 
         const_iterator cbegin() const;
         const_iterator cend() const;
+
+        ~vec();
         
         T x, y;
-   };
 
-    template<IsNumberV U>
-    vec<2, U> operator/(const U& t, const vec<2, U>& v);
+    };
 
-    template<IsNumberV U>
-    vec<2, U> operator*(const U& t, const vec<2, U>& v);
+    template <IsNumber U>
+    vec<2, U> operator/(const U &t, const vec<2, U> &v);
+
+    template <IsNumber U>
+    vec<2, U> operator*(const U &t, const vec<2, U> &v);
 };
 
 #include "../src/vec2.inl"

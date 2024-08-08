@@ -1,16 +1,13 @@
 #pragma once
 
-#include "setup_vec.hpp"
-#include "types_vec.hpp"
-#include <stdexcept>
+#include "../../detail/setup_vec.hpp"
 #include "../../iterator/include/iterator_vec.hpp"
 #include "../../iterator/include/iterator_cvec.hpp"
-#include <stdint.h>
-#include <iostream>
+
 
 namespace line{
  
-    template<IsNumberV T> 
+    template<IsNumber T> 
     struct vec<3, T>{
         
         using value_type = T;
@@ -23,7 +20,9 @@ namespace line{
         vec(T x, T y , T z);  
         vec(const vec<3, T>& v); 
         vec(const vec<2, T>& v, T z);
+        vec(vec<3, T>&& v) noexcept;
         vec<3, T>& operator = (const vec<3, T>& v); 
+        vec<3, T>& operator = (vec<3, T>&& v) noexcept;
 
         // arithmetic operators
         vec<3, T> operator + (const vec<3, T>& v) const; 
@@ -50,15 +49,17 @@ namespace line{
 
         const_iterator cbegin() const;
         const_iterator cend() const;
-
+        
+        ~vec();
+        
         T x, y, z;
     };
 
 
-    template<IsNumberV U>
+    template<IsNumber U>
     vec<3, U> operator/(const U& t, const vec<3, U>& v);
 
-    template<IsNumberV U>
+    template<IsNumber U>
     vec<3, U> operator * (const U& t, const vec<3, U>& v);
 };
 
