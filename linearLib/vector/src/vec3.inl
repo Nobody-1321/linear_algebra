@@ -6,17 +6,21 @@ namespace line {
     // Constructors
 
     template<IsNumber T>
-    vec<3, T>::vec(T x, T y, T z) : x(x), y(y), z(z) {}
+    vec<3, T>::vec(T x, T y, T z) : x{x}, y{y}, z{z} {}
 
     template<IsNumber T>
-    vec<3, T>::vec(const vec<3, T>& v) : x(v.x), y(v.y) , z(v.z) {}
+    vec<3, T>::vec(const vec<3, T>& v) : x{v.x}, y{v.y} , z{v.z} {}
 
     template<IsNumber T>
-    vec<3, T>::vec(const vec<2, T>& v, T z) : x(v.x), y(v.y), z(z) {}
+    vec<3, T>::vec(const vec<2, T>& v, T z) : x{v.x}, y{v.y}, z{z} {}
 
     template<IsNumber T>
-    vec<3, T>::vec(vec<3, T>&& v) noexcept : x(v.x), y(v.y), z(v.z) {}
+    vec<3, T>::vec(vec<3, T>&& v) noexcept : x{v.x}, y{v.y}, z{v.z} {}
 
+
+
+
+    /// assignment operators ///
     template<IsNumber T>
     vec<3, T>& vec<3, T>::operator=(const vec<3, T>& v) {
         
@@ -40,6 +44,8 @@ namespace line {
 
         return *this;
     }
+
+
 
     // arithmetic operators
     template<IsNumber T>
@@ -69,31 +75,29 @@ namespace line {
         return vec<3, T>(x / t, y / t, z / t);
     }
 
+
+
     // comparison operators
     template<IsNumber T>
     bool vec<3, T>::operator == (const vec<3, T>& v) const {
         return (x == v.x) && (y == v.y) && (z == v.z);
     }
 
-    // index operator
+
+    
+    // access to elements//
     template<IsNumber T>
-    const T& vec<3, T>::operator [] (const std::size_t& i) const {
+    const T& vec<3, T>::operator [] (const std::size_t& i) const noexcept {
         return *(&x + i);
     }
 
     template<IsNumber T>
-    T& vec<3, T>::operator [] (const std::size_t& i) {
+    T& vec<3, T>::operator [] (const std::size_t& i) noexcept {
         return *(&x + i);
     }
 
-    // functions
     template<IsNumber T>
-    std::size_t vec<3, T>::size() const {
-        return 3;
-    }
-
-    template<IsNumber T>
-    T* vec<3, T>::data() {
+    T* vec<3, T>::data() noexcept {
         return &x;
     }
 
@@ -103,7 +107,7 @@ namespace line {
             return *(&x + i);
         } 
         
-        throw std::out_of_range("Index out of range");   
+        throw std::out_of_range("Index _i_ (which is " + std::to_string(i) + ") >= this->size() (which is " + std::to_string(2) + ")");
     }
 
     template<IsNumber T>
@@ -112,33 +116,57 @@ namespace line {
             return *(&x + i);
         } 
         
-        throw std::out_of_range("Index out of range");   
+        throw std::out_of_range("Index _i_ (which is " + std::to_string(i) + ") >= this->size() (which is " + std::to_string(2) + ")");
+    }
+
+
+
+    // functions
+    template<IsNumber T>
+    constexpr std::size_t vec<3, T>::size() const noexcept{
+        return 3;
     }
 
     template<IsNumber T>
-    typename vec<3, T>::iterator vec<3, T>::begin() {
+    void vec<3, T>::swap(vec<3, T>& v) noexcept {
+        std::swap(x, v.x);
+        std::swap(y, v.y);
+        std::swap(z, v.z);
+    }
+
+
+
+    /// iterators ///
+    template<IsNumber T>
+    typename vec<3, T>::iterator vec<3, T>::begin() noexcept {
         return iterator(&x);
     }
 
     template<IsNumber T>
-    typename vec<3, T>::iterator vec<3, T>::end() {
+    typename vec<3, T>::iterator vec<3, T>::end() noexcept{
         return iterator(&z + 1);
     }
 
     template<IsNumber T>
-    typename vec<3, T>::const_iterator vec<3, T>::cbegin() const {
+    typename vec<3, T>::const_iterator vec<3, T>::cbegin() const noexcept{
         return const_iterator(&x);
     }
 
     template<IsNumber T>
-    typename vec<3, T>::const_iterator vec<3, T>::cend() const {
+    typename vec<3, T>::const_iterator vec<3, T>::cend() const noexcept {
         return const_iterator(&z + 1);
     }
+
+
 
     //destructors
     template<IsNumber T>
     vec<3, T>::~vec() {}
 
+
+
+
+    // free functions
     template<IsNumber U>
     vec<3, U> operator / (const U& t, const vec<3, U>& v) {
         if (t == 0) throw std::invalid_argument("Division by zero not allowed");

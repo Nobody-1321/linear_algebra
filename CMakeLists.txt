@@ -8,13 +8,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 message(STATUS "CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
-
-#add_compile_options(-Wall -Wextra -Wpedantic -Werror )
+#add_compile_options(-Wall -Wextra -Wpedantic -Werror -O3)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/linearLib)
 
 option(BUILD_TESTS "Build the tests" )
-
 if(BUILD_TESTS)
     enable_testing()
     add_subdirectory(test)

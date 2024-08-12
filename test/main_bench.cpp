@@ -1,6 +1,8 @@
 #include <benchmark/benchmark.h>
 #include <vec2.hpp>
-#include <types_vec.hpp>
+#include <vec3.hpp>
+#include <vec.hpp>
+//#include <types_vec.hpp>
 #include <setup_vec.hpp>
 #include <iostream>
 #include <vec4.hpp>
@@ -8,10 +10,10 @@
 #include <iterator_cvec.hpp>
 
 
-
+/*
 static void BM_vec2_copy(benchmark::State& state) {
-    line::vec2_f vec1(1.0f, 2.0f);
-    line::vec2_f expected(1.0f, 2.0f);
+    line::vec<2, float> vec1(1.0f, 2.0f);
+    line::vec<2, float> expected(1.0f, 2.0f);
 
     for (auto _ : state) {
         for (int i = 0; i < 1000; ++i) {
@@ -20,20 +22,57 @@ static void BM_vec2_copy(benchmark::State& state) {
         }
     }
 }
+*/
 
-static void BM_vec2_cop(benchmark::State& state) {
-    line::vec2_f vec1(1.0f, 2.0f);
-    line::vec2_f expected(1.0f, 2.0f);
+static void BM_vec4_constructor(benchmark::State& state) {
 
     for (auto _ : state) {
         for (int i = 0; i < 1000; ++i) {
-            vec1[0] = 0;
+            line::vec<460,float> vec1(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
+             11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f);
+
         }
     }
 }
 
+/*
 static void BM_vec2_iterate(benchmark::State& state) {
-    line::vec2_f vec1(1.0f, 2.0f);
+    line::vec<2,float> vec1(1.0f, 2.0f);
     
     for (auto _ : state) {
         for (auto it = vec1.begin(); it != vec1.end(); ++it) {
@@ -44,19 +83,21 @@ static void BM_vec2_iterate(benchmark::State& state) {
 
 
 static void BM_vec2_iterate2(benchmark::State& state) {
-    line::vec2_f vec1(1.0f, 2.0f);
+    line::vec<2,float> vec1(1.0f, 2.0f);
     
     for (auto _ : state) {
-        for (int i = 0; i < vec1.size();  i++) {
+        for (std::size_t i = 0; i < vec1.size();  i++) {
             benchmark::DoNotOptimize(vec1[i]);
         }
     }
 }
-
-BENCHMARK(BM_vec2_iterate)->Iterations(700);
-BENCHMARK(BM_vec2_iterate2)->Iterations(700);
-BENCHMARK(BM_vec2_copy)->Iterations(700);
-BENCHMARK(BM_vec2_cop)->Iterations(700);
+*/
+/*
+BENCHMARK(BM_vec2_iterate)->Iterations(150000);
+BENCHMARK(BM_vec2_iterate2)->Iterations(150000);
+BENCHMARK(BM_vec2_copy)->Iterations(150000);
+*/
+BENCHMARK(BM_vec4_constructor)->Iterations(1500);
 
 
 BENCHMARK_MAIN();

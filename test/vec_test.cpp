@@ -2,7 +2,7 @@
 #include <vec2.hpp>
 #include <vec3.hpp>
 #include <vec4.hpp>
-#include <types_vec.hpp>
+//#include <types_vec.hpp>
 #include <iostream>
 #include <setup_vec.hpp>
 #include "fixture_vec.cpp"

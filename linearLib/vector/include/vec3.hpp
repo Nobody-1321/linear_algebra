@@ -21,6 +21,8 @@ namespace line{
         vec(const vec<3, T>& v); 
         vec(const vec<2, T>& v, T z);
         vec(vec<3, T>&& v) noexcept;
+
+        // assignment operators
         vec<3, T>& operator = (const vec<3, T>& v); 
         vec<3, T>& operator = (vec<3, T>&& v) noexcept;
 
@@ -34,28 +36,30 @@ namespace line{
         // comparison operators
         bool operator == (const vec<3, T>& v) const; 
         
-        // index operator
-        const T& operator [] (const std::size_t& i) const ;
-        T& operator [] (const std::size_t& i);
-         
-        // functions
-        std::size_t size() const;
-        T* data();
+        // access to elements
+        const T& operator [] (const std::size_t& i) const noexcept;
+        T& operator [] (const std::size_t& i) noexcept;
+        T* data() noexcept;
         const T& at(const std::size_t& i) const;
         T& at(const std::size_t& i);
 
-        iterator begin();
-        iterator end();
+        // functions
+        constexpr std::size_t size() const noexcept;
+        void swap(vec<3, T>& v) noexcept;
 
-        const_iterator cbegin() const;
-        const_iterator cend() const;
+        //iterators
+        iterator begin() noexcept;
+        iterator end() noexcept;
+
+        const_iterator cbegin() const noexcept;
+        const_iterator cend() const noexcept;
         
         ~vec();
         
         T x, y, z;
     };
 
-
+    /// free functions
     template<IsNumber U>
     vec<3, U> operator/(const U& t, const vec<3, U>& v);
 

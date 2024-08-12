@@ -3,7 +3,7 @@
 namespace line {
 
 template<typename T>
-const_iterator<T>::const_iterator(pointer ptr) : ptr(ptr) {}
+const_iterator<T>::const_iterator(pointer ptr) : ptr{ptr} {}
 
 template<typename T>
 typename const_iterator<T>::reference const_iterator<T>::operator*() const { 

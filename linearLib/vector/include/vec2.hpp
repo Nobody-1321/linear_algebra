@@ -21,9 +21,10 @@ namespace line
         vec(T x, T y);
         vec(const vec<2, T> &v);
         vec(vec<2, T> &&v) noexcept;
+        
+        // assignment operators
         vec<2, T> &operator=(const vec<2, T> &v);
         vec<2, T> &operator=(vec<2, T> &&v) noexcept;
-
 
         // arithmetic operators
         vec<2, T> operator+(const vec<2, T> &v) const;
@@ -35,21 +36,24 @@ namespace line
         // comparison operators
         bool operator==(const vec<2, T> &v) const;
 
-        // index operator
-        const T &operator[](const std::size_t &i) const;
-        T &operator[](const std::size_t &i);
+        // access to elements
+        const T &operator[](const std::size_t &i) const noexcept;
+        T &operator[](const std::size_t &i) noexcept;
 
-        // functions
-        std::size_t size() const;
-        T *data();
+        T *data() noexcept;
         const T &at(const std::size_t &i) const;
         T &at(const std::size_t &i);
 
-        iterator begin();
-        iterator end();
+        // functions
+        constexpr std::size_t size() const noexcept;
+        void  swap(vec<2, T> &v) noexcept;
 
-        const_iterator cbegin() const;
-        const_iterator cend() const;
+        //iterators
+        iterator begin() noexcept;
+        iterator end() noexcept;
+
+        const_iterator cbegin() const noexcept;
+        const_iterator cend() const noexcept;
 
         ~vec();
         
@@ -57,6 +61,7 @@ namespace line
 
     };
 
+    ////// free functions //////
     template <IsNumber U>
     vec<2, U> operator/(const U &t, const vec<2, U> &v);
 
