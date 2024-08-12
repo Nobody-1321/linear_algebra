@@ -17,38 +17,38 @@ namespace line{
 
 
         // constructors 
-        vec(T x, T y , T z , T w);
-        vec(const vec<4, T>& v); 
-        vec(vec<4, T>&& v) noexcept;
-        vec(const vec<2, T>& v, T z, T w);
-        vec(const vec<3, T>& v, T w);
+        vec(T coordX, T coordY , T coordZ , T coordW);
+        vec(const vec<4, T>& vec_); 
+        vec(vec<4, T>&& vec_) noexcept;
+        vec(const vec<2, T>& vec_, T coordZ, T coordW);
+        vec(const vec<3, T>& vec_, T coordW);
 
         // assignment operators
-        vec<4, T>& operator = (const vec<4, T>& v); 
-        vec<4, T>& operator = (vec<4, T>&& v) noexcept;
+        vec<4, T>& operator = (const vec<4, T>& vec_); 
+        vec<4, T>& operator = (vec<4, T>&& vec_) noexcept;
 
         // arithmetic operators
-        vec<4, T> operator + (const vec<4, T>& v) const; 
-        vec<4, T> operator - (const vec<4, T>& v) const; 
-        vec<4, T> operator * (const vec<4, T>& v) const; 
-        vec<4, T> operator * (const T& t) const; 
-        vec<4, T> operator / (const T& t) const;
+        vec<4, T> operator + (const vec<4, T>& vec_) const; 
+        vec<4, T> operator - (const vec<4, T>& vec_) const; 
+        vec<4, T> operator * (const vec<4, T>& vec_) const; 
+        vec<4, T> operator * (const T& sca) const; 
+        vec<4, T> operator / (const T& sca) const;
         
 
         // comparison operators
-        bool operator == (const vec<4, T>& v) const;
+        constexpr bool operator == (const vec<4, T>& vec_) const noexcept;
 
 
         // functions 
         constexpr std::size_t size() const noexcept;
-        void swap(vec<4, T>& v) noexcept;
+        void swap(vec<4, T>& vec_) noexcept;
 
         // access to elements
-        const T& operator [] (const std::size_t& i) const noexcept;
-        T& operator [] (const std::size_t& i) noexcept;
+        const T& operator [] (const std::size_t& idx) const noexcept;
+        T& operator [] (const std::size_t& idx) noexcept;
         T* data() noexcept;
-        const T& at(const std::size_t& i) const;
-        T& at(const std::size_t& i);
+        const T& at(const std::size_t& idx) const;
+        T& at(const std::size_t& idx);
 
         //iterators
         iterator begin() noexcept;
@@ -64,10 +64,10 @@ namespace line{
 
     /// free functions
     template<IsNumber U>
-    vec<4, U> operator/(const U& t, const vec<4, U>& v);
+    vec<4, U> operator/(const U& sca, const vec<4, U>& vec_);
   
     template<IsNumber U>
-    vec<4, U> operator*(const U& t, const vec<4, U>& v);
+    vec<4, U> operator*(const U& sca, const vec<4, U>& vec);
 };
 
 #include "../src/vec4.inl"

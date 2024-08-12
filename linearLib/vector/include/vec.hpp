@@ -7,7 +7,7 @@
 #include "../../iterator/include/iterator_vec.hpp"
 #include "../../iterator/include/iterator_cvec.hpp"
 #include "../../detail/setup_vec.hpp"
-#include "../../detail/setup_vec.hpp"
+#include "../../detail/types_d.hpp"
 
 namespace line
 {
@@ -24,16 +24,15 @@ namespace line
     using const_iterator = line::const_iterator<optional_type>;
 
     // constructors
-    vec(const vec<L, T> &v);
-    vec(const vec<L, T> &v, T fill_value);
+    vec(const vec<L, T> &vec_);
 
     template <length_t L2>
-    vec(const vec<L2, T> &v);
+    vec(const vec<L2, T> &vec_);
 
     template <length_t L2>
-    vec(const vec<L2, T> &v, T fill_value);
+    vec(const vec<L2, T> &vec_, T fill_value);
 
-    vec(vec<L, T> &&v) noexcept;
+    vec(vec<L, T> &&vec_) noexcept;
     
     template <typename... Args>
       requires detail::AreSameAndNumbers<T, Args...>
@@ -41,25 +40,37 @@ namespace line
 
     vec(T fill_value);
 
+    ///assignment operators
+    vec<L, T> &operator=(const vec<L, T> &vec_);
+    vec<L, T> &operator=(vec<L, T> &&vec_) noexcept;
+
+    // arithmetic operators
+
+
+    // comparison operators
+    bool operator==(const vec<L, T> &vec_) const;
+    
+    // access to elements
+    optional_type &operator[](const std::size_t &idx) noexcept; 
+    const optional_type &operator[](const std::size_t &idx) const noexcept;
+
+    optional_type * data() noexcept;
+    optional_type &at(const std::size_t &idx);
+    const optional_type &at(const std::size_t &idx) const;
+
     //functions
     constexpr std::size_t size() const noexcept;
     void fill(T fill_value);
-
-    // index operator
-    optional_type &operator[](const std::size_t &i) noexcept; // { return data_v->at(i); }
-    const optional_type &operator[](const std::size_t &i) const noexcept; // { return data_v->at(i); }
-    optional_type * data() noexcept;
-
-    optional_type &at(const std::size_t &i) noexcept; // { return data_v->at(i); }
-    const optional_type &at(const std::size_t &i) const noexcept; // { return data_v->at(i); }
+    void swap(vec<L, T> &vec_) noexcept;
 
 
     // iterator
-    iterator begin()noexcept; //{ return iterator(data_v->begin()); }
-    iterator end() noexcept;//{ return iterator(data_v->end()); }
+    iterator begin()noexcept;
+    iterator end() noexcept;
 
-    const_iterator begin() const noexcept;//{ return const_iterator(data_v->begin()); }
-    const_iterator end() const noexcept;//{ return const_iterator(data_v->end()); }
+    const_iterator begin() const noexcept;
+    const_iterator end() const noexcept;
+    
     ~vec();
 
   private:

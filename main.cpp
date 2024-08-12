@@ -12,14 +12,7 @@
 int main() {
 
     using namespace std;
+    line::vec<2, int> v1(1, 2);
 
-    line::vec<10, float> v1(1.0f, 2.5f, 3.0f, 4.9f, 5.0f, 50.6f);
-    cout << v1.data()->value() ;
-    
-    cout << std::endl;
-    
- /*   for (int i = 0; i < 10; ++i) {
-        cout << v1[i].value_or(1) << " ";
-    }
- */
+    std::vector<int> vec(std::vector<int>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 }   

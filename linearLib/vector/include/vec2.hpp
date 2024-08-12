@@ -18,35 +18,35 @@ namespace line
         using const_iterator = line::const_iterator<T>;
 
         // constructors
-        vec(T x, T y);
-        vec(const vec<2, T> &v);
-        vec(vec<2, T> &&v) noexcept;
+        vec(T coordX, T coordY);
+        vec(const vec<2, T> &vec_);
+        vec(vec<2, T> &&vec_) noexcept;
         
         // assignment operators
-        vec<2, T> &operator=(const vec<2, T> &v);
-        vec<2, T> &operator=(vec<2, T> &&v) noexcept;
+        vec<2, T> &operator=(const vec<2, T> &vec_);
+        vec<2, T> &operator=(vec<2, T> &&vec_) noexcept;
 
         // arithmetic operators
-        vec<2, T> operator+(const vec<2, T> &v) const;
-        vec<2, T> operator-(const vec<2, T> &v) const;
-        vec<2, T> operator*(const vec<2, T> &v) const;
-        vec<2, T> operator*(const T &t) const;
-        vec<2, T> operator/(const T &t) const;
+        vec<2, T> operator+(const vec<2, T> &vec_) const;
+        vec<2, T> operator-(const vec<2, T> &vec_) const;
+        vec<2, T> operator*(const vec<2, T> &vec_) const;
+        vec<2, T> operator*(const T &sca) const;
+        vec<2, T> operator/(const T &sca) const;
 
         // comparison operators
-        bool operator==(const vec<2, T> &v) const;
+        constexpr bool operator==(const vec<2, T> &vec_) const noexcept;
 
         // access to elements
-        const T &operator[](const std::size_t &i) const noexcept;
-        T &operator[](const std::size_t &i) noexcept;
+        const T &operator[](const std::size_t &idx) const noexcept;
+        T &operator[](const std::size_t &idx) noexcept;
 
         T *data() noexcept;
-        const T &at(const std::size_t &i) const;
-        T &at(const std::size_t &i);
+        const T &at(const std::size_t &idx) const;
+        T &at(const std::size_t &idx);
 
         // functions
         constexpr std::size_t size() const noexcept;
-        void  swap(vec<2, T> &v) noexcept;
+        void  swap(vec<2, T> &vec_) noexcept;
 
         //iterators
         iterator begin() noexcept;
@@ -63,10 +63,10 @@ namespace line
 
     ////// free functions //////
     template <IsNumber U>
-    vec<2, U> operator/(const U &t, const vec<2, U> &v);
+    vec<2, U> operator/(const U &sca, const vec<2, U> &vec_);
 
     template <IsNumber U>
-    vec<2, U> operator*(const U &t, const vec<2, U> &v);
+    vec<2, U> operator*(const U &sca, const vec<2, U> &vec_);
 };
 
 #include "../src/vec2.inl"

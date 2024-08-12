@@ -20,39 +20,53 @@ typedef ::testing::Types<
 // Usa TYPED_TEST_SUITE para definir el caso de prueba
 TYPED_TEST_SUITE(Fixture_Vec2, MyVecTypes_2V);
 
-// Definir la prueba para el constructor
-TYPED_TEST(Fixture_Vec2, test_copy) {
-    typename TestFixture::Vec vec(8, 8);
-    typename TestFixture::Vec expected(8, 8);
-    test_copy_v<typename TestFixture::Vec>(vec, expected);
+// constructors test
+TYPED_TEST(Fixture_Vec2, Constructors) {
+
+    typename TestFixture::Vec u(8, 8);
+    typename TestFixture::Vec v(u);
+    typename TestFixture::Vec w = u;
+    ASSERT_EQ(w, u);
+
+    typename TestFixture::Vec x{2, 2};
+    typename TestFixture::Vec y = {x};
+    ASSERT_EQ(x, y);
+
+    typename TestFixture::Vec z = {2, 2};
+    typename TestFixture::Vec l = std::move(z);
+    ASSERT_EQ(x, z);
 }
 
-TYPED_TEST(Fixture_Vec2, test_assign) {
-    typename TestFixture::Vec vec(8, 8);
-    typename TestFixture::Vec expected(8, 8);
-    test_assign_v<typename TestFixture::Vec>(vec, expected);
+// access to elements test
+TYPED_TEST(Fixture_Vec2, AccessToElements) {
+
+    typename TestFixture::Vec u{8, 8};
+    ASSERT_EQ(u[0], 8);
+    ASSERT_EQ(u[1], 8);
+    ASSERT_EQ(u.at(0), 8);
+    ASSERT_EQ(u.at(1), 8);
+    ASSERT_EQ(u.x, 8);
+    ASSERT_EQ(u.y, 8);
+    auto v = u.data();
+    ASSERT_EQ( &(*v), &u.x);
+    ASSERT_EQ( &(*(v+1)), &u.y);
+    ASSERT_THROW(u.at(2), std::out_of_range);
+
+}
+//iterators test
+TYPED_TEST(Fixture_Vec2, Iterators) {
+
+    typename TestFixture::Vec u{8, 10};
+    auto it = u.begin();
+    auto it2 = u.end();
+    ASSERT_EQ(*it, 8);
+    ASSERT_EQ(*(it+1), 8+2);
+    ASSERT_EQ(it2-it, 2);
+    ASSERT_EQ(*u.cbegin(), *u.begin());
+    ASSERT_EQ(*u.cend(), *u.end());
 }
 
-TYPED_TEST(Fixture_Vec2, test_add) {
-    typename TestFixture::Vec vec1(8, 8);
-    typename TestFixture::Vec vec2(2, 2);
-    typename TestFixture::Vec expected(10, 10);
-    test_add_v<typename TestFixture::Vec>(vec1, vec2, expected);
-}
 
-TYPED_TEST(Fixture_Vec2, test_sub) {
-    typename TestFixture::Vec vec1(8, 8);
-    typename TestFixture::Vec vec2(2, 2);
-    typename TestFixture::Vec expected(6, 6);
-    test_sub_v<typename TestFixture::Vec>(vec1, vec2, expected);
-}
-
-TYPED_TEST(Fixture_Vec2, test_mul) {
-    typename TestFixture::Vec vec1(8, 8);
-    typename TestFixture::Vec vec2(2, 2);
-    typename TestFixture::Vec expected(16, 16);
-    test_mul_v<typename TestFixture::Vec>(vec1, vec2, expected);
-}
 // u + v = v + u
 TYPED_TEST(Fixture_Vec2, Commutativity) {
 
@@ -151,38 +165,6 @@ typedef ::testing::Types<
 TYPED_TEST_SUITE(Fixture_Vec3, MyVecTypes_3V);
 
 
-TYPED_TEST(Fixture_Vec3, test_copy) {
-    typename TestFixture::Vec vec(8, 8, 8);
-    typename TestFixture::Vec expected(8, 8, 8);
-    test_copy_v<typename TestFixture::Vec>(vec, expected);
-}
-
-TYPED_TEST(Fixture_Vec3, test_assign) {
-    typename TestFixture::Vec vec(8, 8, 8);
-    typename TestFixture::Vec expected(8, 8, 8);
-    test_assign_v<typename TestFixture::Vec>(vec, expected);
-}
-
-TYPED_TEST(Fixture_Vec3, test_add) {
-    typename TestFixture::Vec vec1(8, 8, 8);
-    typename TestFixture::Vec vec2(2, 2, 2);
-    typename TestFixture::Vec expected(10, 10, 10);
-    test_add_v<typename TestFixture::Vec>(vec1, vec2, expected);
-}
-
-TYPED_TEST(Fixture_Vec3, test_sub) {
-    typename TestFixture::Vec vec1(8, 8, 8);
-    typename TestFixture::Vec vec2(2, 2, 2);
-    typename TestFixture::Vec expected(6, 6, 6);
-    test_sub_v<typename TestFixture::Vec>(vec1, vec2, expected);
-}
-
-TYPED_TEST(Fixture_Vec3, test_mul) {
-    typename TestFixture::Vec vec1(8, 8, 8);
-    typename TestFixture::Vec vec2(2, 2, 2);
-    typename TestFixture::Vec expected(16, 16, 16);
-    test_mul_v<typename TestFixture::Vec>(vec1, vec2, expected);
-}
 // u + v = v + u
 TYPED_TEST(Fixture_Vec3, Commutativity) {
 
@@ -282,38 +264,6 @@ typedef ::testing::Types<
 TYPED_TEST_SUITE(Fixture_Vec4, MyVecTypes_4V);
 
 
-TYPED_TEST(Fixture_Vec4, test_copy) {
-    typename TestFixture::Vec vec(8, 8, 8, 8);
-    typename TestFixture::Vec expected(8, 8, 8, 8);
-    test_copy_v<typename TestFixture::Vec>(vec, expected);
-}
-
-TYPED_TEST(Fixture_Vec4, test_assign) {
-    typename TestFixture::Vec vec(8, 8, 8, 8);
-    typename TestFixture::Vec expected(8, 8, 8, 8);
-    test_assign_v<typename TestFixture::Vec>(vec, expected);
-}
-
-TYPED_TEST(Fixture_Vec4, test_add) {
-    typename TestFixture::Vec vec1(8, 8, 8, 8);
-    typename TestFixture::Vec vec2(2, 2, 2, 2);
-    typename TestFixture::Vec expected(10, 10, 10, 10);
-    test_add_v<typename TestFixture::Vec>(vec1, vec2, expected);
-}
-
-TYPED_TEST(Fixture_Vec4, test_sub) {
-    typename TestFixture::Vec vec1(8, 8, 8, 8);
-    typename TestFixture::Vec vec2(2, 2, 2, 2);
-    typename TestFixture::Vec expected(6, 6, 6, 6);
-    test_sub_v<typename TestFixture::Vec>(vec1, vec2, expected);
-}
-
-TYPED_TEST(Fixture_Vec4, test_mul) {
-    typename TestFixture::Vec vec1(8, 8, 8, 8);
-    typename TestFixture::Vec vec2(2, 2, 2, 2);
-    typename TestFixture::Vec expected(16, 16, 16, 16);
-    test_mul_v<typename TestFixture::Vec>(vec1, vec2, expected);
-}
 // u + v = v + u
 TYPED_TEST(Fixture_Vec4, Commutativity) {
 

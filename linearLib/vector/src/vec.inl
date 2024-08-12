@@ -1,43 +1,37 @@
-//#pragma once
-//#include "../include/vec.hpp"
+ #pragma once
+ #include "../include/vec.hpp"
 namespace line
 {
     using namespace detail;
-    
-    template <length_t L, IsNumber T>
-    vec<L, T>::vec(const vec<L, T> &v)
-    {
-        data_v->fill(std::nullopt);
-        std::copy_n(v.begin(), L, data_v->begin());
-    }
 
     template <length_t L, IsNumber T>
-    vec<L, T>::vec(const vec<L, T> &v, T fill_value)
+    vec<L, T>::vec(const vec<L, T> &vec_)
     {
-        data_v->fill(fill_value);
-        std::copy_n(v.begin(), L, data_v->begin());
+        data_v->fill(std::nullopt);
+        std::copy_n(vec_.begin(), L, data_v->begin());
     }
 
     template <length_t L, IsNumber T>
     template <length_t L2>
-    vec<L, T>::vec(const vec<L2, T> &v)
+    vec<L, T>::vec(const vec<L2, T> &vec_)
     {
         data_v->fill(std::nullopt);
-        std::copy_n(v.begin(), std::min(L, L2), data_v->begin());
+        std::copy_n(vec_.begin(), std::min(L, L2), data_v->begin());
     }
 
     template <length_t L, IsNumber T>
     template <length_t L2>
-    vec<L, T>::vec(const vec<L2, T> &v, T fill_value)
+    vec<L, T>::vec(const vec<L2, T> &vec_, T fill_value)
     {
         data_v->fill(fill_value);
-        std::copy_n(v.begin(), std::min(L, L2), data_v->begin());
+        std::copy_n(vec_.begin(), std::min(L, L2), data_v->begin());
     }
 
     template <length_t L, IsNumber T>
-    vec<L, T>::vec(vec<L, T> &&v) noexcept {
-        data_v = std::move(v.data_v);
-        v.data_v = nullptr;
+    vec<L, T>::vec(vec<L, T> &&vec_) noexcept
+        : data_v(std::move(vec_.data_v)) // Utilizando lista de inicialización
+    {
+        vec_.data_v = nullptr;
     }
 
     template <length_t L, IsNumber T>
@@ -47,10 +41,7 @@ namespace line
     {
         data_v->fill(std::nullopt);
         std::size_t index = 0;
-        ((index < L && (data_v->at(index++) = static_cast<T>(args))), ...);
-        
-        //std::initializer_list<T> arg_list = {static_cast<T>(args)...};
-        //std::copy_n(arg_list.begin(), std::min(L, sizeof...(args)), data_v->begin()); 
+        ((index < L && (data_v->at(index++) = static_cast<T>(std::forward<Args>(args)))), ...);
     }
 
     template <length_t L, IsNumber T>
@@ -59,18 +50,48 @@ namespace line
         data_v->fill(fill_value);
     }
 
-
-    //access to elements
-    template<length_t L, IsNumber T>
-    typename vec<L,T>::optional_type &vec<L, T>::operator[](const std::size_t &i) noexcept
+    // assignment operators
+    template <length_t L, IsNumber T>
+    vec<L, T> &vec<L, T>::operator=(const vec<L, T> &vec_)
     {
-        return (*data_v)[i];
+        if (this != &vec_)
+        {
+            std::copy_n(vec_.begin(), L, data_v->begin());
+        }
+
+        return *this;
     }
 
     template <length_t L, IsNumber T>
-    const typename vec<L, T>::optional_type &vec<L, T>::operator[](const std::size_t &i) const noexcept
+    vec<L, T> &vec<L, T>::operator=(vec<L, T> &&vec_) noexcept
     {
-        return (*data_v)[i];
+        if (this != &vec_)
+        {
+            data_v = std::move(vec_.data_v);
+            vec_.data_v = nullptr;
+        }
+
+        return *this;
+    }
+
+    // comparison operators
+    template <length_t L, IsNumber T>
+    bool vec<L, T>::operator==(const vec<L, T> &vec_) const
+    {
+        return std::equal(this->begin(), this->end(), vec_.begin());
+    }
+
+    // access to elements
+    template <length_t L, IsNumber T>
+    typename vec<L, T>::optional_type &vec<L, T>::operator[](const std::size_t &idx) noexcept
+    {
+        return (*data_v)[idx];
+    }
+
+    template <length_t L, IsNumber T>
+    const typename vec<L, T>::optional_type &vec<L, T>::operator[](const std::size_t &idx) const noexcept
+    {
+        return (*data_v)[idx];
     }
 
     template <length_t L, IsNumber T>
@@ -80,34 +101,39 @@ namespace line
     }
 
     template <length_t L, IsNumber T>
-    typename vec<L, T>::optional_type &vec<L, T>::at(const std::size_t &i) noexcept
+    typename vec<L, T>::optional_type &vec<L, T>::at(const std::size_t &idx)
     {
-        return data_v->at(i);
+        return data_v->at(idx);
     }
-    
+
     template <length_t L, IsNumber T>
-    const typename vec<L, T>::optional_type &vec<L, T>::at(const std::size_t &i) const noexcept
+    const typename vec<L, T>::optional_type &vec<L, T>::at(const std::size_t &idx) const
     {
-        return data_v->at(i);
+        return data_v->at(idx);
     }
- 
-    //functions
+
+    // functions
 
     template <length_t L, IsNumber T>
     constexpr std::size_t vec<L, T>::size() const noexcept
     {
         return L;
     }
-    
+
     template <length_t L, IsNumber T>
     void vec<L, T>::fill(T fill_value)
     {
         data_v->fill(fill_value);
     }
 
+    template <length_t L, IsNumber T>
+    void vec<L, T>::swap(vec<L, T> &vec_) noexcept
+    {
+        std::swap(*data_v, *vec_.data_v);
+    }
 
-    //iterators
-     
+    // iterators
+
     template <length_t L, IsNumber T>
     typename vec<L, T>::iterator vec<L, T>::begin() noexcept
     {

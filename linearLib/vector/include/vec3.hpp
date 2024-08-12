@@ -17,35 +17,35 @@ namespace line{
         using const_iterator = line::const_iterator<T>;       
 
         // constructors 
-        vec(T x, T y , T z);  
-        vec(const vec<3, T>& v); 
-        vec(const vec<2, T>& v, T z);
-        vec(vec<3, T>&& v) noexcept;
+        vec(T coordX, T coordY , T coordZ);  
+        vec(const vec<3, T>& vec_); 
+        vec(const vec<2, T>& vec_, T coordZ);
+        vec(vec<3, T>&& vec_) noexcept;
 
         // assignment operators
-        vec<3, T>& operator = (const vec<3, T>& v); 
-        vec<3, T>& operator = (vec<3, T>&& v) noexcept;
+        vec<3, T>& operator = (const vec<3, T>& vec_); 
+        vec<3, T>& operator = (vec<3, T>&& vec_) noexcept;
 
         // arithmetic operators
-        vec<3, T> operator + (const vec<3, T>& v) const; 
-        vec<3, T> operator - (const vec<3, T>& v) const; 
-        vec<3, T> operator * (const vec<3, T>& v) const; 
-        vec<3, T> operator * (const T& t) const; 
-        vec<3, T> operator / (const T& t) const;
+        vec<3, T> operator + (const vec<3, T>& vec_) const; 
+        vec<3, T> operator - (const vec<3, T>& vec_) const; 
+        vec<3, T> operator * (const vec<3, T>& vec_) const; 
+        vec<3, T> operator * (const T& sca) const; 
+        vec<3, T> operator / (const T& sca) const;
         
         // comparison operators
-        bool operator == (const vec<3, T>& v) const; 
+        constexpr bool operator == (const vec<3, T>& vec_) const noexcept; 
         
         // access to elements
-        const T& operator [] (const std::size_t& i) const noexcept;
-        T& operator [] (const std::size_t& i) noexcept;
+        const T& operator [] (const std::size_t& idx) const noexcept;
+        T& operator [] (const std::size_t& idx) noexcept;
         T* data() noexcept;
-        const T& at(const std::size_t& i) const;
-        T& at(const std::size_t& i);
+        const T& at(const std::size_t& idx) const;
+        T& at(const std::size_t& idx);
 
         // functions
         constexpr std::size_t size() const noexcept;
-        void swap(vec<3, T>& v) noexcept;
+        void swap(vec<3, T>& vec_) noexcept;
 
         //iterators
         iterator begin() noexcept;
@@ -61,10 +61,10 @@ namespace line{
 
     /// free functions
     template<IsNumber U>
-    vec<3, U> operator/(const U& t, const vec<3, U>& v);
+    vec<3, U> operator/(const U& sca, const vec<3, U>& vec_);
 
     template<IsNumber U>
-    vec<3, U> operator * (const U& t, const vec<3, U>& v);
+    vec<3, U> operator * (const U& sca, const vec<3, U>& vec_);
 };
 
 #include "../src/vec3.inl"

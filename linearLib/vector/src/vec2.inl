@@ -1,19 +1,19 @@
-//#pragma once
-//#include "../include/vec2.hpp"
+#pragma once
+#include "../include/vec2.hpp"
 namespace line {
 
     ////// constructors //////
     
     template<IsNumber T>
-    vec<2, T>::vec(T x, T y) : x{x}, y{y} {
+    vec<2, T>::vec(T coordX, T coordY) : x{coordX}, y{coordY} {
     }
 
     template<IsNumber T>
-    vec<2, T>::vec(const vec<2, T>& v) : x{v.x}, y{v.y} {
+    vec<2, T>::vec(const vec<2, T>& vec_) : x{vec_.x}, y{vec_.y} {
     }
 
     template<IsNumber T>
-    vec<2, T>::vec(vec<2, T>&& v) noexcept : x{v.x}, y{v.y} {
+    vec<2, T>::vec(vec<2, T>&& vec_) noexcept : x{vec_.x}, y{vec_.y} {
     }
     
 
@@ -23,22 +23,22 @@ namespace line {
     /////// assignment operators ///////
     
     template<IsNumber T>
-    vec<2, T>& vec<2, T>::operator=(vec<2, T>&& v) noexcept {
+    vec<2, T>& vec<2, T>::operator=(vec<2, T>&& vec_) noexcept {
         
-        if (this != &v) {
-            x = v.x;
-            y = v.y;
+        if (this != &vec_) {
+            x = vec_.x;
+            y = vec_.y;
         }
 
         return *this;
     }
 
     template<IsNumber T>
-    vec<2, T>& vec<2, T>::operator=(const vec<2, T>& v) {
+    vec<2, T>& vec<2, T>::operator=(const vec<2, T>& vec_) {
         
-        if (this != &v) {
-            x = v.x;
-            y = v.y;
+        if (this != &vec_) {
+            x = vec_.x;
+            y = vec_.y;
         }
 
         return *this;
@@ -46,49 +46,49 @@ namespace line {
 
     // arithmetic operators
     template<IsNumber T>
-    vec<2, T> vec<2, T>::operator + (const vec<2, T>& v) const {
-        return vec<2, T>(x + v.x, y + v.y);
+    vec<2, T> vec<2, T>::operator + (const vec<2, T>& vec_) const {
+        return vec<2, T>(x + vec_.x, y + vec_.y);
     }
 
     template<IsNumber T>
-    vec<2, T> vec<2, T>::operator - (const vec<2, T>& v) const{
-       return vec<2, T>(x - v.x, y - v.y);
+    vec<2, T> vec<2, T>::operator - (const vec<2, T>& vec_) const{
+       return vec<2, T>(x - vec_.x, y - vec_.y);
     }
 
     template<IsNumber T>
-    vec<2, T> vec<2, T>::operator * (const vec<2, T>& v) const{
-        return vec<2, T>(x * v.x, y * v.y);
+    vec<2, T> vec<2, T>::operator * (const vec<2, T>& vec_) const{
+        return vec<2, T>(x * vec_.x, y * vec_.y);
     }
 
     template<IsNumber T>
-    vec<2, T> vec<2, T>::operator * (const T& t) const{
-        return vec<2, T>(x * t, y * t);
+    vec<2, T> vec<2, T>::operator * (const T& sca) const{
+        return vec<2, T>(x * sca, y * sca);
     }
 
     template<IsNumber T>
-    vec<2, T> vec<2, T>::operator / (const T& t) const {
-        if (t == 0) throw std::invalid_argument("Division by zero not allowed");
+    vec<2, T> vec<2, T>::operator / (const T& sca) const {
+        if (sca == 0){ throw std::invalid_argument("Division by zero not allowed");}
 
-        return vec<2, T>(x / t,y / t);
+        return vec<2, T>(x / sca,y / sca);
     }
 
 
 
     ///// comparison operators /////
     template<IsNumber T>
-    bool vec<2, T>::operator==(const vec<2, T>& v) const {
-        return this->x == v.x && this->y == v.y;
+    constexpr bool vec<2, T>::operator==(const vec<2, T>& vec_) const noexcept {
+        return this->x == vec_.x && this->y == vec_.y;
     }
     
     // access to elements
     template<IsNumber T>
-    const T & vec<2, T>::operator [] (const std::size_t& i) const noexcept {
-        return *(&x + i);
+    const T & vec<2, T>::operator [] (const std::size_t& idx) const noexcept {
+        return *(&x + idx);
     }
 
     template<IsNumber T>
-    T & vec<2, T>::operator [] (const std::size_t& i)  noexcept{
-        return *(&x + i);
+    T & vec<2, T>::operator [] (const std::size_t& idx)  noexcept{
+        return *(&x + idx);
     }
 
     template<IsNumber T>
@@ -97,21 +97,21 @@ namespace line {
     }
 
     template<IsNumber T>
-    const T& vec<2, T>::at(const std::size_t& i) const {
-        if ( i < 2) {
-            return *(&x + i);
+    const T& vec<2, T>::at(const std::size_t& idx) const {
+        if ( idx < 2) {
+            return *(&x + idx);
         } 
         
-        throw std::out_of_range("Index _i_ (which is " + std::to_string(i) + ") >= this->size() (which is " + std::to_string(2) + ")");
+        throw std::out_of_range("Index _idx_ (which is " + std::to_string(idx) + ") >= this->size() (which is " + std::to_string(3) + ")");
     }
 
     template<IsNumber T>
-    T& vec<2, T>::at(const std::size_t& i) {
-        if ( i < 2) {
-            return *(&x + i);
+    T& vec<2, T>::at(const std::size_t& idx) {
+        if ( idx < 2) {
+            return *(&x + idx);
         } 
 
-        throw std::out_of_range("Index _i_ (which is " + std::to_string(i) + ") >= this->size() (which is " + std::to_string(2) + ")");
+        throw std::out_of_range("Index _idx_ (which is " + std::to_string(idx) + ") >= this->size() (which is " + std::to_string(3) + ")");
     }
     
     // functions    
@@ -121,9 +121,9 @@ namespace line {
     }
 
     template<IsNumber T>
-    void vec<2, T>::swap(vec<2, T>& v) noexcept{
-        std::swap(x, v.x);
-        std::swap(y, v.y);
+    void vec<2, T>::swap(vec<2, T>& vec_) noexcept{
+        std::swap(x, vec_.x);
+        std::swap(y, vec_.y);
     }
 
     
@@ -161,15 +161,15 @@ namespace line {
     //////  free functions //////
 
     template<IsNumber U>
-    vec<2, U> operator / (const U& t, const vec<2, U>& v) {
-        if (t == 0) throw std::invalid_argument("Division by zero not allowed");
+    vec<2, U> operator / (const U& sca, const vec<2, U>& vec_) {
+        if (sca == 0) { throw std::invalid_argument("Division by zero not allowed");}
         
-        return vec<2, U>(v.x / t, v.y / t);
+        return vec<2, U>(vec_.x / sca, vec_.y / sca);
     }
 
     template<IsNumber U>
-    vec<2, U> operator * (const U& t, const vec<2, U>& v) {
-        return vec<2, U>(v.x * t, v.y * t);
+    vec<2, U> operator * (const U& sca, const vec<2, U>& vec_) {
+        return vec<2, U>(vec_.x * sca, vec_.y * sca);
     }
 
 }
