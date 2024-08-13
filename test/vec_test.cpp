@@ -2,7 +2,7 @@
 #include <vec2.hpp>
 #include <vec3.hpp>
 #include <vec4.hpp>
-//#include <types_vec.hpp>
+#include <vec.hpp>
 #include <iostream>
 #include <setup_vec.hpp>
 #include "fixture_vec.cpp"
@@ -53,6 +53,7 @@ TYPED_TEST(Fixture_Vec2, AccessToElements) {
     ASSERT_THROW(u.at(2), std::out_of_range);
 
 }
+
 //iterators test
 TYPED_TEST(Fixture_Vec2, Iterators) {
 
@@ -350,4 +351,166 @@ TYPED_TEST(Fixture_Vec4, MultiplicativeIdentity) {
     U c = static_cast<U>(1);
     typename TestFixture::Vec result = c * u;
     ASSERT_EQ(u, result);
+}
+
+
+
+
+typedef ::testing::Types<
+    VecType<15, int>,
+    VecType<15, float>,
+    VecType<15, double>
+> MyVecTypes_NV;
+
+TYPED_TEST_SUITE(Fixture_VecN, MyVecTypes_NV);
+
+
+// constructors test
+
+TYPED_TEST(Fixture_VecN, Constructors)
+{
+    using U = TestFixture::Vec::value_type;
+
+    {
+        typename TestFixture::Vec u(1);
+        bool flag = true;
+        U val = static_cast<U>(1);
+        for (auto i = u.begin(); i != u.end(); ++i)
+        {
+            if (i->value() != val)
+            {
+                flag = false;
+                break;
+            }
+        }
+        ASSERT_EQ(flag, true);
+    }
+
+    {
+        typename TestFixture::Vec v(static_cast<U>(1), static_cast<U>(2), static_cast<U>(3), 
+                                    static_cast<U>(4), static_cast<U>(5), static_cast<U>(6),
+                                    static_cast<U>(7), static_cast<U>(8), static_cast<U>(9),
+                                    static_cast<U>(10), static_cast<U>(11), static_cast<U>(12), 
+                                    static_cast<U>(13), static_cast<U>(14), static_cast<U>(15)
+                                    );
+        bool flag = true;
+
+        for (auto i = v.begin(); i != v.end(); ++i)
+        {
+            if (i->has_value() == false)
+            {
+                flag = false;
+                break;
+            }
+        }
+
+        ASSERT_EQ(flag, true);
+    }
+
+    {
+        typename TestFixture::Vec w = {static_cast<U>(1), static_cast<U>(2), static_cast<U>(3), 
+                                    static_cast<U>(4), static_cast<U>(5), static_cast<U>(6),
+                                    static_cast<U>(7), static_cast<U>(8), static_cast<U>(9),
+                                    static_cast<U>(10), static_cast<U>(11), static_cast<U>(12), 
+                                    static_cast<U>(13), static_cast<U>(14), static_cast<U>(15)
+                                    };
+        bool flag = true;
+
+        for (auto i = w.begin(); i != w.end(); ++i)
+        {
+            if (i->has_value() == false)
+            {
+                flag = false;
+                break;
+            }
+        }
+
+        ASSERT_EQ(flag, true);
+    }
+
+    {
+        typename TestFixture::Vec x = {static_cast<U>(1), static_cast<U>(2), static_cast<U>(3), 
+                                    static_cast<U>(4), static_cast<U>(5), static_cast<U>(6),
+                                    static_cast<U>(7), static_cast<U>(8), static_cast<U>(9),
+                                    static_cast<U>(10), static_cast<U>(11), static_cast<U>(12), 
+                                    static_cast<U>(13), static_cast<U>(14), static_cast<U>(15)
+                                    };
+        typename TestFixture::Vec y = x;
+        
+        ASSERT_EQ(x, y);
+    }
+
+
+
+    {
+        line::vec<15, U> z = {static_cast<U>(1), static_cast<U>(2), static_cast<U>(3), 
+                                    static_cast<U>(4), static_cast<U>(5), static_cast<U>(6),
+                                    static_cast<U>(7), static_cast<U>(8), static_cast<U>(9),
+                                    static_cast<U>(10), static_cast<U>(11), static_cast<U>(12), 
+                                    static_cast<U>(13), static_cast<U>(14), static_cast<U>(15)
+                                    };
+
+        line::vec<10, U> l{z};
+
+        bool flag = true;
+
+        for (auto i = l.begin(); i != l.end(); ++i)
+        {
+
+
+            if (i->has_value() == false )
+            {
+                flag = false;
+                break;
+            }
+        }
+
+        ASSERT_EQ(flag, true);
+
+    }
+    
+    {
+        line::vec<15, U> l = {static_cast<U>(1), static_cast<U>(2), static_cast<U>(3), 
+                                    static_cast<U>(4), static_cast<U>(5), static_cast<U>(6),
+                                    static_cast<U>(7), static_cast<U>(8), static_cast<U>(9),
+                                    static_cast<U>(10)
+                                    };
+
+
+        bool flag = false;
+
+        for (auto i = l.begin() + 10 ; i != l.end(); ++i){
+            if (i->has_value() == true)
+            {
+                flag = true;
+                break;
+            }
+        }
+
+        ASSERT_EQ(flag, false);        
+    }
+/*
+    {
+        line::vec<10, U> l = {static_cast<U>(1), static_cast<U>(2), static_cast<U>(3), 
+                                    static_cast<U>(4), static_cast<U>(5), static_cast<U>(6),
+                                    static_cast<U>(7), static_cast<U>(8), static_cast<U>(9),
+                                    static_cast<U>(10)
+                                    };
+
+        line::vec<15, U> m = l;
+
+        bool flag = false;
+
+        for (auto i = l.begin(); i != l.end(); ++i){
+            if (i->has_value() == true)
+            {
+                flag = true;
+                break;
+            }
+        }
+
+        ASSERT_EQ(flag, false);        
+    }
+*/
+
 }

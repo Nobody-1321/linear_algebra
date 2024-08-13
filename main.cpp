@@ -12,7 +12,14 @@
 int main() {
 
     using namespace std;
-    line::vec<2, int> v1(1, 2);
 
-    std::vector<int> vec(std::vector<int>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    line::vec<10, int> vec1(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    line::vec<15, int> vec2(1);
+
+    vec2 = std::move(vec1);
+    
+
+
+    std::cout << std::endl;
+
 }   

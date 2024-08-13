@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-//#include <types_vec.hpp>
 #include <setup_vec.hpp>
 
 template<typename U>
@@ -31,6 +30,13 @@ public:
 // Clase Fixture con plantilla
 template <typename VecType>
 class Fixture_Vec4 : public ::testing::Test {
+public: 
+    using Vec = typename VecType::type;
+};
+
+
+template <typename VecType>
+class Fixture_VecN : public ::testing::Test {
 public: 
     using Vec = typename VecType::type;
 };

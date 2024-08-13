@@ -1,5 +1,5 @@
- #pragma once
- #include "../include/vec.hpp"
+// #pragma once
+// #include "../include/vec.hpp"
 namespace line
 {
     using namespace detail;
@@ -70,9 +70,116 @@ namespace line
             data_v = std::move(vec_.data_v);
             vec_.data_v = nullptr;
         }
-
         return *this;
     }
+
+    template <length_t L, IsNumber T>
+    vec<L, T> vec<L, T>::operator+(const vec<L, T> &vec_) const
+    {
+        vec<L, T> result(0);
+
+        std::transform(
+            this->begin(), this->end(),
+            vec_.begin(),
+            result.begin(),
+            [](const std::optional<T> &valL, const std::optional<T> &valR) -> std::optional<T>
+            {
+                if (valL.has_value() && valR.has_value())
+                {
+                    return valL.value() + valR.value();
+                }
+                return std::nullopt;
+            });
+
+        return result;
+    }
+
+    template <length_t L, IsNumber T>
+    vec<L, T> vec<L, T>::operator-(const vec<L, T> &vec_) const
+    {
+        vec<L, T> result(0);
+
+        std::transform(
+            this->begin(), this->end(),
+            vec_.begin(),
+            result.begin(),
+            [](const std::optional<T> &valL, const std::optional<T> &valR) -> std::optional<T>
+            {
+                if (valL.has_value() && valR.has_value())
+                {
+                    return valL.value() - valR.value();
+                }
+                return std::nullopt;
+            });
+
+        return result;
+    }
+
+    template <length_t L, IsNumber T>
+    vec<L, T> vec<L, T>::operator*(const vec<L, T> &vec_) const
+    {
+        vec<L, T> result(0);
+
+        std::transform(
+            this->begin(), this->end(),
+            vec_.begin(),
+            result.begin(),
+            [](const std::optional<T> &valL, const std::optional<T> &valR) -> std::optional<T>
+            {
+                if (valL.has_value() && valR.has_value())
+                {
+                    return valL.value() * valR.value();
+                }
+                return std::nullopt;
+            });
+
+        return result;
+    }
+
+    template <length_t L, IsNumber T>
+    vec<L, T> vec<L, T>::operator*(const T &scalar) const
+    {
+        vec<L, T> result(0);
+
+        std::transform(
+            this->begin(), this->end(),
+            result.begin(),
+            [scalar](const std::optional<T> &val) -> std::optional<T>
+            {
+                if (val.has_value())
+                {
+                    return val.value() * scalar;
+                }
+                return std::nullopt;
+            });
+
+        return result;
+    }
+
+    template <length_t L, IsNumber T>
+    vec<L, T> vec<L, T>::operator/(const T &scalar) const
+    {
+        if (scalar == 0)
+        {
+            throw std::invalid_argument("Division by zero");
+        }
+
+        vec<L, T> result(0);
+
+        std::transform(
+            this->begin(), this->end(),
+            result.begin(),
+            [scalar](const std::optional<T> &val) -> std::optional<T>
+            {
+                if (val.has_value())
+                {
+                    return val.value() / scalar;
+                }
+                return std::nullopt;
+            });
+
+        return result;
+    }    
 
     // comparison operators
     template <length_t L, IsNumber T>
@@ -160,5 +267,53 @@ namespace line
 
     template <length_t L, IsNumber T>
     vec<L, T>::~vec() {}
+
+    // free functions
+    template <length_t U, IsNumber R>
+    vec<U, R> operator/(const R &scalar, const vec<U, R> &vec_)
+    {
+        if (scalar == 0)
+        {
+            throw std::invalid_argument("Division by zero");
+        }
+
+        vec<U, R> result(0);
+
+        std::transform(
+            vec_.begin(), vec_.end(),
+            result.begin(),
+            [scalar](const std::optional<R> &val) -> std::optional<R>
+            {
+                if (val.has_value())
+                {
+                    return scalar / val.value();
+                }
+                return std::nullopt;
+            });
+
+        return result;
+    }
+
+    // scalar * vector
+    template <length_t U, IsNumber R>
+    vec<U, R> operator*(const R &scalar, const vec<U, R> &vec_)
+    {
+        vec<U, R> result(0);
+
+        std::transform(
+            vec_.begin(), vec_.end(),
+            result.begin(),
+            [scalar](const std::optional<R> &val) -> std::optional<R>
+            {
+                if (val.has_value())
+                {
+                    return scalar * val.value();
+                }
+                return std::nullopt;
+            });
+
+        return result;
+    }
+
 
 };

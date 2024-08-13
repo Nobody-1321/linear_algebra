@@ -10,20 +10,20 @@
 #include <iterator_cvec.hpp>
 
 
-/*
+
 static void BM_vec2_copy(benchmark::State& state) {
-    line::vec<2, float> vec1(1.0f, 2.0f);
-    line::vec<2, float> expected(1.0f, 2.0f);
+    line::vec<10, float> vec1(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f);
+    line::vec<10, float> expected(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f);
 
     for (auto _ : state) {
         for (int i = 0; i < 1000; ++i) {
-            vec1[0]= expected[0];
+            vec1 + expected;
             
         }
     }
 }
-*/
 
+/*
 static void BM_vec4_constructor(benchmark::State& state) {
 
     for (auto _ : state) {
@@ -70,6 +70,8 @@ static void BM_vec4_constructor(benchmark::State& state) {
     }
 }
 
+*/
+
 /*
 static void BM_vec2_iterate(benchmark::State& state) {
     line::vec<2,float> vec1(1.0f, 2.0f);
@@ -95,9 +97,9 @@ static void BM_vec2_iterate2(benchmark::State& state) {
 /*
 BENCHMARK(BM_vec2_iterate)->Iterations(150000);
 BENCHMARK(BM_vec2_iterate2)->Iterations(150000);
-BENCHMARK(BM_vec2_copy)->Iterations(150000);
 */
-BENCHMARK(BM_vec4_constructor)->Iterations(1500);
+BENCHMARK(BM_vec2_copy)->Iterations(1500);
+//BENCHMARK(BM_vec4_constructor)->Iterations(1500);
 
 
 BENCHMARK_MAIN();

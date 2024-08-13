@@ -1,5 +1,5 @@
-#pragma once
-#include "../include/vec4.hpp"
+//#pragma once
+//#include "../include/vec4.hpp"
 
 namespace line {
 
@@ -123,7 +123,7 @@ namespace line {
             return *(&x + idx);
         }
 
-        throw std::out_of_range("Index _i_ (which is " + std::to_string(idx) + ") >= this->size() (which is " + std::to_string(4) + ")");
+        throw std::out_of_range("Index _idx_ (which is " + std::to_string(idx) + ") >= this->size() (which is " + std::to_string(4) + ")");
     }
 
     template<IsNumber T>
@@ -132,7 +132,7 @@ namespace line {
             return *(&x + idx);
         }
 
-        throw std::out_of_range("Index _i_ (which is " + std::to_string(idx) + ") >= this->size() (which is " + std::to_string(4) + ")");
+        throw std::out_of_range("Index _idx_ (which is " + std::to_string(idx) + ") >= this->size() (which is " + std::to_string(4) + ")");
     }
 
 

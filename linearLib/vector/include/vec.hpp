@@ -4,6 +4,8 @@
 #include <array>
 #include <algorithm>
 #include <memory>
+#include <execution>
+#include <iostream>
 #include "../../iterator/include/iterator_vec.hpp"
 #include "../../iterator/include/iterator_cvec.hpp"
 #include "../../detail/setup_vec.hpp"
@@ -45,7 +47,11 @@ namespace line
     vec<L, T> &operator=(vec<L, T> &&vec_) noexcept;
 
     // arithmetic operators
-
+    vec<L, T> operator+(const vec<L, T> &vec_) const;
+    vec<L, T> operator-(const vec<L, T> &vec_) const;
+    vec<L, T> operator*(const vec<L, T> &vec_) const;
+    vec<L, T> operator*(const T &scalar) const;
+    vec<L, T> operator/(const T &scalar) const;
 
     // comparison operators
     bool operator==(const vec<L, T> &vec_) const;
@@ -76,6 +82,14 @@ namespace line
   private:
     std::unique_ptr<array_type> data_v = std::make_unique<array_type>();
   };
+
+  // free functions
+  template <length_t U, IsNumber R>
+  vec<U, R> operator/(const R &scalar, const vec<U, R> &vec_);
+
+  //multiplication by scalar
+  template <length_t U, IsNumber R>
+  vec<U, R> operator*(const R &scalar, const vec<U, R> &vec_);
 
 };
 
