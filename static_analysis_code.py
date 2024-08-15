@@ -53,7 +53,7 @@ def run_clang_tidy(directory, build_path, file_extensions, checks, exclude_paths
                     print(f"Error running clang-tidy on {file_path}: {e}")
 
 # Example function call
-directory = "./linearLib/vector/"
+directory = "./linearLib/matrix/"
 build_path = "build"
 file_extensions = [".hpp", ".cpp", ".c", ".inl"]
 checks = ["cppcoreguidelines-*", "clang-analyzer-*","readability-*","bugprone-*", "performance-*"]

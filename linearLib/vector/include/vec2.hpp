@@ -2,7 +2,7 @@
 
 #include "../../iterator/include/iterator_vec.hpp"
 #include "../../iterator/include/iterator_cvec.hpp"
-#include "../../detail/setup_vec.hpp"
+#include "../../detail/setup_structs.hpp"
 
 namespace line
 {
@@ -18,6 +18,7 @@ namespace line
         using const_iterator = line::const_iterator<T>;
 
         // constructors
+        vec();
         vec(T coordX, T coordY);
         vec(const vec<2, T> &vec_);
         vec(vec<2, T> &&vec_) noexcept;

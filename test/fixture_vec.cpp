@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <setup_vec.hpp>
+#include <setup_structs.hpp>
 
 template<typename U>
 struct TestValues {

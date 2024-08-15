@@ -4,7 +4,7 @@
 #include <vec4.hpp>
 #include <vec.hpp>
 #include <iostream>
-#include <setup_vec.hpp>
+#include <setup_structs.hpp>
 #include "fixture_vec.cpp"
 
 //./tests --gtest_filter=Fixture_Vec2/*.context_test_sum

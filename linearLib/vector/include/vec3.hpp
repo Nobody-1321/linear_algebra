@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../detail/setup_vec.hpp"
+#include "../../detail/setup_structs.hpp"
 #include "../../iterator/include/iterator_vec.hpp"
 #include "../../iterator/include/iterator_cvec.hpp"
 

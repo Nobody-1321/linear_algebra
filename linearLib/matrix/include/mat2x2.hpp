@@ -1,9 +1,11 @@
 #pragma once
-#include "setup_mat.hpp"
 #include "../../vector/include/vec2.hpp"
+#include "../../detail/setup_structs.hpp"
+#include <memory>
+#include <array>
 
 namespace line{
-    template<IsNumberM T> 
+    template<IsNumber T> 
     struct mat<2, 2, T>
     {    
 
@@ -12,14 +14,37 @@ namespace line{
         
         using col_type = vec<2, T>;
         using type = mat<2, 2, T>;
+        using row_length = std::integral_constant<length_t, 2>;
+        using col_length = std::integral_constant<length_t, 2>;
         using value_type = T;
 
         //constructors
-        mat(T t); 
-        mat(T t1, T t2, T t3, T t4); 
-        mat(const mat<2, 2, T>& m); 
+        mat(T val_t);
+        mat(T val_t1, T val_t2, T val_t3, T val_t4); 
+        mat(const mat<2, 2, T>& mat_); 
+        mat(const mat<2, 2, T>&& mat_) noexcept;
+        
+        //assignment operators
+        mat<2, 2, T>& operator=(const mat<2, 2, T>& mat_);
+        mat<2, 2, T>& operator=(mat<2, 2, T>&& mat_) noexcept;
+        
+        col_type  & operator[](int idx) ; 
+        col_type const & operator[](int idx) const; 
+
+        ~mat();
+        private:
+        std::array<col_type, 2> cols;   
+    };
+    
+  //  template<IsNumberM U>
+ //   mat<2, 2, U> operator * ( const U& t, const mat<2, 2, U>& m); 
+     
+
+}
+
+#include "../src/mat2x2.inl"
+        /*
         mat(const col_type& v1, const col_type& v2);
-        mat<2, 2, T>& operator=(const mat<2, 2, T>& m);
 
         // arithmetic operators
         mat<2, 2, T> operator + (const mat<2, 2, T>& m) const;
@@ -31,22 +56,10 @@ namespace line{
         // comparison operators
         bool operator == (const mat<2, 2, T>& m) const;
         
-        col_type  & operator[](int i) ; 
-        col_type const & operator[](int i) const; 
+
 
         T size_row() const;
         T size_col() const;
 
         ~mat();
-
-        private:
-        vec<2, T> cols[2];
-    };
-    
-    template<IsNumberM U>
-    mat<2, 2, U> operator * ( const U& t, const mat<2, 2, U>& m); 
-     
-
-}
-
-#include "../src/mat2x2.inl"
+        */

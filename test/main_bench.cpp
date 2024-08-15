@@ -3,7 +3,7 @@
 #include <vec3.hpp>
 #include <vec.hpp>
 //#include <types_vec.hpp>
-#include <setup_vec.hpp>
+#include <setup_structs.hpp>
 #include <iostream>
 #include <vec4.hpp>
 #include <iterator_vec.hpp>

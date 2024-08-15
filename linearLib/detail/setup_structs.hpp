@@ -5,9 +5,12 @@
 
 namespace line{
     using namespace detail;
+
     template<length_t L, IsNumber T> 
     struct vec;
-    
+       
+    template<length_t R, length_t C, IsNumber T> 
+    struct mat;
 }
 
 

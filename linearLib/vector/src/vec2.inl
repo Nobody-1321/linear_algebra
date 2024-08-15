@@ -3,7 +3,10 @@
 namespace line {
 
     ////// constructors //////
-    
+    template<IsNumber T>
+    vec<2, T>::vec() : x{0}, y{0} {
+    }
+
     template<IsNumber T>
     vec<2, T>::vec(T coordX, T coordY) : x{coordX}, y{coordY} {
     }

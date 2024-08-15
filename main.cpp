@@ -7,6 +7,7 @@
 #include <vector>
 #include <iterator_vec.hpp>
 #include <memory>
+#include <array>
 
 //clang-tidy -p build/ ./linearLib/vector/src/vec.inl -checks=cppcoreguidelines-* -header-filter='.*'
 
@@ -14,15 +15,12 @@ int main() {
 
     using namespace line;
     using namespace std;
+    line::mat<2,2,int> m2(1,2,3,4);
+    line::mat<2,2,int> m1(std::move(m2));
+//    std::array<int, 2> ff{1,1};
 
-    line::vec<6, float> vec2_1(1.2f, 2.0f, 3.0f, 4.0f, 5.0f);
-    line::vec<6, float> vec2_2(0.0f);
+    cout << m1[0][0] << " " << m1[0][1] << endl;
+    cout << m1[1][0] << " " << m1[1][1] << endl;
 
-    std::cout << "vec2_1: ";
-    for (size_t i = 0; i < vec2_1.size(); i++)
-    {
-        std::cout << vec2_1.at(i).value_or(11111) << " ";
-    }
-    
     std::cout << std::endl;
 }   
