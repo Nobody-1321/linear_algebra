@@ -63,9 +63,6 @@ namespace line
 
     ////// free functions //////
     template <IsNumber U>
-    vec<2, U> operator/(const U &sca, const vec<2, U> &vec_);
-
-    template <IsNumber U>
     vec<2, U> operator*(const U &sca, const vec<2, U> &vec_);
 };
 

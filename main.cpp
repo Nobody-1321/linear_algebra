@@ -3,6 +3,7 @@
 #include <vec3.hpp>   
 #include <vec4.hpp>
 #include <vec.hpp>
+#include <mat2x2.hpp>
 #include <vector>
 #include <iterator_vec.hpp>
 #include <memory>
@@ -11,15 +12,17 @@
 
 int main() {
 
+    using namespace line;
     using namespace std;
 
-    line::vec<10, int> vec1(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-    line::vec<15, int> vec2(1);
+    line::vec<6, float> vec2_1(1.2f, 2.0f, 3.0f, 4.0f, 5.0f);
+    line::vec<6, float> vec2_2(0.0f);
 
-    vec2 = std::move(vec1);
+    std::cout << "vec2_1: ";
+    for (size_t i = 0; i < vec2_1.size(); i++)
+    {
+        std::cout << vec2_1.at(i).value_or(11111) << " ";
+    }
     
-
-
     std::cout << std::endl;
-
 }   

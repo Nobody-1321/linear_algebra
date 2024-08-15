@@ -68,6 +68,9 @@ namespace line
     constexpr std::size_t size() const noexcept;
     void fill(T fill_value);
     void swap(vec<L, T> &vec_) noexcept;
+    void sizeof_() const{
+      std::cout << "vec:  " << sizeof(data_v) << std::endl;
+    }
 
 
     // iterator
@@ -82,11 +85,6 @@ namespace line
   private:
     std::unique_ptr<array_type> data_v = std::make_unique<array_type>();
   };
-
-  // free functions
-  template <length_t U, IsNumber R>
-  vec<U, R> operator/(const R &scalar, const vec<U, R> &vec_);
-
   //multiplication by scalar
   template <length_t U, IsNumber R>
   vec<U, R> operator*(const R &scalar, const vec<U, R> &vec_);

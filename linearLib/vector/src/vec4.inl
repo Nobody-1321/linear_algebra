@@ -168,13 +168,6 @@ namespace line {
 
     // free functions
     template<IsNumber U>
-    vec<4, U> operator/(const U& sca, const vec<4, U>& vec_){
-        if(sca == 0) { throw std::invalid_argument("Division by zero not allowed");}
-   
-        return vec<4, U>(vec_.x / sca, vec_.y / sca, vec_.z / sca, vec_.w / sca);
-    }
-
-    template<IsNumber U>
     vec<4, U> operator*(const U& sca, const vec<4, U>& vec_){
         return vec<4, U>(sca * vec_.x, sca * vec_.y, sca * vec_.z, sca * vec_.w);
     }

@@ -5,9 +5,8 @@
 namespace line{
     template<IsNumberM T> 
     struct mat<2, 2, T>
-    {   private:  
+    {    
 
-        vec<2, T> cols[2];
         
         public:
         
@@ -38,15 +37,15 @@ namespace line{
         T size_row() const;
         T size_col() const;
 
+        ~mat();
+
+        private:
+        vec<2, T> cols[2];
     };
     
     template<IsNumberM U>
     mat<2, 2, U> operator * ( const U& t, const mat<2, 2, U>& m); 
      
-    template<IsNumberM U>
-    mat<2, 2, U> operator / ( const U& t, const mat<2, 2, U>& m); 
-    
-    
 
 }
 

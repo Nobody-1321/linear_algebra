@@ -7,7 +7,6 @@ namespace line
     template <length_t L, IsNumber T>
     vec<L, T>::vec(const vec<L, T> &vec_)
     {
-        data_v->fill(std::nullopt);
         std::copy_n(vec_.begin(), L, data_v->begin());
     }
 
@@ -39,9 +38,10 @@ namespace line
         requires detail::AreSameAndNumbers<T, Args...>
     vec<L, T>::vec(Args &&...args)
     {
+        static_assert(sizeof...(Args) <= L, "Too many arguments provided to vec constructor");
         data_v->fill(std::nullopt);
         std::size_t index = 0;
-        ((index < L && (data_v->at(index++) = static_cast<T>(std::forward<Args>(args)))), ...);
+        ((index < sizeof...(Args) && (data_v->at(index++) = static_cast<T>(std::forward<Args>(args)))), ...);
     }
 
     template <length_t L, IsNumber T>
@@ -267,32 +267,6 @@ namespace line
 
     template <length_t L, IsNumber T>
     vec<L, T>::~vec() {}
-
-    // free functions
-    template <length_t U, IsNumber R>
-    vec<U, R> operator/(const R &scalar, const vec<U, R> &vec_)
-    {
-        if (scalar == 0)
-        {
-            throw std::invalid_argument("Division by zero");
-        }
-
-        vec<U, R> result(0);
-
-        std::transform(
-            vec_.begin(), vec_.end(),
-            result.begin(),
-            [scalar](const std::optional<R> &val) -> std::optional<R>
-            {
-                if (val.has_value())
-                {
-                    return scalar / val.value();
-                }
-                return std::nullopt;
-            });
-
-        return result;
-    }
 
     // scalar * vector
     template <length_t U, IsNumber R>
