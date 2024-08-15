@@ -43,6 +43,16 @@ template<IsNumber T>
         return *this;
     }
 
+    //functions
+    template<IsNumber T> 
+    constexpr std::size_t mat<2, 2, T>::size_row() const noexcept{
+        return 2;
+    }
+
+    template<IsNumber T> 
+    constexpr std::size_t mat<2, 2, T>::size_col() const noexcept{
+        return 2;
+    }   
 
     template<IsNumber T> 
     typename mat<2, 2, T>::col_type  & mat<2, 2, T>::operator[](int idx){
@@ -55,7 +65,11 @@ template<IsNumber T>
         return cols[idx];
     }
 
-      
+    // comparison operators      
+    template<IsNumber T> 
+    bool mat<2, 2, T>::operator == (const mat<2, 2, T>& mat_) const{
+        return (cols[0] == mat_[0]) && (cols[1] == mat_[1]);
+    }
 
     template<IsNumber T>
     mat<2, 2, T>::~mat(){

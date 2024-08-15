@@ -7,10 +7,7 @@
 namespace line{
     template<IsNumber T> 
     struct mat<2, 2, T>
-    {    
-
-        
-        public:
+    {            
         
         using col_type = vec<2, T>;
         using type = mat<2, 2, T>;
@@ -32,8 +29,17 @@ namespace line{
         col_type const & operator[](int idx) const; 
 
         ~mat();
+
+        constexpr std::size_t size_row() const noexcept;
+        constexpr std::size_t size_col() const noexcept;
+
+
+        // comparison operators
+        bool operator == (const mat<2, 2, T>& mat_) const;
+        
         private:
         std::array<col_type, 2> cols;   
+
     };
     
   //  template<IsNumberM U>
@@ -52,14 +58,4 @@ namespace line{
         mat<2, 2, T> operator * (const mat<2, 2, T>& m) const;
         mat<2, 2, T> operator * (const T& t) const;
         mat<2, 2, T> operator / (const T& t) const;
-
-        // comparison operators
-        bool operator == (const mat<2, 2, T>& m) const;
-        
-
-
-        T size_row() const;
-        T size_col() const;
-
-        ~mat();
-        */
+*/
