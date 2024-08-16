@@ -15,8 +15,11 @@ int main() {
 
     using namespace line;
     using namespace std;
-    line::mat<2,2,int> m2(1,2,3,4);
-    line::mat<2,2,int> m1(std::move(m2));
+//    line::mat<2,2,int> m2(1,2,3,4);
+    line::vec<2,int> v1(1,2);
+    line::vec<2,int> v2(3,4);
+    line::mat<2,2,int> m1(v1,v2);
+    
 //    std::array<int, 2> ff{1,1};
 
     cout << m1[0][0] << " " << m1[0][1] << endl;

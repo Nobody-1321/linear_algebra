@@ -6,10 +6,10 @@
 namespace line{
     using namespace detail;
 
-    template<length_t L, IsNumber T> 
+    template<length_t L, IsNumeric T> 
     struct vec;
        
-    template<length_t R, length_t C, IsNumber T> 
+    template<length_t R, length_t C, IsNumeric T> 
     struct mat;
 }
 

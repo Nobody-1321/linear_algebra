@@ -7,7 +7,7 @@
 namespace line
 {
 
-    template <IsNumber T>
+    template <IsNumeric T>
     struct vec<2, T>
     {
 
@@ -63,7 +63,7 @@ namespace line
     };
 
     ////// free functions //////
-    template <IsNumber U>
+    template <IsNumeric U>
     vec<2, U> operator*(const U &sca, const vec<2, U> &vec_);
 };
 

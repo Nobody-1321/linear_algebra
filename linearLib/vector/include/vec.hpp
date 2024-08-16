@@ -13,7 +13,7 @@
 
 namespace line
 {
-  template <length_t L, IsNumber T>
+  template <length_t L, IsNumeric T>
   struct vec
   {
 
@@ -86,7 +86,7 @@ namespace line
     std::unique_ptr<array_type> data_v = std::make_unique<array_type>();
   };
   //multiplication by scalar
-  template <length_t U, IsNumber R>
+  template <length_t U, IsNumeric R>
   vec<U, R> operator*(const R &scalar, const vec<U, R> &vec_);
 
 };

@@ -5,7 +5,7 @@
 #include <array>
 
 namespace line{
-    template<IsNumber T> 
+    template<IsNumeric T> 
     struct mat<2, 2, T>
     {            
         
@@ -18,24 +18,31 @@ namespace line{
         //constructors
         mat(T val_t);
         mat(T val_t1, T val_t2, T val_t3, T val_t4); 
+        mat(const col_type& vec_1, const col_type& vec_2);
         mat(const mat<2, 2, T>& mat_); 
-        mat(const mat<2, 2, T>&& mat_) noexcept;
-        
+        mat(const mat<2, 2, T>&& mat_) noexcept; 
         //assignment operators
         mat<2, 2, T>& operator=(const mat<2, 2, T>& mat_);
         mat<2, 2, T>& operator=(mat<2, 2, T>&& mat_) noexcept;
         
+        // arithmetic operators
+        mat<2, 2, T> operator + (const mat<2, 2, T>& mat_) const;
+        mat<2, 2, T> operator - (const mat<2, 2, T>& mat_) const;
+        mat<2, 2, T> operator * (const mat<2, 2, T>& mat_) const;
+        mat<2, 2, T> operator * (const T& sca) const;
+        mat<2, 2, T> operator / (const T& sca) const; 
+
+        // access to elements      
         col_type  & operator[](int idx) ; 
         col_type const & operator[](int idx) const; 
-
-        ~mat();
 
         constexpr std::size_t size_row() const noexcept;
         constexpr std::size_t size_col() const noexcept;
 
-
         // comparison operators
         bool operator == (const mat<2, 2, T>& mat_) const;
+        
+        ~mat();
         
         private:
         std::array<col_type, 2> cols;   
@@ -49,13 +56,3 @@ namespace line{
 }
 
 #include "../src/mat2x2.inl"
-        /*
-        mat(const col_type& v1, const col_type& v2);
-
-        // arithmetic operators
-        mat<2, 2, T> operator + (const mat<2, 2, T>& m) const;
-        mat<2, 2, T> operator - (const mat<2, 2, T>& m) const;
-        mat<2, 2, T> operator * (const mat<2, 2, T>& m) const;
-        mat<2, 2, T> operator * (const T& t) const;
-        mat<2, 2, T> operator / (const T& t) const;
-*/
