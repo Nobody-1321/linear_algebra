@@ -4,6 +4,7 @@
 #include <array>
 #include <algorithm>
 #include <memory>
+#include <assert.h>
 #include <execution>
 #include <iostream>
 #include "../../iterator/include/iterator_vec.hpp"
@@ -20,29 +21,33 @@ namespace line
     using value_type = T;
     using type = vec<L, T>;
     using length = std::integral_constant<length_t, L>;
-    using optional_type = std::optional<T>;
-    using array_type = std::array<optional_type, L>;
-    using iterator = line::iterator<optional_type>;
-    using const_iterator = line::const_iterator<optional_type>;
+    using array_type = std::array<value_type, L>;
+    using iterator = line::iterator<value_type>;
+    using const_iterator = line::const_iterator<value_type>;
 
     // constructors
+    vec();
+    //list initialization
+    //vec(std::initializer_list<T> init_list);
     vec(const vec<L, T> &vec_);
 
-    template <length_t L2>
-    vec(const vec<L2, T> &vec_);
-
-    template <length_t L2>
-    vec(const vec<L2, T> &vec_, T fill_value);
-
-    vec(vec<L, T> &&vec_) noexcept;
-    
     template <typename... Args>
       requires detail::AreSameAndNumbers<T, Args...>
     vec(Args &&...args);
 
-    vec(T fill_value);
+    vec(vec<L, T> &&vec_) noexcept;
 
-    ///assignment operators
+    vec(T fill_value);
+    
+//    template <length_t L2>
+//    explicit vec(const vec<L2, T> &vec_);
+
+//    template <length_t L2>
+//    vec(const vec<L2, T> &vec_, T fill_value);
+
+/*
+
+    /// assignment operators
     vec<L, T> &operator=(const vec<L, T> &vec_);
     vec<L, T> &operator=(vec<L, T> &&vec_) noexcept;
 
@@ -55,39 +60,38 @@ namespace line
 
     // comparison operators
     bool operator==(const vec<L, T> &vec_) const;
-    
+    bool operator!=(const vec<L, T> &vec_) const;
+
     // access to elements
-    optional_type &operator[](const std::size_t &idx) noexcept; 
+    optional_type &operator[](const std::size_t &idx) noexcept;
     const optional_type &operator[](const std::size_t &idx) const noexcept;
 
-    optional_type * data() noexcept;
+    optional_type *data() noexcept;
     optional_type &at(const std::size_t &idx);
     const optional_type &at(const std::size_t &idx) const;
 
-    //functions
+    // functions
     constexpr std::size_t size() const noexcept;
     void fill(T fill_value);
     void swap(vec<L, T> &vec_) noexcept;
-    void sizeof_() const{
-      std::cout << "vec:  " << sizeof(data_v) << std::endl;
-    }
-
+    bool contains_nullopt() const;
 
     // iterator
-    iterator begin()noexcept;
+    iterator begin() noexcept;
     iterator end() noexcept;
 
-    const_iterator begin() const noexcept;
-    const_iterator end() const noexcept;
-    
-    ~vec();
+    const_iterator cbegin() const noexcept;
+    const_iterator cend() const noexcept;
 
+    ~vec();
+*/
   private:
     std::unique_ptr<array_type> data_v = std::make_unique<array_type>();
   };
-  //multiplication by scalar
-  template <length_t U, IsNumeric R>
-  vec<U, R> operator*(const R &scalar, const vec<U, R> &vec_);
+  
+  // multiplication by scalar
+  //template <length_t U, IsNumeric R>
+  //vec<U, R> operator*(const R &scalar, const vec<U, R> &vec_);
 
 };
 

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <mat2x2.hpp>
-#include <types_mat.hpp>
+#include "../linearLib/detail/setup_structs.hpp"
 #include "fixture_mat.cpp"
 
 //./tests --gtest_filter=Fixture_Mat*/*.*
@@ -58,6 +58,7 @@ TYPED_TEST(Fixture_Mat2, ScalarMultiplicationAssociativity) {
     ASSERT_EQ(R1, R2);
     ASSERT_EQ(R1, R3);
 }
+
 
 typedef ::testing::Types<
     MatType<3, 3, int>,

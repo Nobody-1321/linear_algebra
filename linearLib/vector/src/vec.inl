@@ -1,8 +1,15 @@
-// #pragma once
-// #include "../include/vec.hpp"
+ #pragma once
+ #include "../include/vec.hpp"
 namespace line
 {
     using namespace detail;
+
+    // constructors
+    template <length_t L, IsNumeric T>
+    vec<L, T>::vec()
+    {
+        data_v->fill(0);
+    }
 
     template <length_t L, IsNumeric T>
     vec<L, T>::vec(const vec<L, T> &vec_)
@@ -10,20 +17,30 @@ namespace line
         std::copy_n(vec_.begin(), L, data_v->begin());
     }
 
+
+/*
     template <length_t L, IsNumeric T>
-    template <length_t L2>
-    vec<L, T>::vec(const vec<L2, T> &vec_)
+    vec<L, T>::vec(std::initializer_list<T> init_list)
     {
-        data_v->fill(std::nullopt);
-        std::copy_n(vec_.begin(), std::min(L, L2), data_v->begin());
+        assert(init_list.size() == L);
+        std::size_t index = 0;
+        for (const T &val : init_list)
+        {
+            data_v->at(index++) = val;
+        }
     }
 
+*/
+
+
     template <length_t L, IsNumeric T>
-    template <length_t L2>
-    vec<L, T>::vec(const vec<L2, T> &vec_, T fill_value)
+    template <typename... Args>
+        requires detail::AreSameAndNumbers<T, Args...>
+    vec<L, T>::vec(Args &&...args)
     {
-        data_v->fill(fill_value);
-        std::copy_n(vec_.begin(), std::min(L, L2), data_v->begin());
+        static_assert(sizeof...(Args) == L, "Too many arguments provided to vec constructor");
+        std::size_t index = 0;
+        ((index < sizeof...(Args) && (data_v->at(index++) = static_cast<T>(std::forward<Args>(args)))), ...);
     }
 
     template <length_t L, IsNumeric T>
@@ -34,21 +51,34 @@ namespace line
     }
 
     template <length_t L, IsNumeric T>
-    template <typename... Args>
-        requires detail::AreSameAndNumbers<T, Args...>
-    vec<L, T>::vec(Args &&...args)
-    {
-        static_assert(sizeof...(Args) <= L, "Too many arguments provided to vec constructor");
-        data_v->fill(std::nullopt);
-        std::size_t index = 0;
-        ((index < sizeof...(Args) && (data_v->at(index++) = static_cast<T>(std::forward<Args>(args)))), ...);
-    }
-
-    template <length_t L, IsNumeric T>
     vec<L, T>::vec(T fill_value)
     {
         data_v->fill(fill_value);
     }
+/*    
+    template <length_t L, IsNumeric T>
+    template <length_t L2>
+    vec<L, T>::vec(const vec<L2, T> &vec_)
+    {
+        data_v->fill(std::nullopt);
+        std::copy_n(vec_.begin(), std::min(L, L2), data_v->begin());
+    }
+    
+
+    template <length_t L, IsNumeric T>
+    template <length_t L2>
+    vec<L, T>::vec(const vec<L2, T> &vec_, T fill_value)
+    {
+        data_v->fill(fill_value);
+        std::copy_n(vec_.begin(), std::min(L, L2), data_v->begin());
+    }
+*/
+
+
+
+
+/*
+
 
     // assignment operators
     template <length_t L, IsNumeric T>
@@ -56,7 +86,7 @@ namespace line
     {
         if (this != &vec_)
         {
-            std::copy_n(vec_.begin(), L, data_v->begin());
+            std::copy_n(vec_.cbegin(), L, data_v->begin());
         }
 
         return *this;
@@ -65,6 +95,7 @@ namespace line
     template <length_t L, IsNumeric T>
     vec<L, T> &vec<L, T>::operator=(vec<L, T> &&vec_) noexcept
     {
+        
         if (this != &vec_)
         {
             data_v = std::move(vec_.data_v);
@@ -79,8 +110,8 @@ namespace line
         vec<L, T> result(0);
 
         std::transform(
-            this->begin(), this->end(),
-            vec_.begin(),
+            this->cbegin(), this->cend(),
+            vec_.cbegin(),
             result.begin(),
             [](const std::optional<T> &valL, const std::optional<T> &valR) -> std::optional<T>
             {
@@ -100,8 +131,8 @@ namespace line
         vec<L, T> result(0);
 
         std::transform(
-            this->begin(), this->end(),
-            vec_.begin(),
+            this->cbegin(), this->cend(),
+            vec_.cbegin(),
             result.begin(),
             [](const std::optional<T> &valL, const std::optional<T> &valR) -> std::optional<T>
             {
@@ -185,7 +216,13 @@ namespace line
     template <length_t L, IsNumeric T>
     bool vec<L, T>::operator==(const vec<L, T> &vec_) const
     {
-        return std::equal(this->begin(), this->end(), vec_.begin());
+        return std::equal(this->cbegin(), this->cend(), vec_.cbegin());
+    }
+
+    template <length_t L, IsNumeric T>
+    bool vec<L, T>::operator!=(const vec<L, T> &vec_) const
+    {
+        return !(*this == vec_);
     }
 
     // access to elements
@@ -224,7 +261,7 @@ namespace line
     template <length_t L, IsNumeric T>
     constexpr std::size_t vec<L, T>::size() const noexcept
     {
-        return L;
+        return vec<L, T>::length::value;
     }
 
     template <length_t L, IsNumeric T>
@@ -237,6 +274,13 @@ namespace line
     void vec<L, T>::swap(vec<L, T> &vec_) noexcept
     {
         std::swap(*data_v, *vec_.data_v);
+    }
+
+    template <length_t L, IsNumeric T>
+    bool vec<L, T>::contains_nullopt() const
+    {
+        return std::any_of(data_v->begin(), data_v->end(), [](const std::optional<T> &val) -> bool
+                           { return !val.has_value(); });
     }
 
     // iterators
@@ -254,13 +298,13 @@ namespace line
     }
 
     template <length_t L, IsNumeric T>
-    typename vec<L, T>::const_iterator vec<L, T>::begin() const noexcept
+    typename vec<L, T>::const_iterator vec<L, T>::cbegin() const noexcept
     {
         return const_iterator(data_v->begin());
     }
 
     template <length_t L, IsNumeric T>
-    typename vec<L, T>::const_iterator vec<L, T>::end() const noexcept
+    typename vec<L, T>::const_iterator vec<L, T>::cend() const noexcept
     {
         return const_iterator(data_v->end());
     }
@@ -275,7 +319,7 @@ namespace line
         vec<U, R> result(0);
 
         std::transform(
-            vec_.begin(), vec_.end(),
+            vec_.cbegin(), vec_.cend(),
             result.begin(),
             [scalar](const std::optional<R> &val) -> std::optional<R>
             {
@@ -289,5 +333,5 @@ namespace line
         return result;
     }
 
-
+*/
 };

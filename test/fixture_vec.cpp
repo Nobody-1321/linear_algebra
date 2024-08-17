@@ -14,26 +14,6 @@ struct VecType {
     using type = line::vec<N, T>;
 };
 
-template <typename VecType>
-class Fixture_Vec2 : public ::testing::Test {
-public: 
-    using Vec = typename VecType::type;
-};
-
-// Clase Fixture con plantilla
-template <typename VecType>
-class Fixture_Vec3 : public ::testing::Test {
-public: 
-    using Vec = typename VecType::type;
-};
-
-// Clase Fixture con plantilla
-template <typename VecType>
-class Fixture_Vec4 : public ::testing::Test {
-public: 
-    using Vec = typename VecType::type;
-};
-
 
 template <typename VecType>
 class Fixture_VecN : public ::testing::Test {

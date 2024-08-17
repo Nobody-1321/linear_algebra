@@ -1,11 +1,8 @@
 #include <benchmark/benchmark.h>
-#include <vec2.hpp>
-#include <vec3.hpp>
 #include <vec.hpp>
 //#include <types_vec.hpp>
 #include <setup_structs.hpp>
 #include <iostream>
-#include <vec4.hpp>
 #include <iterator_vec.hpp>
 #include <iterator_cvec.hpp>
 
