@@ -27,25 +27,17 @@ namespace line
 
     // constructors
     vec();
-    //list initialization
-    //vec(std::initializer_list<T> init_list);
     vec(const vec<L, T> &vec_);
 
     template <typename... Args>
-      requires detail::AreSameAndNumbers<T, Args...>
+      requires detail::AreSameAndNumbers<T, Args...>    
     vec(Args &&...args);
 
-    vec(vec<L, T> &&vec_) noexcept;
-
-    vec(T fill_value);
+      //list initialization
+    vec(std::initializer_list<T> init_list);
     
-//    template <length_t L2>
-//    explicit vec(const vec<L2, T> &vec_);
-
-//    template <length_t L2>
-//    vec(const vec<L2, T> &vec_, T fill_value);
-
-/*
+    vec(vec<L, T> &&vec_) noexcept;
+    vec(T fill_value);
 
     /// assignment operators
     vec<L, T> &operator=(const vec<L, T> &vec_);
@@ -58,23 +50,23 @@ namespace line
     vec<L, T> operator*(const T &scalar) const;
     vec<L, T> operator/(const T &scalar) const;
 
+
     // comparison operators
     bool operator==(const vec<L, T> &vec_) const;
     bool operator!=(const vec<L, T> &vec_) const;
 
     // access to elements
-    optional_type &operator[](const std::size_t &idx) noexcept;
-    const optional_type &operator[](const std::size_t &idx) const noexcept;
+    value_type &operator[](const std::size_t &idx) noexcept;
+    const value_type &operator[](const std::size_t &idx) const noexcept;
 
-    optional_type *data() noexcept;
-    optional_type &at(const std::size_t &idx);
-    const optional_type &at(const std::size_t &idx) const;
+    value_type *data() noexcept;
+    value_type &at(const std::size_t &idx);
+    const value_type &at(const std::size_t &idx) const;
 
     // functions
     constexpr std::size_t size() const noexcept;
     void fill(T fill_value);
     void swap(vec<L, T> &vec_) noexcept;
-    bool contains_nullopt() const;
 
     // iterator
     iterator begin() noexcept;
@@ -84,14 +76,15 @@ namespace line
     const_iterator cend() const noexcept;
 
     ~vec();
-*/
+
   private:
-    std::unique_ptr<array_type> data_v = std::make_unique<array_type>();
+  // smart pointer to array
+    std::unique_ptr<array_type> data_v;
   };
   
   // multiplication by scalar
-  //template <length_t U, IsNumeric R>
-  //vec<U, R> operator*(const R &scalar, const vec<U, R> &vec_);
+  template <length_t U, IsNumeric R>
+  vec<U, R> operator*(const R &scalar, const vec<U, R> &vec_);
 
 };
 

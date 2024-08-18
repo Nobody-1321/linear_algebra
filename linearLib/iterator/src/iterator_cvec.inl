@@ -11,7 +11,7 @@ typename const_iterator<T>::reference const_iterator<T>::operator*() const {
 }
 
 template<typename T>
-typename const_iterator<T>::pointer const_iterator<T>::operator->() { 
+typename const_iterator<T>::pointer const_iterator<T>::operator->() const{ 
     return ptr; 
 }
 

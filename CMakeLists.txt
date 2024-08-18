@@ -10,11 +10,11 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 #build type
-set(CMAKE_BUILD_TYPE Realease)
+set(CMAKE_BUILD_TYPE Debug) 
 
 
 message(STATUS "CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
-#add_compile_options(-Wall -Wextra -Wpedantic -Werror -O3)
+add_compile_options(-Wall -Wextra -Wpedantic -Werror )
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/linearLib)
 

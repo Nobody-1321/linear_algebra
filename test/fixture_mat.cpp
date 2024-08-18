@@ -9,21 +9,15 @@ struct MatType {
 };
 
 template <typename MatType>
-class Fixture_Mat2 : public ::testing::Test {
+class Fixture_MatN : public ::testing::Test {
 public: 
     using Mat = typename MatType::type;
 };
-
-
-
 template <typename MatType>
-class Fixture_Mat3 : public ::testing::Test {
+class Fixture_MatN1 : public ::testing::Test {
 public: 
     using Mat = typename MatType::type;
+    using row_length = typename Mat::row_length;
+    using col_length = typename Mat::col_length;
 };
 
-template <typename MatType>
-class Fixture_Mat4 : public ::testing::Test {
-public: 
-    using Mat = typename MatType::type;
-};

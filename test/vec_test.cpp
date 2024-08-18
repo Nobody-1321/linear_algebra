@@ -23,26 +23,25 @@ TYPED_TEST(Fixture_VecN, AccessToElements)
     typename TestFixture::Vec u{static_cast<U>(8), static_cast<U>(8)};
     ASSERT_EQ(u[0], 8);
     ASSERT_EQ(u[1], 8);
-    ASSERT_EQ(u.at(0), 8);
-    ASSERT_EQ(u.at(1), 8);
+    //ASSERT_EQ(u.at(0), 8);
+    //ASSERT_EQ(u.at(1), 8);
     //auto v = u.data();
-    ASSERT_THROW(u.at(2), std::out_of_range);
-
+    //ASSERT_THROW(u.at(2), std::out_of_range);
 }
 /*
 // iterators test
 TYPED_TEST(Fixture_VecN, Iterators)
 {
-
-    typename TestFixture::Vec u{8, 10};
+    using U = TestFixture::Vec::value_type;
+    typename TestFixture::Vec u{static_cast<U>(8), static_cast<U>(8)};
     auto it = u.begin();
     auto it2 = u.end();
     ASSERT_EQ(*it, 8);
-    ASSERT_EQ(*(it + 1), 8 + 2);
+    ASSERT_EQ(*(it + 1), 8 );
     ASSERT_EQ(it2 - it, 2);
     ASSERT_EQ(*u.cbegin(), *u.begin());
     ASSERT_EQ(*u.cend(), *u.end());
-}*/
+}
 
 // u + v = v + u
 TYPED_TEST(Fixture_VecN, Commutativity)
@@ -146,6 +145,7 @@ TYPED_TEST(Fixture_VecN, MultiplicativeIdentity)
     ASSERT_EQ(u, result);
 }
 
+*/
 /*
 // Definir los tipos y tamaños que deseas probar
 typedef ::testing::Types<

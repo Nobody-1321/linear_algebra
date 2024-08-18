@@ -1,21 +1,22 @@
-
+#pragma once
+#include "../include/mat.hpp"
 namespace line{
 
     // constructors
 
         // identity matrix
     template <length_t R, length_t C, IsNumeric T>
-    mat<R, C, T>::mat()
+    mat<R, C, T>::mat(): rows(R)
     {
-        for (int i = 0; i < R; i++)
+        for (std::size_t i = 0; i < R; i++)
         {
             rows[i] = vec<C, T>(0);
-            rows[i][i] = 1;
+            //rows[i][i] = static_cast<T>(1); //corrompe la memoria
         }
     }
 
     template <length_t R, length_t C, IsNumeric T>
-    mat<R, C, T>::mat(T val_t)
+    mat<R, C, T>::mat(T val_t): rows(R)
     {
         for (int i = 0; i < R; i++)
         {
@@ -24,7 +25,7 @@ namespace line{
     }
 
     template <length_t R, length_t C, IsNumeric T>
-    mat<R, C, T>::mat(const mat<R, C, T> &mat_)
+    mat<R, C, T>::mat(const mat<R, C, T> &mat_): rows(R)
     {
         for (int i = 0; i < R; i++)
         {
@@ -33,22 +34,18 @@ namespace line{
     }
 
     template <length_t R, length_t C, IsNumeric T>
-    mat<R, C, T>::mat(mat<R, C, T> &&mat_) noexcept
+    mat<R, C, T>::mat(mat<R, C, T> &&mat_) noexcept : rows{std::move(mat_.rows)}
     {
-        for (int i = 0; i < R; i++)
-        {
-            rows[i] = std::move(mat_[i]);
-        }
     }
     
             // multiple arguments       
     template <length_t R, length_t C, IsNumeric T>
     template <typename... Args>
     requires detail::AreSameAndNumbers<T, Args...>
-    mat<R, C, T>::mat(Args &&...args)
+    mat<R, C, T>::mat(Args &&...args) : rows(R)
     {
-        static_assert(sizeof...(Args) <= R * C, "Too many arguments provided to mat constructor");
-        for (int i = 0; i < R; i++)
+        static_assert(sizeof...(Args) == R * C, "Number of arguments must be equal to the number of elements in the matrix");
+        for (std::size_t i = 0; i < R; i++)
         {
             rows[i] = vec<C, T>();
         }
@@ -56,18 +53,17 @@ namespace line{
         ((index < sizeof...(Args) && (rows[index / C][index % C] = static_cast<T>(std::forward<Args>(args)), index++)), ...);
     }
 
-
+    // list initialization
     template <length_t R, length_t C, IsNumeric T>
-    mat<R, C, T>::mat(std::initializer_list<std::initializer_list<T>> init_list) {
+    mat<R, C, T>::mat(std::initializer_list<std::initializer_list<T>> init_list) : rows(R)
+    {
         assert(init_list.size() == R);
         for (int i = 0; i < R; i++)
         {
-            //assert(init_list.begin()[i].size() == C);
+            assert(init_list.begin()[i].size() == C);
             rows[i] = vec<C, T>(init_list.begin()[i]);
         }
     }
-
-
 
     // assignment operators
     template <length_t R, length_t C, IsNumeric T>
@@ -85,7 +81,7 @@ namespace line{
     }
 
     template <length_t R, length_t C, IsNumeric T>
-    mat<R, C, T> &mat<R, C, T>::operator=(mat<R, C, T> &&mat_) noexcept
+    mat<R, C, T> &mat<R, C, T>::operator=(mat<R, C, T> &&mat_) noexcept 
     {
         if (this != &mat_)
         {
@@ -104,7 +100,7 @@ namespace line{
     {
         mat<R, C, T> result;
 
-        for (int i = 0; i < R; i++)
+        for (std::size_t i = 0; i < R; i++)
         {
             result[i] = rows[i] + mat_[i];
         }
@@ -125,25 +121,47 @@ namespace line{
         return result;
     }
 
-    template <length_t R, length_t C, IsNumeric T>
-    template<length_t R2, length_t C2>
+ template <length_t R, length_t C, IsNumeric T>
+    template <length_t R2, length_t C2>
     mat<R, C2, T> mat<R, C, T>::operator*(const mat<R2, C2, T> &mat_) const
     {
-        mat<R, C2, T> result(0);
+        // Verificar que el número de columnas de la primera matriz sea igual al número de filas de la segunda matriz
+        static_assert(C == R2, "Matrix dimensions do not match for multiplication");
 
-        for (int i = 0; i < R; i++)
+        mat<R, C2, T> result{};
+
+        // Inicializar la matriz resultante con ceros
+        result.fill(0);
+
+        // Realizar la multiplicación de matrices
+        for (std::size_t i = 0; i < R; i++)
         {
-            for (int j = 0; j < C2; j++)
+            for (std::size_t j = 0; j < C2; j++)
             {
-                for (int k = 0; k < C; k++)
+                for (std::size_t k = 0; k < C; k++)
                 {
-                    if (rows[i][k].has_value() && mat_[k][j].has_value())
-                    {
-                        result[i][j] = result[i][j].value() + rows[i][k].value() * mat_[k][j].value();
-                    }
+                    result[i][j] += rows[i][k] * mat_.at(k)[j];
                 }
             }
         }
+
+        return result;
+    }
+
+    // Multiplicación de matriz por vector
+    template <length_t R, length_t C, IsNumeric T>
+    vec<R, T> mat<R, C, T>::operator*(const vec<R, T> &vec_) const
+    {
+        vec<R, T> result;
+
+    for (int i = 0; i < R; i++)
+    {
+        result[i] = 0; // Asegúrate de inicializar el resultado a 0
+        for (int j = 0; j < C; j++)
+        {
+            result[i] += rows[i][j] * vec_[j];
+        }
+    }
 
         return result;
     }
@@ -153,7 +171,7 @@ namespace line{
     {
         mat<R, C, T> result;
 
-        for (int i = 0; i < R; i++)
+        for( std::size_t i = 0; i < size_row(); i++)
         {
             result[i] = rows[i] * sca;
         }
@@ -178,7 +196,7 @@ namespace line{
     template <length_t R, length_t C, IsNumeric T>
     bool mat<R, C, T>::operator==(const mat<R, C, T> &mat_) const
     {
-        for (int i = 0; i < R; i++)
+        for (std::size_t i = 0; i < R; i++)
         {
             if (rows[i] != mat_[i])
             {
@@ -209,23 +227,9 @@ namespace line{
     }
 
     template <length_t R, length_t C, IsNumeric T>
-    bool mat<R, C, T>::contains_nullopt() const noexcept
-    {
-        for (int i = 0; i < R; i++)
-        {
-            if (rows[i].contains_nullopt())
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    template <length_t R, length_t C, IsNumeric T>
     void mat<R, C, T>::fill(T fill_value)
     {
-        for (int i = 0; i < R; i++)
+        for (std::size_t i = 0; i < R; i++)
         {
             rows[i].fill(fill_value);
         }
@@ -264,11 +268,25 @@ namespace line{
     {
         return rows.at(idx);
     }
-    
+
+    //destructors
+    template <length_t R, length_t C, IsNumeric T>
+    mat<R, C, T>::~mat(){};
+
     // free functions
-    template<length_t R, length_t C, IsNumeric T>
-    mat<R, C, T> operator*(const T& sca, const mat<R, C, T>& mat_)
+    // scalar multiplication
+    template <length_t R, length_t C, IsNumeric T>
+    mat<R, C, T> operator*(const T &sca, const mat<R, C, T> &mat_)
     {
-        return mat_ * sca;
+        mat<R, C, T> result;
+
+        for (std::size_t i = 0; i < R; i++)
+        {
+            result[i] = sca * mat_[i];
+        }
+
+        return result;
     }
+    
+
 };

@@ -1,84 +1,56 @@
- #pragma once
- #include "../include/vec.hpp"
 namespace line
 {
     using namespace detail;
 
-    // constructors
+    // constructors for smart pointers
+
     template <length_t L, IsNumeric T>
-    vec<L, T>::vec()
+    vec<L, T>::vec() : data_v{std::unique_ptr<array_type>()}
     {
-        data_v->fill(0);
+        this->fill(0);
     }
 
     template <length_t L, IsNumeric T>
-    vec<L, T>::vec(const vec<L, T> &vec_)
+    vec<L, T>::vec(const vec<L, T> &vec_) : data_v{std::make_unique<array_type>()}
     {
-        std::copy_n(vec_.begin(), L, data_v->begin());
+        std::copy_n(vec_.cbegin(), L, data_v->begin());
     }
 
-
-/*
-    template <length_t L, IsNumeric T>
-    vec<L, T>::vec(std::initializer_list<T> init_list)
-    {
-        assert(init_list.size() == L);
-        std::size_t index = 0;
-        for (const T &val : init_list)
-        {
-            data_v->at(index++) = val;
-        }
-    }
-
-*/
 
 
     template <length_t L, IsNumeric T>
     template <typename... Args>
         requires detail::AreSameAndNumbers<T, Args...>
-    vec<L, T>::vec(Args &&...args)
+    vec<L, T>::vec(Args &&...args) : data_v{std::make_unique<array_type>()}
     {
         static_assert(sizeof...(Args) == L, "Too many arguments provided to vec constructor");
         std::size_t index = 0;
-        ((index < sizeof...(Args) && (data_v->at(index++) = static_cast<T>(std::forward<Args>(args)))), ...);
+        ((index < sizeof...(Args) && (data_v.at(index++) = static_cast<T>(std::forward<Args>(args)))), ...);
+    }
+
+    // list initialization
+    template <length_t L, IsNumeric T>
+    vec<L, T>::vec(std::initializer_list<T> init_list): data_v{std::make_unique<array_type>()}
+    {
+        if (init_list.size() != L)
+        {
+            throw std::invalid_argument("Invalid size of initializer list");
+        }
+
+        std::copy(init_list.begin(), init_list.end(), data_v.begin());
     }
 
     template <length_t L, IsNumeric T>
     vec<L, T>::vec(vec<L, T> &&vec_) noexcept
         : data_v(std::move(vec_.data_v)) // Utilizando lista de inicialización
     {
-        vec_.data_v = nullptr;
     }
 
     template <length_t L, IsNumeric T>
-    vec<L, T>::vec(T fill_value)
+    vec<L, T>::vec(T fill_value): data_v(L)
     {
-        data_v->fill(fill_value);
+        this->fill(fill_value);
     }
-/*    
-    template <length_t L, IsNumeric T>
-    template <length_t L2>
-    vec<L, T>::vec(const vec<L2, T> &vec_)
-    {
-        data_v->fill(std::nullopt);
-        std::copy_n(vec_.begin(), std::min(L, L2), data_v->begin());
-    }
-    
-
-    template <length_t L, IsNumeric T>
-    template <length_t L2>
-    vec<L, T>::vec(const vec<L2, T> &vec_, T fill_value)
-    {
-        data_v->fill(fill_value);
-        std::copy_n(vec_.begin(), std::min(L, L2), data_v->begin());
-    }
-*/
-
-
-
-
-/*
-
 
     // assignment operators
     template <length_t L, IsNumeric T>
@@ -99,8 +71,8 @@ namespace line
         if (this != &vec_)
         {
             data_v = std::move(vec_.data_v);
-            vec_.data_v = nullptr;
         }
+        
         return *this;
     }
 
@@ -113,17 +85,16 @@ namespace line
             this->cbegin(), this->cend(),
             vec_.cbegin(),
             result.begin(),
-            [](const std::optional<T> &valL, const std::optional<T> &valR) -> std::optional<T>
+            [](const T &valL, const T &valR) -> T
             {
-                if (valL.has_value() && valR.has_value())
-                {
-                    return valL.value() + valR.value();
-                }
-                return std::nullopt;
+                return valL + valR;
             });
 
         return result;
-    }
+    }    
+
+
+
 
     template <length_t L, IsNumeric T>
     vec<L, T> vec<L, T>::operator-(const vec<L, T> &vec_) const
@@ -134,13 +105,9 @@ namespace line
             this->cbegin(), this->cend(),
             vec_.cbegin(),
             result.begin(),
-            [](const std::optional<T> &valL, const std::optional<T> &valR) -> std::optional<T>
+            [](const T &valL, const T &valR) 
             {
-                if (valL.has_value() && valR.has_value())
-                {
-                    return valL.value() - valR.value();
-                }
-                return std::nullopt;
+                return valL - valR;
             });
 
         return result;
@@ -152,16 +119,12 @@ namespace line
         vec<L, T> result(0);
 
         std::transform(
-            this->begin(), this->end(),
-            vec_.begin(),
+            this->cbegin(), this->cend(),
+            vec_.cbegin(),
             result.begin(),
-            [](const std::optional<T> &valL, const std::optional<T> &valR) -> std::optional<T>
+            [](const T &valL, const T &valR)
             {
-                if (valL.has_value() && valR.has_value())
-                {
-                    return valL.value() * valR.value();
-                }
-                return std::nullopt;
+                return valL * valR;
             });
 
         return result;
@@ -173,15 +136,11 @@ namespace line
         vec<L, T> result(0);
 
         std::transform(
-            this->begin(), this->end(),
+            this->cbegin(), this->cend(),
             result.begin(),
-            [scalar](const std::optional<T> &val) -> std::optional<T>
+            [scalar](const T &val)
             {
-                if (val.has_value())
-                {
-                    return val.value() * scalar;
-                }
-                return std::nullopt;
+                return val * scalar;
             });
 
         return result;
@@ -198,15 +157,11 @@ namespace line
         vec<L, T> result(0);
 
         std::transform(
-            this->begin(), this->end(),
+            this->cbegin(), this->cend(),
             result.begin(),
-            [scalar](const std::optional<T> &val) -> std::optional<T>
+            [scalar](const T &val)
             {
-                if (val.has_value())
-                {
-                    return val.value() / scalar;
-                }
-                return std::nullopt;
+                return val / scalar;
             });
 
         return result;
@@ -225,35 +180,38 @@ namespace line
         return !(*this == vec_);
     }
 
+
     // access to elements
     template <length_t L, IsNumeric T>
-    typename vec<L, T>::optional_type &vec<L, T>::operator[](const std::size_t &idx) noexcept
+    typename vec<L, T>::value_type &vec<L, T>::operator[](const std::size_t &idx) noexcept
     {
-        return (*data_v)[idx];
+        return data_v[idx];
     }
 
     template <length_t L, IsNumeric T>
-    const typename vec<L, T>::optional_type &vec<L, T>::operator[](const std::size_t &idx) const noexcept
+    const typename vec<L, T>::value_type &vec<L, T>::operator[](const std::size_t &idx) const noexcept
     {
-        return (*data_v)[idx];
+        return data_v[idx];
+    }
+
+
+
+    template <length_t L, IsNumeric T>
+    typename vec<L, T>::value_type *vec<L, T>::data() noexcept
+    {
+        return data_v.data();
     }
 
     template <length_t L, IsNumeric T>
-    typename vec<L, T>::optional_type *vec<L, T>::data() noexcept
+    typename vec<L, T>::value_type &vec<L, T>::at(const std::size_t &idx)
     {
-        return data_v->data();
+        return data_v.at(idx);
     }
 
     template <length_t L, IsNumeric T>
-    typename vec<L, T>::optional_type &vec<L, T>::at(const std::size_t &idx)
+    const typename vec<L, T>::value_type &vec<L, T>::at(const std::size_t &idx) const
     {
-        return data_v->at(idx);
-    }
-
-    template <length_t L, IsNumeric T>
-    const typename vec<L, T>::optional_type &vec<L, T>::at(const std::size_t &idx) const
-    {
-        return data_v->at(idx);
+        return data_v.at(idx);
     }
 
     // functions
@@ -267,50 +225,45 @@ namespace line
     template <length_t L, IsNumeric T>
     void vec<L, T>::fill(T fill_value)
     {
-        data_v->fill(fill_value);
+        std::fill(data_v.begin(), data_v.end(), fill_value);
     }
 
     template <length_t L, IsNumeric T>
     void vec<L, T>::swap(vec<L, T> &vec_) noexcept
     {
-        std::swap(*data_v, *vec_.data_v);
+        std::swap(data_v, vec_.data_v);
     }
 
-    template <length_t L, IsNumeric T>
-    bool vec<L, T>::contains_nullopt() const
-    {
-        return std::any_of(data_v->begin(), data_v->end(), [](const std::optional<T> &val) -> bool
-                           { return !val.has_value(); });
-    }
 
     // iterators
 
     template <length_t L, IsNumeric T>
     typename vec<L, T>::iterator vec<L, T>::begin() noexcept
     {
-        return iterator(data_v->begin());
+        return iterator(data_v.data());
     }
 
     template <length_t L, IsNumeric T>
     typename vec<L, T>::iterator vec<L, T>::end() noexcept
     {
-        return iterator(data_v->end());
+        return iterator(data_v.data() + L);
     }
 
     template <length_t L, IsNumeric T>
     typename vec<L, T>::const_iterator vec<L, T>::cbegin() const noexcept
     {
-        return const_iterator(data_v->begin());
+        return const_iterator(data_v.data());
     }
 
     template <length_t L, IsNumeric T>
     typename vec<L, T>::const_iterator vec<L, T>::cend() const noexcept
     {
-        return const_iterator(data_v->end());
+        return const_iterator(data_v.data() + L);
     }
 
     template <length_t L, IsNumeric T>
-    vec<L, T>::~vec() {}
+    vec<L, T>::~vec(){}
+
 
     // scalar * vector
     template <length_t U, IsNumeric R>
@@ -321,17 +274,13 @@ namespace line
         std::transform(
             vec_.cbegin(), vec_.cend(),
             result.begin(),
-            [scalar](const std::optional<R> &val) -> std::optional<R>
+            [scalar](const R &val)
             {
-                if (val.has_value())
-                {
-                    return scalar * val.value();
-                }
-                return std::nullopt;
+                return val * scalar;
             });
 
         return result;
     }
 
-*/
+
 };

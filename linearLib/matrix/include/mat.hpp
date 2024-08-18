@@ -29,9 +29,6 @@ namespace line{
         mat(Args&&... args);
 
         mat(std::initializer_list<std::initializer_list<T>> init_list);
- 
-        
-
 
         //assignment operators
         mat<R, C, T>& operator=(const mat<R, C, T>& mat_);
@@ -43,6 +40,9 @@ namespace line{
         
         template<length_t R2, length_t C2>
         mat<R, C2, T> operator * (const mat<R2, C2, T>& mat_) const;
+
+        //multiplication by vector
+        vec<R, T> operator * (const vec<R, T>& vec_) const;
 
         mat<R, C, T> operator * (const T& sca) const;
         mat<R, C, T> operator / (const T& sca) const;
@@ -60,18 +60,19 @@ namespace line{
         constexpr std::size_t size_row() const noexcept;
         constexpr std::size_t size_col() const noexcept;
         bool is_square() const noexcept;
-        bool contains_nullopt() const noexcept;
         void fill(T fill_value);
         void swap(mat<R, C, T>& mat_) noexcept;
 
+        ~mat();
 
         private:
-        std::array<row_type, R> rows;
+        std::array<row_type, 2> rows;
     };
 
-   //free functions
+    // free functions
+    //scalar multiplication
     template<length_t R, length_t C, IsNumeric T>
-    mat<R, C, T> operator*(const T& sca, const mat<R, C, T>& mat_); 
+    mat<R, C, T> operator*(const T& sca, const mat<R, C, T>& mat_);
 
 }
     

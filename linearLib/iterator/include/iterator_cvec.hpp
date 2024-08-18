@@ -18,7 +18,7 @@ struct const_iterator {
     const_iterator(pointer ptr);
 
     reference operator*() const;
-    pointer operator->();
+    pointer operator->() const;
 
     const_iterator& operator++();
     const_iterator operator++(int);

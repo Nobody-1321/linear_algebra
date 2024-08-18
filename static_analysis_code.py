@@ -60,6 +60,6 @@ checks = ["cppcoreguidelines-*", "clang-analyzer-*","readability-*","bugprone-*"
 
 # Paths and extensions to exclude
 exclude_paths = ["./linearLib/vector/src/"]
-exclude_extensions = [".inl"]
+exclude_extensions = [".hpp"]
 
 run_clang_tidy(directory, build_path, file_extensions, checks, exclude_paths, exclude_extensions)
