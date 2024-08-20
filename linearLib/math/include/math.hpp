@@ -52,8 +52,6 @@ namespace line{
 
     //Matrix 
 
-
-
     //transpose
     template <length_t R, length_t C, IsNumeric T>
     mat<C, R, T> transpose(const mat<R, C, T>& mat_);
