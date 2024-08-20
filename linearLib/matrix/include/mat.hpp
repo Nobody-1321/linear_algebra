@@ -17,6 +17,7 @@ namespace line{
         using value_type = T;
 
         //constructors
+
             //identity matrix
         mat();
         mat(T val_t);
@@ -62,11 +63,17 @@ namespace line{
         bool is_square() const noexcept;
         void fill(T fill_value);
         void swap(mat<R, C, T>& mat_) noexcept;
+        
+        //iterators
+        row_type::iterator begin() noexcept;
+        row_type::iterator end() noexcept;
+        row_type::const_iterator cbegin() const noexcept;
+        row_type::const_iterator cend() const noexcept;
 
         ~mat();
 
         private:
-        std::array<row_type, 2> rows;
+        std::array<row_type, R> rows;
     };
 
     // free functions

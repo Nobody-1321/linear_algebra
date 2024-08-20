@@ -5,7 +5,7 @@ namespace line
     // constructors for smart pointers
 
     template <length_t L, IsNumeric T>
-    vec<L, T>::vec() : data_v{std::unique_ptr<array_type>()}
+    vec<L, T>::vec() : data_v{std::make_unique<array_type>()}
     {
         this->fill(0);
     }
@@ -25,7 +25,7 @@ namespace line
     {
         static_assert(sizeof...(Args) == L, "Too many arguments provided to vec constructor");
         std::size_t index = 0;
-        ((index < sizeof...(Args) && (data_v.at(index++) = static_cast<T>(std::forward<Args>(args)))), ...);
+        ((index < sizeof...(Args) && (data_v->at(index++) = static_cast<T>(std::forward<Args>(args)))), ...);
     }
 
     // list initialization
@@ -37,7 +37,7 @@ namespace line
             throw std::invalid_argument("Invalid size of initializer list");
         }
 
-        std::copy(init_list.begin(), init_list.end(), data_v.begin());
+        std::copy(init_list.begin(), init_list.end(), data_v->begin());
     }
 
     template <length_t L, IsNumeric T>
@@ -47,7 +47,7 @@ namespace line
     }
 
     template <length_t L, IsNumeric T>
-    vec<L, T>::vec(T fill_value): data_v(L)
+    vec<L, T>::vec(T fill_value): data_v{std::make_unique<array_type>()}
     {
         this->fill(fill_value);
     }
@@ -185,13 +185,13 @@ namespace line
     template <length_t L, IsNumeric T>
     typename vec<L, T>::value_type &vec<L, T>::operator[](const std::size_t &idx) noexcept
     {
-        return data_v[idx];
+        return (*data_v)[idx];
     }
 
     template <length_t L, IsNumeric T>
     const typename vec<L, T>::value_type &vec<L, T>::operator[](const std::size_t &idx) const noexcept
     {
-        return data_v[idx];
+        return (*data_v)[idx];
     }
 
 
@@ -225,13 +225,13 @@ namespace line
     template <length_t L, IsNumeric T>
     void vec<L, T>::fill(T fill_value)
     {
-        std::fill(data_v.begin(), data_v.end(), fill_value);
+        data_v->fill(fill_value);
     }
 
     template <length_t L, IsNumeric T>
     void vec<L, T>::swap(vec<L, T> &vec_) noexcept
     {
-        std::swap(data_v, vec_.data_v);
+        std::swap(data_v, vec_->data_v);
     }
 
 
@@ -240,25 +240,25 @@ namespace line
     template <length_t L, IsNumeric T>
     typename vec<L, T>::iterator vec<L, T>::begin() noexcept
     {
-        return iterator(data_v.data());
+        return iterator(data_v->data());
     }
 
     template <length_t L, IsNumeric T>
     typename vec<L, T>::iterator vec<L, T>::end() noexcept
     {
-        return iterator(data_v.data() + L);
+        return iterator(data_v->data() + L);
     }
 
     template <length_t L, IsNumeric T>
     typename vec<L, T>::const_iterator vec<L, T>::cbegin() const noexcept
     {
-        return const_iterator(data_v.data());
+        return const_iterator(data_v->data());
     }
 
     template <length_t L, IsNumeric T>
     typename vec<L, T>::const_iterator vec<L, T>::cend() const noexcept
     {
-        return const_iterator(data_v.data() + L);
+        return const_iterator(data_v->data() + L);
     }
 
     template <length_t L, IsNumeric T>

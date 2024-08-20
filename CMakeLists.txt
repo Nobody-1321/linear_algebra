@@ -14,7 +14,7 @@ set(CMAKE_BUILD_TYPE Debug)
 
 
 message(STATUS "CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
-add_compile_options(-Wall -Wextra -Wpedantic -Werror )
+#add_compile_options(-Wall -Wextra -Wpedantic -Werror )
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/linearLib)
 

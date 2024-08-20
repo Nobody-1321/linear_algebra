@@ -16,7 +16,7 @@ set(MATH_DIR ${CMAKE_CURRENT_SOURCE_DIR}/math)
 
 
 set(MAIN_SOURCE_FILES 
-    ${MATH_DIR}/math.cpp    
+    ${MATH_DIR}/mats.cpp    
     #${VECTOR_DIR}/src/vec2.inl
     #${VECTOR_DIR}/src/vec3.inl
 )
@@ -27,6 +27,7 @@ add_library(lineal SHARED ${MAIN_SOURCE_FILES})
 target_include_directories(lineal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/vector/include)
 target_include_directories(lineal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/matrix/include)
 target_include_directories(lineal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/iterator/include)
+target_include_directories(lineal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/math/include)
 target_include_directories(lineal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/detail)
 
 

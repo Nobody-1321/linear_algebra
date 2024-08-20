@@ -6,26 +6,26 @@ namespace line{
 
         // identity matrix
     template <length_t R, length_t C, IsNumeric T>
-    mat<R, C, T>::mat(): rows(R)
+    mat<R, C, T>::mat(): rows{}
     {
         for (std::size_t i = 0; i < R; i++)
         {
             rows[i] = vec<C, T>(0);
-            //rows[i][i] = static_cast<T>(1); //corrompe la memoria
+            //rows[i][i] = static_cast<T>(1); //access out of bounds
         }
     }
 
     template <length_t R, length_t C, IsNumeric T>
-    mat<R, C, T>::mat(T val_t): rows(R)
+    mat<R, C, T>::mat(T val_t) : rows{}
     {
-        for (int i = 0; i < R; i++)
+        for (std::size_t i = 0; i < R; i++)
         {
             rows[i] = vec<C, T>(val_t);
         }
     }
 
     template <length_t R, length_t C, IsNumeric T>
-    mat<R, C, T>::mat(const mat<R, C, T> &mat_): rows(R)
+    mat<R, C, T>::mat(const mat<R, C, T> &mat_) : rows{}
     {
         for (int i = 0; i < R; i++)
         {
@@ -42,7 +42,7 @@ namespace line{
     template <length_t R, length_t C, IsNumeric T>
     template <typename... Args>
     requires detail::AreSameAndNumbers<T, Args...>
-    mat<R, C, T>::mat(Args &&...args) : rows(R)
+    mat<R, C, T>::mat(Args &&...args) : rows{}
     {
         static_assert(sizeof...(Args) == R * C, "Number of arguments must be equal to the number of elements in the matrix");
         for (std::size_t i = 0; i < R; i++)
@@ -55,7 +55,7 @@ namespace line{
 
     // list initialization
     template <length_t R, length_t C, IsNumeric T>
-    mat<R, C, T>::mat(std::initializer_list<std::initializer_list<T>> init_list) : rows(R)
+    mat<R, C, T>::mat(std::initializer_list<std::initializer_list<T>> init_list) : rows{}
     {
         assert(init_list.size() == R);
         for (int i = 0; i < R; i++)
@@ -267,6 +267,31 @@ namespace line{
     typename mat<R, C, T>::row_type const &mat<R, C, T>::at(int idx) const
     {
         return rows.at(idx);
+    }
+
+    // iterators
+    template <length_t R, length_t C, IsNumeric T>
+    typename mat<R, C, T>::row_type::iterator mat<R, C, T>::begin() noexcept
+    {
+        return rows[0].begin();
+    }
+
+    template <length_t R, length_t C, IsNumeric T>
+    typename mat<R, C, T>::row_type::iterator mat<R, C, T>::end() noexcept
+    {
+        return rows[R - 1].end();
+    }
+
+    template <length_t R, length_t C, IsNumeric T>
+    typename mat<R, C, T>::row_type::const_iterator mat<R, C, T>::cbegin() const noexcept
+    {
+        return rows[0].cbegin();
+    }
+
+    template <length_t R, length_t C, IsNumeric T>
+    typename mat<R, C, T>::row_type::const_iterator mat<R, C, T>::cend() const noexcept
+    {
+        return rows[R - 1].cend();
     }
 
     //destructors

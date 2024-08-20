@@ -7,9 +7,9 @@
 
 // Definir los tipos y tamaños que deseas probar
 typedef ::testing::Types<
-    VecType<2, float>
-    //VecType<2, float>,
-    //VecType<2, double>
+    VecType<2, int>,
+    VecType<2, float>,
+    VecType<2, double>
     >
     MyVecTypes_2V;
 
@@ -28,7 +28,7 @@ TYPED_TEST(Fixture_VecN, AccessToElements)
     //auto v = u.data();
     //ASSERT_THROW(u.at(2), std::out_of_range);
 }
-/*
+
 // iterators test
 TYPED_TEST(Fixture_VecN, Iterators)
 {
@@ -54,8 +54,6 @@ TYPED_TEST(Fixture_VecN, Commutativity)
     typename TestFixture::Vec result2 = v + u;
     ASSERT_EQ(result1, result2);
 }
-
-
 
 // (u + v) + w = u + (v + w)
 TYPED_TEST(Fixture_VecN, Associativity)
@@ -145,7 +143,30 @@ TYPED_TEST(Fixture_VecN, MultiplicativeIdentity)
     ASSERT_EQ(u, result);
 }
 
-*/
+
+typedef ::testing::Types<
+    VecType<3, int>,
+    VecType<3, float>,
+    VecType<3, double>
+> MyVecTypes_3V;
+
+TYPED_TEST_SUITE(Fixture_Vec3, MyVecTypes_3V);
+
+TYPED_TEST(Fixture_Vec3, AccessToElements)
+{
+    using U = TestFixture::Vec::value_type;
+    typename TestFixture::Vec a{static_cast<U>(1), static_cast<U>(2), static_cast<U>(3)};
+    typename TestFixture::Vec b{static_cast<U>(4), static_cast<U>(5), static_cast<U>(6)};
+    typename TestFixture::Vec c{static_cast<U>(7), static_cast<U>(-3), static_cast<U>(0)};
+    typename TestFixture::Vec R{static_cast<U>(10), static_cast<U>(0), static_cast<U>(3)};
+    
+    //b + c - a
+    typename TestFixture::Vec result = b + c - a;
+
+    ASSERT_EQ(result, R);
+
+}
+
 /*
 // Definir los tipos y tamaños que deseas probar
 typedef ::testing::Types<
