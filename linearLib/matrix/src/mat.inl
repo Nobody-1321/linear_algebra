@@ -127,10 +127,7 @@ namespace line{
         // Verificar que el número de columnas de la primera matriz sea igual al número de filas de la segunda matriz
         static_assert(C == R2, "Matrix dimensions do not match for multiplication");
 
-        mat<R, C2, T> result{};
-
-        // Inicializar la matriz resultante con ceros
-        result.fill(0);
+        mat<R, C2, T> result;
 
         // Realizar la multiplicación de matrices
         for (std::size_t i = 0; i < R; i++)
@@ -151,7 +148,11 @@ namespace line{
     template <length_t R, length_t C, IsNumeric T>
     vec<R, T> mat<R, C, T>::operator*(const vec<R, T> &vec_) const
     {
+        
+        static_assert(C == R, "Matrix dimensions do not match for multiplication");
+
         vec<R, T> result;
+
 
     for (int i = 0; i < R; i++)
     {
@@ -189,6 +190,93 @@ namespace line{
         }
 
         return result;
+    }
+
+    // compound assignment operators
+    template <length_t R, length_t C, IsNumeric T>  
+    mat<R, C, T> &mat<R, C, T>::operator+=(const mat<R, C, T> &mat_)
+    {
+        for (int i = 0; i < R; i++)
+        {
+            (*rows)[i] += mat_[i];
+        }
+
+        return *this;
+    }
+
+    template <length_t R, length_t C, IsNumeric T>
+    mat<R, C, T> &mat<R, C, T>::operator-=(const mat<R, C, T> &mat_)
+    {
+        for (int i = 0; i < R; i++)
+        {
+            (*rows)[i] -= mat_[i];
+        }
+
+        return *this;
+    }
+
+    template <length_t R, length_t C, IsNumeric T>
+    template <length_t R2, length_t C2>
+    mat<R, C2, T> &mat<R, C, T>::operator*=(const mat<R2, C2, T> &mat_)
+    {
+        static_assert(C == R2, "Matrix dimensions do not match for multiplication");
+        
+        // Realizar la multiplicación de matrices
+        for (std::size_t i = 0; i < R; i++)
+        {
+            for (std::size_t j = 0; j < C2; j++)
+            {
+                for (std::size_t k = 0; k < C; k++)
+                {
+                    (*rows)[i][j] += (*rows)[i][k] * mat_.at(k)[j];
+                }
+            }
+        }
+
+        return *this;
+    }
+    
+    template <length_t R, length_t C, IsNumeric T>
+    vec<R, T> &mat<R, C, T>::operator*=(const vec<R, T> &vec_)
+    {
+        static_assert(C == R, "Matrix dimensions do not match for multiplication");
+
+
+        for (int i = 0; i < R; i++)
+        {
+            for (int j = 0; j < C; j++)
+            {
+                (*rows)[i] += (*rows)[i][j] * vec_[j];
+            }
+        }
+
+        return *this;
+    }
+
+
+    template <length_t R, length_t C, IsNumeric T>
+    mat<R, C, T> &mat<R, C, T>::operator*=(const T &sca)
+    {
+        for (int i = 0; i < R; i++)
+        {
+            (*rows)[i] *= sca;
+        }
+
+        return *this;
+    }
+
+    
+
+
+    template <length_t R, length_t C, IsNumeric T>
+    mat<R, C, T> &mat<R, C, T>::operator/=(const T &sca)
+    {
+        for (int i = 0; i < R; i++)
+        {
+            (*rows)[i] /= sca;
+        }
+
+        return *this;
     }
 
     // comparison operators

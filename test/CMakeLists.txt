@@ -14,7 +14,7 @@ add_executable(tests
 )
 
 # Aplicar optimización específica para tests
-target_compile_options(tests PRIVATE -O3)
+#target_compile_options(tests PRIVATE -O1)
 
 # No aplicar las opciones de compilación globales (como -Wall, -Wextra, etc.) en tests
 target_compile_options(tests PRIVATE -Wno-error)  # Desactivar warnings como errores si se necesitan

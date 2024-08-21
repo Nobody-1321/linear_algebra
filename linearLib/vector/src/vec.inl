@@ -1,8 +1,6 @@
 namespace line
 {
 
-
-
     using namespace detail;
 
     // constructors for smart pointers
@@ -18,8 +16,6 @@ namespace line
     {
         std::copy_n(vec_.cbegin(), L, data_v->begin());
     }
-
-
 
     template <length_t L, IsNumeric T>
     template <typename... Args>
@@ -91,7 +87,6 @@ namespace line
 
         return result;
     }    
-
 
     template <length_t L, IsNumeric T>
     vec<L, T> vec<L, T>::operator-(const vec<L, T> &vec_) const
@@ -178,6 +173,77 @@ namespace line
     }
 
 
+    // compound assignment operators
+    template <length_t L, IsNumeric T>
+    vec<L, T> &vec<L, T>::operator+=(const vec<L, T> &vec_)
+    {
+        std::transform(
+            this->begin(), this->end(),
+            vec_.cbegin(),
+            this->begin(),
+            std::plus<T>());
+
+        return *this;
+    }
+
+    template <length_t L, IsNumeric T>
+    vec<L, T> &vec<L, T>::operator-=(const vec<L, T> &vec_)
+    {
+        std::transform(
+            this->begin(), this->end(),
+            vec_.cbegin(),
+            this->begin(),
+            std::minus<T>());
+
+        return *this;
+    }
+
+
+    template <length_t L, IsNumeric T>
+    vec<L, T> &vec<L, T>::operator*=(const vec<L, T> &vec_)
+    {
+        std::transform(
+            this->begin(), this->end(),
+            vec_.cbegin(),
+            this->begin(),
+            std::multiplies<T>());
+
+        return *this;
+    }
+
+    template <length_t L, IsNumeric T>
+    vec<L, T> &vec<L, T>::operator*=(const T &scalar)
+    {
+        std::transform(
+            this->begin(), this->end(),
+            this->begin(),
+            [scalar](const T &val)
+            {
+                return val * scalar;
+            });
+
+        return *this;
+    }
+
+    template <length_t L, IsNumeric T>
+    vec<L, T> &vec<L, T>::operator/=(const T &scalar)
+    {
+        if (scalar == 0)
+        {
+            throw std::invalid_argument("Division by zero");
+        }
+
+        std::transform(
+            this->begin(), this->end(),
+            this->begin(),
+            [scalar](const T &val)
+            {
+                return val / scalar;
+            });
+
+        return *this;
+    }
+
     // access to elements
     template <length_t L, IsNumeric T>
     typename vec<L, T>::value_type &vec<L, T>::operator[](const std::size_t &idx) noexcept
@@ -194,19 +260,19 @@ namespace line
     template <length_t L, IsNumeric T>
     typename vec<L, T>::value_type *vec<L, T>::data() noexcept
     {
-        return data_v.data();
+        return data_v->data();
     }
 
     template <length_t L, IsNumeric T>
     typename vec<L, T>::value_type &vec<L, T>::at(const std::size_t &idx)
     {
-        return data_v.at(idx);
+        return data_v->at(idx);
     }
 
     template <length_t L, IsNumeric T>
     const typename vec<L, T>::value_type &vec<L, T>::at(const std::size_t &idx) const
     {
-        return data_v.at(idx);
+        return data_v->at(idx);
     }
 
     // functions

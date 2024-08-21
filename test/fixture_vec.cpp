@@ -20,3 +20,15 @@ class Fixture_VecN : public ::testing::Test {
 public: 
     using Vec = typename VecType::type;
 };
+template <typename VecType>
+class Fixture_Vec3N : public ::testing::Test {
+public: 
+    using Vec = typename VecType::type;
+};
+template <typename VecType>
+class Fixture_Vec15N : public ::testing::Test {
+public: 
+    using Vec = typename VecType::type;
+};
+
+

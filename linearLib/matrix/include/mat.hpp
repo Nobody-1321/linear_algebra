@@ -49,6 +49,18 @@ namespace line{
         mat<R, C, T> operator * (const T& sca) const;
         mat<R, C, T> operator / (const T& sca) const;
 
+        //compound assignment operators
+        mat<R, C, T>& operator += (const mat<R, C, T>& mat_);
+        mat<R, C, T>& operator -= (const mat<R, C, T>& mat_);
+        mat<R, C, T>& operator *= (const T& sca);
+
+        template<length_t R2, length_t C2>
+        mat<R, C2, T>& operator *= (const mat<R2, C2, T>& mat_);
+
+        vec<R, T>& operator *= (const vec<R, T>& vec_);
+
+        mat<R, C, T>& operator /= (const T& sca);
+
         //access to elements
         row_type & operator[](int idx) noexcept;
         row_type const & operator[](int idx) const noexcept;
