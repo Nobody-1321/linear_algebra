@@ -6,17 +6,18 @@ namespace line{
 
         // identity matrix
     template <length_t R, length_t C, IsNumeric T>
-    mat<R, C, T>::mat(): rows{}
+    mat<R, C, T>::mat(): rows{std::make_unique<std::array<row_type, R>>()}
     {
         for (std::size_t i = 0; i < R; i++)
         {
-            rows[i] = vec<C, T>(0);
-            //rows[i][i] = static_cast<T>(1); //access out of bounds
+            
+            (*rows)[i] = vec<C, T>(0);
+            //(*rows)[i][i] = static_cast<T>(1); //access out of bounds
         }
     }
 
     template <length_t R, length_t C, IsNumeric T>
-    mat<R, C, T>::mat(T val_t) : rows{}
+    mat<R, C, T>::mat(T val_t) : rows{std::make_unique<std::array<row_type, R>>()}
     {
         for (std::size_t i = 0; i < R; i++)
         {
@@ -25,11 +26,11 @@ namespace line{
     }
 
     template <length_t R, length_t C, IsNumeric T>
-    mat<R, C, T>::mat(const mat<R, C, T> &mat_) : rows{}
+    mat<R, C, T>::mat(const mat<R, C, T> &mat_) : rows{std::make_unique<std::array<row_type, R>>()}
     {
         for (int i = 0; i < R; i++)
         {
-            rows[i] = mat_[i];
+            (*rows)[i] = mat_[i];
         }
     }
 
@@ -42,26 +43,27 @@ namespace line{
     template <length_t R, length_t C, IsNumeric T>
     template <typename... Args>
     requires detail::AreSameAndNumbers<T, Args...>
-    mat<R, C, T>::mat(Args &&...args) : rows{}
+    mat<R, C, T>::mat(Args &&...args) : rows{std::make_unique<std::array<row_type, R>>()}
     {
         static_assert(sizeof...(Args) == R * C, "Number of arguments must be equal to the number of elements in the matrix");
         for (std::size_t i = 0; i < R; i++)
         {
-            rows[i] = vec<C, T>();
+            (*rows)[i] = vec<C, T>();
         }
         std::size_t index = 0;
-        ((index < sizeof...(Args) && (rows[index / C][index % C] = static_cast<T>(std::forward<Args>(args)), index++)), ...);
+        ((index < sizeof...(Args) && ((*rows)[index / C][index % C] = static_cast<T>(std::forward<Args>(args)), index++)), ...);
     }
 
     // list initialization
     template <length_t R, length_t C, IsNumeric T>
-    mat<R, C, T>::mat(std::initializer_list<std::initializer_list<T>> init_list) : rows{}
+    mat<R, C, T>::mat(std::initializer_list<std::initializer_list<T>> init_list) : rows{std::make_unique<std::array<row_type, R>>()}
     {
+
         assert(init_list.size() == R);
         for (int i = 0; i < R; i++)
         {
             assert(init_list.begin()[i].size() == C);
-            rows[i] = vec<C, T>(init_list.begin()[i]);
+            (*rows)[i] = vec<C, T>(init_list.begin()[i]);
         }
     }
 
@@ -73,7 +75,7 @@ namespace line{
         {
             for (int i = 0; i < R; i++)
             {
-                rows[i] = mat_[i];
+                (*rows)[i] = mat_[i];
             }
         }
 
@@ -85,10 +87,7 @@ namespace line{
     {
         if (this != &mat_)
         {
-            for (int i = 0; i < R; i++)
-            {
-                rows[i] = std::move(mat_[i]);
-            }
+            rows = std::move(mat_.rows);
         }
 
         return *this;
@@ -102,7 +101,7 @@ namespace line{
 
         for (std::size_t i = 0; i < R; i++)
         {
-            result[i] = rows[i] + mat_[i];
+            result[i] = (*rows)[i] + mat_[i];
         }
 
         return result;
@@ -115,7 +114,7 @@ namespace line{
 
         for (int i = 0; i < R; i++)
         {
-            result[i] = rows[i] - mat_[i];
+            result[i] = (*rows)[i] - mat_[i];
         }
 
         return result;
@@ -140,7 +139,7 @@ namespace line{
             {
                 for (std::size_t k = 0; k < C; k++)
                 {
-                    result[i][j] += rows[i][k] * mat_.at(k)[j];
+                    result[i][j] += (*rows)[i][k] * mat_.at(k)[j];
                 }
             }
         }
@@ -159,7 +158,7 @@ namespace line{
         result[i] = 0; // Asegúrate de inicializar el resultado a 0
         for (int j = 0; j < C; j++)
         {
-            result[i] += rows[i][j] * vec_[j];
+            result[i] += (*rows)[i][j] * vec_[j];
         }
     }
 
@@ -173,7 +172,7 @@ namespace line{
 
         for( std::size_t i = 0; i < size_row(); i++)
         {
-            result[i] = rows[i] * sca;
+            result[i] = (*rows)[i] * sca;
         }
 
         return result;
@@ -186,7 +185,7 @@ namespace line{
 
         for (int i = 0; i < R; i++)
         {
-            result[i] = rows[i] / sca;
+            result[i] = (*rows)[i] / sca;
         }
 
         return result;
@@ -198,7 +197,7 @@ namespace line{
     {
         for (std::size_t i = 0; i < R; i++)
         {
-            if (rows[i] != mat_[i])
+            if ((*rows)[i] != mat_[i])
             {
                 return false;
             }
@@ -231,67 +230,70 @@ namespace line{
     {
         for (std::size_t i = 0; i < R; i++)
         {
-            rows[i].fill(fill_value);
+            (*rows)[i].fill(fill_value);
         }
     }
 
     template <length_t R, length_t C, IsNumeric T>
     void mat<R, C, T>::swap(mat<R, C, T> &mat_) noexcept
     {
-        for (int i = 0; i < R; i++)
-        {
-            rows[i].swap(mat_[i]);
-        }
+        std::swap(rows, mat_.rows);
+    }
+
+    template <length_t R, length_t C, IsNumeric T>
+    void mat<R, C, T>::dirmemory()
+    {
+        std::cout << "Memory address of the first element: " << &(*rows) << std::endl;
     }
 
     // access to elements
     template <length_t R, length_t C, IsNumeric T>
     typename mat<R, C, T>::row_type &mat<R, C, T>::operator[](int idx) noexcept
     {
-        return rows[idx];
+        return (*rows)[idx];
     }
 
     template <length_t R, length_t C, IsNumeric T>
     typename mat<R, C, T>::row_type const &mat<R, C, T>::operator[](int idx) const noexcept
     {
-        return rows[idx];
+        return (*rows)[idx];
     }
 
     template <length_t R, length_t C, IsNumeric T>
     typename mat<R, C, T>::row_type &mat<R, C, T>::at(int idx)
     {
-        return rows.at(idx);
+        return rows->at(idx);
     }
 
     template <length_t R, length_t C, IsNumeric T>
     typename mat<R, C, T>::row_type const &mat<R, C, T>::at(int idx) const
     {
-        return rows.at(idx);
+        return rows->at(idx);
     }
 
     // iterators
     template <length_t R, length_t C, IsNumeric T>
     typename mat<R, C, T>::row_type::iterator mat<R, C, T>::begin() noexcept
     {
-        return rows[0].begin();
+        return rows[0]->begin();
     }
 
     template <length_t R, length_t C, IsNumeric T>
     typename mat<R, C, T>::row_type::iterator mat<R, C, T>::end() noexcept
     {
-        return rows[R - 1].end();
+        return rows[R - 1]->end();
     }
 
     template <length_t R, length_t C, IsNumeric T>
     typename mat<R, C, T>::row_type::const_iterator mat<R, C, T>::cbegin() const noexcept
     {
-        return rows[0].cbegin();
+        return rows[0]->cbegin();
     }
 
     template <length_t R, length_t C, IsNumeric T>
     typename mat<R, C, T>::row_type::const_iterator mat<R, C, T>::cend() const noexcept
     {
-        return rows[R - 1].cend();
+        return rows[R - 1]->cend();
     }
 
     //destructors

@@ -1,5 +1,8 @@
 namespace line
 {
+
+
+
     using namespace detail;
 
     // constructors for smart pointers
@@ -7,7 +10,7 @@ namespace line
     template <length_t L, IsNumeric T>
     vec<L, T>::vec() : data_v{std::make_unique<array_type>()}
     {
-        this->fill(0);
+        data_v->fill(0);
     }
 
     template <length_t L, IsNumeric T>
@@ -32,24 +35,20 @@ namespace line
     template <length_t L, IsNumeric T>
     vec<L, T>::vec(std::initializer_list<T> init_list): data_v{std::make_unique<array_type>()}
     {
-        if (init_list.size() != L)
-        {
-            throw std::invalid_argument("Invalid size of initializer list");
-        }
-
+        assert(init_list.size() == L);
         std::copy(init_list.begin(), init_list.end(), data_v->begin());
     }
 
     template <length_t L, IsNumeric T>
     vec<L, T>::vec(vec<L, T> &&vec_) noexcept
-        : data_v(std::move(vec_.data_v)) // Utilizando lista de inicialización
+        : data_v(std::move(vec_.data_v)) 
     {
     }
 
     template <length_t L, IsNumeric T>
     vec<L, T>::vec(T fill_value): data_v{std::make_unique<array_type>()}
     {
-        this->fill(fill_value);
+        data_v->fill(fill_value);
     }
 
     // assignment operators
@@ -94,8 +93,6 @@ namespace line
     }    
 
 
-
-
     template <length_t L, IsNumeric T>
     vec<L, T> vec<L, T>::operator-(const vec<L, T> &vec_) const
     {
@@ -105,7 +102,7 @@ namespace line
             this->cbegin(), this->cend(),
             vec_.cbegin(),
             result.begin(),
-            [](const T &valL, const T &valR) 
+            [](const T &valL, const T &valR) -> T
             {
                 return valL - valR;
             });
@@ -122,7 +119,7 @@ namespace line
             this->cbegin(), this->cend(),
             vec_.cbegin(),
             result.begin(),
-            [](const T &valL, const T &valR)
+            [](const T &valL, const T &valR) -> T
             {
                 return valL * valR;
             });
@@ -194,8 +191,6 @@ namespace line
         return (*data_v)[idx];
     }
 
-
-
     template <length_t L, IsNumeric T>
     typename vec<L, T>::value_type *vec<L, T>::data() noexcept
     {
@@ -231,7 +226,7 @@ namespace line
     template <length_t L, IsNumeric T>
     void vec<L, T>::swap(vec<L, T> &vec_) noexcept
     {
-        std::swap(data_v, vec_->data_v);
+        std::swap(data_v, vec_.data_v);
     }
 
 

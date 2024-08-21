@@ -2,6 +2,7 @@
 #include "../../vector/include/vec.hpp"
 #include "../../detail/setup_structs.hpp"
 #include <memory>
+#include <iostream>
 #include <assert.h>
 #include <array>
 
@@ -63,6 +64,7 @@ namespace line{
         bool is_square() const noexcept;
         void fill(T fill_value);
         void swap(mat<R, C, T>& mat_) noexcept;
+        void dirmemory();
         
         //iterators
         row_type::iterator begin() noexcept;
@@ -73,7 +75,8 @@ namespace line{
         ~mat();
 
         private:
-        std::array<row_type, R> rows;
+        //std::array<row_type, R> rows;
+        std::unique_ptr<std::array<row_type, R>> rows;
     };
 
     // free functions

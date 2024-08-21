@@ -43,12 +43,20 @@ namespace line
     vec<L, T> &operator=(const vec<L, T> &vec_);
     vec<L, T> &operator=(vec<L, T> &&vec_) noexcept;
 
+
+
     // arithmetic operators
     vec<L, T> operator+(const vec<L, T> &vec_) const;
     vec<L, T> operator-(const vec<L, T> &vec_) const;
     vec<L, T> operator*(const vec<L, T> &vec_) const;
     vec<L, T> operator*(const T &scalar) const;
     vec<L, T> operator/(const T &scalar) const;
+
+    /*vec<L, T> &operator+=(const vec<L, T> &vec_);
+    vec<L, T> &operator-=(const vec<L, T> &vec_);
+    vec<L, T> &operator*=(const vec<L, T> &vec_);
+    vec<L, T> &operator*=(const T &scalar);
+    vec<L, T> &operator/=(const T &scalar);*/
 
 
     // comparison operators
