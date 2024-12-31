@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 
 set(VECTOR_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vector)
-set(MATRIX_DIR ${CMAKE_CURRENT_SOURCE_DIR}/matrix)
+#set(MATRIX_DIR ${CMAKE_CURRENT_SOURCE_DIR}/matrix)
 set(MATH_DIR ${CMAKE_CURRENT_SOURCE_DIR}/math)
 
 
@@ -21,14 +21,14 @@ set(MAIN_SOURCE_FILES
     #${VECTOR_DIR}/src/vec3.inl
 )
 
-add_library(lineal SHARED ${MAIN_SOURCE_FILES})
+add_library(line SHARED ${MAIN_SOURCE_FILES})
 
 # Directorios de inclusión públicos
-target_include_directories(lineal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/vector/include)
-target_include_directories(lineal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/matrix/include)
-target_include_directories(lineal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/iterator/include)
-target_include_directories(lineal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/math/include)
-target_include_directories(lineal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/detail)
+target_include_directories(line PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/vector/include)
+target_include_directories(line PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/matrix/include)
+target_include_directories(line PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/iterator/include)
+#target_include_directories(line PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/math/include)
+target_include_directories(line PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/detail)
 
 
 

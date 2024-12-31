@@ -30,4 +30,4 @@ set(MAIN_SOURCES
 
 add_executable(HelloWorld ${MAIN_SOURCES})
 
-target_link_libraries(HelloWorld  lineal)
+target_link_libraries(HelloWorld  line)

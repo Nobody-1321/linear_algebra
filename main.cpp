@@ -2,23 +2,32 @@
 #include <vec.hpp>
 #include <mat.hpp>
 #include <vector>
-#include <iterator_vec.hpp>
+#include <iterator_.hpp>
 #include <memory>
 #include <algorithm>
-#include <math.hpp>
+#include <iterator_const.hpp>
+//#include <math.hpp>
 #include <array>
 
 // clang-tidy -p build/ ./linearLib/vector/src/vec.inl -checks=cppcoreguidelines-* -header-filter='.*'
 
 int main()
-{
+{ 
+    using namespace line;
+    using namespace std;
+    
+    line::mat<100, 3, double> m1{1.0};
 
-  using namespace line;
-  using namespace std;
+    for (auto i = m1.cbegin(); i != m1.cend(); ++i)
+    {
+        for (auto j = i->cbegin(); j != i->cend(); ++j)
+        {
+            std::cout << *j << " ";
+        }
+        std::cout << std::endl;
+    }
 
-
-
-  return 0;
+    return 0;
 }
 
 

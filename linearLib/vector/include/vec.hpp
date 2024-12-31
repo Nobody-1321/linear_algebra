@@ -7,30 +7,36 @@
 #include <assert.h>
 #include <execution>
 #include <iostream>
-#include "../../iterator/include/iterator_vec.hpp"
-#include "../../iterator/include/iterator_cvec.hpp"
-#include "../../detail/setup_structs.hpp"
-#include "../../detail/types_d.hpp"
+#include "../../iterator/include/iterator_.hpp"
+#include "../../iterator/include/iterator_const.hpp"
+#include "../../detail/structs_det.hpp"
+#include "../../detail/types_det.hpp"
+#include "../../detail/concepts_det.hpp"
 
 namespace line
 {
-  template <length_t L, IsNumeric T>
+
+  namespace nsp_length = types::detail;
+  namespace nsp_concepts = concepts::detail;
+
+  
+  template <nsp_length::length_t L, nsp_concepts::is_numeric T>
   struct vec
   {
 
     using value_type = T;
     using type = vec<L, T>;
-    using length = std::integral_constant<length_t, L>;
+    using length = std::integral_constant<nsp_length::length_t, L>;
     using array_type = std::array<value_type, L>;
-    using iterator = line::iterator<value_type>;
-    using const_iterator = line::const_iterator<value_type>;
+    using iterator = line::iterator::iterator<value_type>;
+    using const_iterator =line::iterator::const_iterator<value_type>;
 
     // constructors
     vec();
     vec(const vec<L, T> &vec_);
 
     template <typename... Args>
-      requires detail::AreSameAndNumbers<T, Args...>    
+      requires nsp_concepts::same_numeric_type<T, Args...>    
     vec(Args &&...args);
 
       //list initialization
@@ -42,8 +48,6 @@ namespace line
     /// assignment operators
     vec<L, T> &operator=(const vec<L, T> &vec_);
     vec<L, T> &operator=(vec<L, T> &&vec_) noexcept;
-
-
 
     // arithmetic operators
     vec<L, T> operator+(const vec<L, T> &vec_) const;
@@ -68,8 +72,6 @@ namespace line
     const value_type &operator[](const std::size_t &idx) const noexcept;
 
     value_type *data() noexcept;
-    value_type &at(const std::size_t &idx);
-    const value_type &at(const std::size_t &idx) const;
 
     // functions
     constexpr std::size_t size() const noexcept;
@@ -91,7 +93,7 @@ namespace line
   };
   
   // multiplication by scalar
-  template <length_t U, IsNumeric R>
+  template <nsp_length::length_t U, nsp_concepts::is_numeric R>
   vec<U, R> operator*(const R &scalar, const vec<U, R> &vec_);
 
 };
