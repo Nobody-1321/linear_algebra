@@ -1,5 +1,5 @@
 #include <benchmark/benchmark.h>
-#include <vec.hpp>
+#include <SVec.hpp>
 // #include <types_vec.hpp>
 #include <setup_structs.hpp>
 #include <iostream>
@@ -8,8 +8,8 @@
 
 static void BM_vec2_copy(benchmark::State &state)
 {
-    line::vec<10, float> vec1(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f);
-    line::vec<10, float> expected(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f);
+    line::SVec<10, float> vec1(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f);
+    line::SVec<10, float> expected(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f);
 
     for (auto _ : state)
     {
@@ -27,7 +27,7 @@ static void BM_vec4_constructor(benchmark::State &state)
     {
         for (int i = 0; i < 10000; ++i)
         {
-            line::vec<430, float> vec1{
+            line::SVec<430, float> vec1{
                 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f,
                 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f,
                 21.0f, 22.0f, 23.0f, 24.0f, 25.0f, 26.0f, 27.0f, 28.0f, 29.0f, 30.0f,
@@ -83,7 +83,7 @@ static void BM_vec4_constructor(benchmark::State &state)
 
     /*
     static void BM_vec2_iterate(benchmark::State& state) {
-        line::vec<2,float> vec1(1.0f, 2.0f);
+        line::SVec<2,float> vec1(1.0f, 2.0f);
 
         for (auto _ : state) {
             for (auto it = vec1.begin(); it != vec1.end(); ++it) {
@@ -94,7 +94,7 @@ static void BM_vec4_constructor(benchmark::State &state)
 
 
     static void BM_vec2_iterate2(benchmark::State& state) {
-        line::vec<2,float> vec1(1.0f, 2.0f);
+        line::SVec<2,float> vec1(1.0f, 2.0f);
 
         for (auto _ : state) {
             for (std::size_t i = 0; i < vec1.size();  i++) {

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <setup_structs.hpp>
+#include <structs_det.hpp>
 
 template<typename U>
 struct TestValues {
@@ -8,27 +8,25 @@ struct TestValues {
     static U scalarNegOne() { return static_cast<U>(-1); }
 };
 
-
 template <int N, typename T>
 struct VecType {
-    using type = line::vec<N, T>;
+    using type = line::SVec<N, T>;
 };
-
 
 template <typename VecType>
 class Fixture_VecN : public ::testing::Test {
 public: 
     using Vec = typename VecType::type;
 };
+
 template <typename VecType>
 class Fixture_Vec3N : public ::testing::Test {
 public: 
     using Vec = typename VecType::type;
 };
+
 template <typename VecType>
 class Fixture_Vec15N : public ::testing::Test {
 public: 
     using Vec = typename VecType::type;
 };
-
-

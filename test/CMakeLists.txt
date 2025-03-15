@@ -1,6 +1,6 @@
 # Encuentra los paquetes necesarios
 find_package(GTest REQUIRED)
-find_package(benchmark REQUIRED)
+#find_package(benchmark REQUIRED)
 
 include(GoogleTest)
 
@@ -22,7 +22,7 @@ target_compile_options(tests PRIVATE -Wno-error)  # Desactivar warnings como err
 target_link_libraries(tests 
     GTest::GTest 
     GTest::Main
-    lineal
+    line
 )
 
 # Añadir pruebas a CTest
@@ -30,15 +30,18 @@ gtest_discover_tests(tests)
 
 add_test(NAME tests COMMAND ./tests)
 
+
+
+
 # Ejecutable de benchmarks
-add_executable(benchmarks 
-    main_bench.cpp
-)
+#add_executable(benchmarks 
+#    main_bench.cpp
+#)
 
 # Aplicar optimización específica para benchmarks
-target_compile_options(benchmarks PRIVATE -O3)
+#target_compile_options(benchmarks PRIVATE -O3)
 
-target_link_libraries(benchmarks 
-    benchmark::benchmark
-    lineal
-)
+#target_link_libraries(benchmarks 
+#    benchmark::benchmark
+#    line
+#)

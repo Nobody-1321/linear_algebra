@@ -2,11 +2,12 @@
 #include <concepts>
 #include <type_traits>
 
-namespace 
+namespace
 {
     namespace types
     {
-        namespace detail{
+        namespace detail
+        {
             typedef std::size_t length_t;
         }
 

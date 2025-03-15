@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <vec.hpp>
+#include <SVec.hpp>
 #include <iostream>
 #include "fixture_vec.cpp"
 

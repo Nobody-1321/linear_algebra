@@ -1,33 +1,52 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(HelloWorld)
+project(line VERSION 1.0 LANGUAGES CXX)
 
-
+# Configura el estándar de C++
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# Crear una biblioteca de interfaz (INTERFACE library)
+add_library(line INTERFACE)
 
-#build type
-set(CMAKE_BUILD_TYPE Debug) 
-
-
-message(STATUS "CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
-#add_compile_options(-Wall -Wextra -Wpedantic -Werror )
-
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/linearLib)
-
-option(BUILD_TESTS "Build the tests" )
-if(BUILD_TESTS)
-    enable_testing()
-    add_subdirectory(test)
-endif()
-
-set(MAIN_SOURCES
-    main.cpp
+# Especificar los directorios de inclusión (headers)
+target_include_directories(line INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<INSTALL_INTERFACE:include>
 )
 
-add_executable(HelloWorld ${MAIN_SOURCES})
+# Incluir GNUInstallDirs para rutas de instalación estándar
+include(GNUInstallDirs)
 
-target_link_libraries(HelloWorld  line)
+# Instalar los headers
+install(
+    DIRECTORY src/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/line
+)
+
+# Exportar el target para que otros proyectos lo usen
+install(TARGETS line
+    EXPORT lineTargets
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+# Instalar el archivo de exportación de targets
+install(EXPORT lineTargets
+    FILE lineTargets.cmake
+    NAMESPACE line::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/line
+)
+
+# Configurar el archivo de configuración del paquete
+configure_file(
+    cmake/lineConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/lineConfig.cmake
+    @ONLY
+)
+
+# Instalar el archivo de configuración del paquete
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/lineConfig.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/line
+)

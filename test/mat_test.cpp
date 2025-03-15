@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <mat.hpp>
+#include <SMat.hpp>
 #include "../linearLib/detail/setup_structs.hpp"
 #include "../linearLib/detail/types_d.hpp"
 #include "fixture_mat.cpp"
@@ -66,9 +66,9 @@ TYPED_TEST(Fixture_MatN, ScalarMultiplicationAssociativity) {
 
 
 typedef ::testing::Types<
-    line::mat<5, 2, int>,
-    line::mat<5, 2, float>,
-    line::mat<5, 2, double>
+    line::SMat<5, 2, int>,
+    line::SMat<5, 2, float>,
+    line::SMat<5, 2, double>
 > MyMatTypes_5x2;
 
 
@@ -166,13 +166,13 @@ TYPED_TEST(Fixture_MatN1, MatrixMultiplication) {
             static_cast<T>(1), static_cast<T>(2), static_cast<T>(3), static_cast<T>(4), static_cast<T>(5),
             static_cast<T>(6), static_cast<T>(7), static_cast<T>(8), static_cast<T>(9), static_cast<T>(10)
         };
-        line::mat<2, 3, T> B{
+        line::SMat<2, 3, T> B{
             static_cast<T>(11), static_cast<T>(12), static_cast<T>(13),
             static_cast<T>(14), static_cast<T>(15), static_cast<T>(16)
         };
         auto result = A * B;
 
-        line::mat<5, 3, T> expected{
+        line::SMat<5, 3, T> expected{
             static_cast<T>(39),  static_cast<T>(42),  static_cast<T>(45),
             static_cast<T>(89),  static_cast<T>(96),  static_cast<T>(103),
             static_cast<T>(139), static_cast<T>(150), static_cast<T>(161),

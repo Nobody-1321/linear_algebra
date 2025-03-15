@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
-#include <vec.hpp>
+#include <SVec.hpp>
 #include "../linearLib/detail/setup_structs.hpp"
 //#include <mat4x4.hpp>
 
 template<int R, int C, typename T> 
 struct MatType {
-    using type = line::mat<R, C, T>;
+    using type = line::SMat<R, C, T>;
 };
 
 template <typename MatType>
