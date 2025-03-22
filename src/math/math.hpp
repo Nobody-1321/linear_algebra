@@ -12,7 +12,10 @@
 namespace line
 {
 
-    // to degrees
+    /// @brief  Función para convertir de radianes a grados
+    /// @tparam T 
+    /// @param rad  
+    /// @return T   
     template <is_numeric T>
     T to_degrees(T rad);
 

@@ -1,0 +1,19 @@
+# Directorios donde buscar archivos fuente
+INPUT = src
+
+# Permite recorrer subdirectorios dentro de src
+RECURSIVE = YES
+
+# Extensiones de archivos a analizar
+FILE_PATTERNS = *.h *.hpp *.c *.cpp *.inl
+
+# Si quieres ignorar directorios específicos
+EXCLUDE = /tests /cmake /build /html /latex
+
+#no latex
+GENERATE_LATEX = NO
+
+#no integrar los archivos codigo fuente
+SOURCE_BROWSER = NO
+
+VERBATIM_HEADERS = NO

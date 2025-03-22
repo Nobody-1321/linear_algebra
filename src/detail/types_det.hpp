@@ -6,10 +6,8 @@ namespace
 {
     namespace types
     {
-        namespace detail
-        {
-            typedef std::size_t length_t;
-        }
+    
+        typedef std::size_t length_t;    
 
     }
 }

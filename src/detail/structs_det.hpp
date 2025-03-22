@@ -10,23 +10,20 @@ namespace line
     namespace structs
     {
 
-        namespace detail
-        {
+        template <types::length_t L, detail::concepts::is_numeric T>
+        struct SVec;
 
-            template <types::detail::length_t L, concepts::detail::is_numeric T>
-            struct SVec;
+        // Dynamic vector
+        template <concepts::is_numeric T>
+        struct DVec;
 
-            // Dynamic vector
-            template <concepts::detail::is_numeric T>
-            struct DVec;
+        template <types::length_t R, types::length_t C, detail::concepts::is_numeric T>
+        struct SMat;
 
-            template <types::detail::length_t R, types::detail::length_t C, line::concepts::detail::is_numeric T>
-            struct SMat;
+        // Dynamic matrix
+        // template<concepts::detail::is_numeric T>
+        // struct DMat;
 
-            // Dynamic matrix
-            // template<concepts::detail::is_numeric T>
-            // struct DMat;
-        }
 
     }
 }

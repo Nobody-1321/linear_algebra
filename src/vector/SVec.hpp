@@ -12,6 +12,7 @@
 #include "../detail/structs_det.hpp"
 #include "../detail/types_det.hpp"
 #include "../detail/concepts_det.hpp"
+#include "../detail/ranges_det.hpp"
 
 namespace line
 {
@@ -27,9 +28,9 @@ namespace line
     using type = SVec<L, T>;
     using length = std::integral_constant<nsp_types::length_t, L>;
     using array_type = std::array<value_type, L>;
-    using iterator = line::iterator::iterator<value_type>;
-    using const_iterator = line::iterator::const_iterator<value_type>;
-
+    using iterator = line::rages::iterator<value_type>;
+    using const_iterator = line::ranges::const_iterator<value_type>;
+    
     // constructors
     SVec();
     SVec(const SVec<L, T> &vec_);

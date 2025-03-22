@@ -3,7 +3,7 @@
 namespace line
 {
 
-    namespace iterator
+    namespace ranges
     {
 
         template <typename T>

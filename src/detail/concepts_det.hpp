@@ -4,9 +4,9 @@
 
 namespace line
 {
-    namespace concepts
+    namespace detail
     {
-        namespace detail
+        namespace concepts
         {
 
             template <typename T>
@@ -14,6 +14,7 @@ namespace line
 
             template <typename T, typename... Args>
             concept same_numeric_type = (is_numeric<Args> && ...) && (std::is_same_v<T, Args> && ...);
+
         }
     }
 }

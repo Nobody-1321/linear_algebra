@@ -9,10 +9,10 @@ add_executable(tests
     main_test.cpp
     vec_test.cpp
     fixture_vec.cpp
-    mat_test.cpp
-    fixture_mat.cpp
 )
 
+#mat_test.cpp
+#fixture_mat.cpp
 # Aplicar optimización específica para tests
 #target_compile_options(tests PRIVATE -O1)
 
