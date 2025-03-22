@@ -1,47 +1,41 @@
 # Encuentra los paquetes necesarios
 find_package(GTest REQUIRED)
-#find_package(benchmark REQUIRED)
 
 include(GoogleTest)
 
+# Filtrar pruebas por nombre (si se necesita)
+option(TEST_FILTER "Specify test filter (default: run all tests)" "")
+
+# Agrupar todos los archivos de pruebas
+file(GLOB TEST_SOURCES "*.cpp")
+
 # Ejecutable de tests
-add_executable(tests 
-    main_test.cpp
-    vec_test.cpp
-    fixture_vec.cpp
-)
+add_executable(tests ${TEST_SOURCES})
 
-#mat_test.cpp
-#fixture_mat.cpp
-# Aplicar optimización específica para tests
-#target_compile_options(tests PRIVATE -O1)
+# Configura el estándar de C++
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-# No aplicar las opciones de compilación globales (como -Wall, -Wextra, etc.) en tests
-target_compile_options(tests PRIVATE -Wno-error)  # Desactivar warnings como errores si se necesitan
+# Desactivar warnings como errores
+target_compile_options(tests PRIVATE -Wno-error)
 
+# Enlazar con GoogleTest y tu propia biblioteca
 target_link_libraries(tests 
     GTest::GTest 
     GTest::Main
     line
 )
 
-# Añadir pruebas a CTest
+# Si hay un filtro, se configura para que los tests se ejecuten con el filtro
+if(TEST_FILTER)
+    message(STATUS "Running tests with filter: ${TEST_FILTER}")
+    set(TEST_COMMAND "${CMAKE_BINARY_DIR}/tests --gtest_filter=${TEST_FILTER}")
+    add_test(NAME filtered_tests COMMAND ${TEST_COMMAND})
+else()
+    # Si no hay filtro, ejecuta todos los tests
+    add_test(NAME tests COMMAND ./tests)
+endif()
+
+# Registrar todos los tests para CTest
 gtest_discover_tests(tests)
-
-add_test(NAME tests COMMAND ./tests)
-
-
-
-
-# Ejecutable de benchmarks
-#add_executable(benchmarks 
-#    main_bench.cpp
-#)
-
-# Aplicar optimización específica para benchmarks
-#target_compile_options(benchmarks PRIVATE -O3)
-
-#target_link_libraries(benchmarks 
-#    benchmark::benchmark
-#    line
-#)

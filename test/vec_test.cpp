@@ -23,12 +23,8 @@ TYPED_TEST(Fixture_VecN, AccessToElements)
     typename TestFixture::Vec u{static_cast<U>(8), static_cast<U>(8)};
     ASSERT_EQ(u[0], 8);
     ASSERT_EQ(u[1], 8);
-    //ASSERT_EQ(u.at(0), 8);
-    //ASSERT_EQ(u.at(1), 8);
-    //auto v = u.data();
-    //ASSERT_THROW(u.at(2), std::out_of_range);
 }
-/*
+
 // iterators test
 TYPED_TEST(Fixture_VecN, Iterators)
 {
@@ -198,13 +194,6 @@ TYPED_TEST(Fixture_Vec3N, CompoundAssignmentOperators)
         ASSERT_EQ(u, result1);
     }
 
-    //throw exception
-    {
-        typename TestFixture::Vec u(static_cast<U>(8), static_cast<U>(8), static_cast<U>(8));
-        U c = static_cast<U>(0);
-        ASSERT_THROW(u /= c, std::invalid_argument);
-    }
-
     // multiplication by vector
     {
         typename TestFixture::Vec u(static_cast<U>(8), static_cast<U>(8), static_cast<U>(8));
@@ -221,10 +210,10 @@ typedef ::testing::Types<
     VecType<15, int>>
     MyVecTypes_15V;
 
-TYPED_TEST_SUITE(Fixture_Vec15N, MyVecTypes_15V);
+TYPED_TEST_SUITE(Fixture_constructors, MyVecTypes_15V);
 
-// Prueba del constructor por defecto
-TYPED_TEST(Fixture_Vec15N, DefaultConstructor)
+// default constructor
+TYPED_TEST(Fixture_constructors, DefaultConstructor)
 {
     typename TestFixture::Vec u;
     bool flag = true;
@@ -241,8 +230,8 @@ TYPED_TEST(Fixture_Vec15N, DefaultConstructor)
     ASSERT_EQ(flag, true);
 }
 
-// Prueba del constructor con un valor de llenado
-TYPED_TEST(Fixture_Vec15N, FillConstructor)
+// fill constructor
+TYPED_TEST(Fixture_constructors, FillConstructor)
 {
     typename TestFixture::Vec u(1);
     bool flag = true;
@@ -257,16 +246,16 @@ TYPED_TEST(Fixture_Vec15N, FillConstructor)
     ASSERT_EQ(flag, true);
 }
 
-// Prueba del constructor de copia
-TYPED_TEST(Fixture_Vec15N, CopyConstructor)
+// copy constructor
+TYPED_TEST(Fixture_constructors, CopyConstructor)
 {
     typename TestFixture::Vec u(1);
     typename TestFixture::Vec v(u);
     ASSERT_EQ(u, v);
 }
 
-// Prueba del constructor por movimiento
-TYPED_TEST(Fixture_Vec15N, MoveConstructor)
+// move constructor
+TYPED_TEST(Fixture_constructors, MoveConstructor)
 {
     typename TestFixture::Vec u(225);
     auto *refdata = u.data();
@@ -275,10 +264,12 @@ TYPED_TEST(Fixture_Vec15N, MoveConstructor)
     auto *refdata2 = v.data();    
 
     ASSERT_EQ(refdata, refdata2);
+    ASSERT_FALSE(u.is_valid());
+    ASSERT_TRUE(v.is_valid());
 }
 
-// Prueba de la inicialización por lista
-TYPED_TEST(Fixture_Vec15N, ListInitialization)
+// list initialization
+TYPED_TEST(Fixture_constructors, ListInitialization)
 {
     typename TestFixture::Vec u{1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                                 11, 12, 13, 14, 15};
@@ -294,13 +285,12 @@ TYPED_TEST(Fixture_Vec15N, ListInitialization)
         k++;
     }
 
-    ASSERT_EQ(15, u.size());
+    ASSERT_EQ(15, u.max_size());
     ASSERT_EQ(flag, true);
 }
 
-// Prueba de la inicialización por argumentos
-
-TYPED_TEST(Fixture_Vec15N, ArgumentInitialization)
+// Argument initialization
+TYPED_TEST(Fixture_constructors, ArgumentInitialization)
 {
     typename TestFixture::Vec u(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                                 11, 12, 13, 14, 15);
@@ -316,7 +306,7 @@ TYPED_TEST(Fixture_Vec15N, ArgumentInitialization)
         k++;
     }
 
-    ASSERT_EQ(15, u.size());
+    ASSERT_EQ(15, u.max_size());
     ASSERT_EQ(flag, true);
 }
-*/
+

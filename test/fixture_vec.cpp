@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include "../src/detail/structs_det.hpp"
 #include "../src/vector/SVec.hpp"
 
 template<typename U>
@@ -11,7 +10,7 @@ struct TestValues {
 
 template <int N, typename T>
 struct VecType {
-    using type = line::SVec<N, T>;
+    using type = line::structs::SVec<N, T>;
 };
 
 template <typename VecType>
@@ -27,7 +26,7 @@ public:
 };
 
 template <typename VecType>
-class Fixture_Vec15N : public ::testing::Test {
+class Fixture_constructors : public ::testing::Test {
 public: 
     using Vec = typename VecType::type;
 };
