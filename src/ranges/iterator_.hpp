@@ -6,44 +6,43 @@
 namespace line
 {
 
-    namespace ranges
+  namespace ranges
+  {
+
+    template <typename T> struct iterator
     {
+      using iterator_category = std::random_access_iterator_tag;
+      using value_type = T;
+      using difference_type = std::ptrdiff_t;
+      using pointer = T *;
+      using reference = T &;
 
-        template <typename T>
-        struct iterator
-        {
-            using iterator_category = std::random_access_iterator_tag;
-            using value_type = T;
-            using difference_type = std::ptrdiff_t;
-            using pointer = T *;
-            using reference = T &;
+      pointer ptr;
 
-            pointer ptr;
+      iterator(pointer ptr);
 
-            iterator(pointer ptr);
+      reference operator*() const;
+      pointer operator->();
 
-            reference operator*() const;
-            pointer operator->();
+      iterator &operator++();
+      iterator operator++(int);
 
-            iterator &operator++();
-            iterator operator++(int);
+      iterator &operator--();
+      iterator operator--(int);
 
-            iterator &operator--();
-            iterator operator--(int);
+      iterator operator+(difference_type n) const;
+      iterator operator-(difference_type n) const;
+      difference_type operator-(const iterator &other) const;
 
-            iterator operator+(difference_type n) const;
-            iterator operator-(difference_type n) const;
-            difference_type operator-(const iterator &other) const;
+      bool operator==(const iterator &other) const;
+      bool operator!=(const iterator &other) const;
 
-            bool operator==(const iterator &other) const;
-            bool operator!=(const iterator &other) const;
-
-            bool operator<(const iterator &other) const;
-            bool operator<=(const iterator &other) const;
-            bool operator>(const iterator &other) const;
-            bool operator>=(const iterator &other) const;
-        };
-    } // namespace iterator
+      bool operator<(const iterator &other) const;
+      bool operator<=(const iterator &other) const;
+      bool operator>(const iterator &other) const;
+      bool operator>=(const iterator &other) const;
+    };
+  } // namespace iterator
 } // namespace line
 
 #include "./iterator_.inl"

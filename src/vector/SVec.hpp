@@ -19,23 +19,24 @@ namespace line
   namespace nsp_types = detail::types;
 
   /// @namespace nsp_concepts
-  /// Alias for `detail::concepts` to simplify access to concepts used in the library.
+  /// Alias for `detail::concepts` to simplify access to concepts used in the
+  /// library.
   namespace nsp_concepts = detail::concepts;
 
   namespace structs
   {
     /**
      * @brief A fixed-length vector for storing numerical values.
-     * 
-     * This template struct `SVec` represents a fixed-size vector that can hold a specified
-     * number of elements of a given numeric type. It supports basic arithmetic and comparison
-     * operations, as well as iterators for easy traversal of the vector's elements.
-     * 
+     *
+     * This template struct `SVec` represents a fixed-size vector that can hold
+     * a specified number of elements of a given numeric type. It supports
+     * basic arithmetic and comparison operations, as well as iterators for
+     * easy traversal of the vector's elements.
+     *
      * @tparam L The length of the vector.
      * @tparam T The type of the elements in the vector.
      */
-    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
-    struct SVec
+    template <nsp_types::length_t L, nsp_concepts::is_numeric T> struct SVec
     {
       /// The type of elements stored in the vector.
       using value_type = T;
@@ -70,12 +71,13 @@ namespace line
       SVec(const SVec<L, T> &vec_);
 
       /**
-       * @brief Variadic constructor that initializes the vector with a list of arguments.
+       * @brief Variadic constructor that initializes the vector with a list of
+       * arguments.
        * @tparam Args Types of the arguments passed.
        * @param args The values used to initialize the vector.
        */
       template <typename... Args>
-      requires nsp_concepts::same_numeric_type<T, Args...>
+        requires nsp_concepts::same_numeric_type<T, Args...>
       SVec(Args &&...args);
 
       /**
@@ -243,7 +245,7 @@ namespace line
       void swap(SVec<L, T> &vec_) noexcept;
 
       /**
-       * @brief Checks if the vector is valid. 
+       * @brief Checks if the vector is valid.
        * @return `true` if the vector is valid, `false` otherwise.
        */
       bool is_valid() const noexcept;
