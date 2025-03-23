@@ -36,12 +36,13 @@ namespace line
       // constructors
       DVec();
       DVec(std::size_t size_);
-      // DVec(const DVec<T> &vec_);
+      DVec(const DVec<T> &vec_);
+
+      // arithmetic operators
 
       // access to elements
       value_type &operator[](std::size_t index);
       const value_type &operator[](std::size_t index) const;
-      // data pointer
       value_type *data() noexcept;
 
       // iterators

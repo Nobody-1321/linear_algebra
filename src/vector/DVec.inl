@@ -2,14 +2,18 @@ namespace line
 {
   namespace structs
   {
+    //=========================================================================
     // constructors
+    //=========================================================================
     template <nsp_concepts::is_numeric T> DVec<T>::DVec() : data_v{} {}
 
     template <nsp_concepts::is_numeric T>
     DVec<T>::DVec(std::size_t size_) : data_v(size_)
     {}
 
+    //=========================================================================
     // access to elements
+    //=========================================================================
     template <nsp_concepts::is_numeric T>
     T &DVec<T>::operator[](std::size_t index)
     {

@@ -56,7 +56,9 @@ namespace line
       /// Constant iterator type for the vector.
       using const_iterator = ranges::const_iterator<value_type>;
 
-      // constructors
+      // +---------------------------------------------+
+      // |                 Constructors                |
+      // +---------------------------------------------+
 
       /**
        * @brief Default constructor for `SVec`.
@@ -98,7 +100,9 @@ namespace line
        */
       SVec(T fill_value);
 
-      // assignment operators
+      // +---------------------------------------------+
+      // |           assignment operators              |
+      // +---------------------------------------------+
 
       /**
        * @brief Copy assignment operator.
@@ -114,7 +118,9 @@ namespace line
        */
       SVec<L, T> &operator=(SVec<L, T> &&vec_) noexcept;
 
-      // arithmetic operators
+      // +---------------------------------------------+
+      // |           arithmetic operators              |
+      // +---------------------------------------------+
 
       /**
        * @brief Vector addition.
@@ -202,7 +208,9 @@ namespace line
        */
       bool operator!=(const SVec<L, T> &vec_) const;
 
-      // access to elements
+      // +---------------------------------------------+
+      // |           element access operators          |
+      // +---------------------------------------------+
 
       /**
        * @brief Accesses the element at a specified index.
@@ -224,7 +232,9 @@ namespace line
        */
       value_type *data() noexcept;
 
-      // functions
+      // +---------------------------------------------+
+      // |              functions                      |
+      // +---------------------------------------------+
 
       /**
        * @brief Returns the maximum size of the vector.
@@ -250,7 +260,9 @@ namespace line
        */
       bool is_valid() const noexcept;
 
-      // iterator
+      // +---------------------------------------------+
+      // |               iterators                     |
+      // +---------------------------------------------+
 
       /**
        * @brief Returns an iterator to the beginning of the vector.
