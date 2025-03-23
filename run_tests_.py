@@ -1,58 +1,47 @@
 import os
 import subprocess
-import sys
+import argparse
 
-# Directorio del proyecto y del directorio de construcción
-project_dir = os.path.abspath(os.path.dirname(__file__))
-build_dir = os.path.join(project_dir, "build")
+# Definir los grupos de tests disponibles
+TEST_GROUPS = {
+    "svec": "ENABLE_SVEC_TESTS",
+    "dvec": "ENABLE_DVEC_TESTS",
+}
 
-# CMake configurado para compilar los tests
-cmake_command = [
-    "cmake",
-    "-S", project_dir,  # Directorio fuente (donde está CMakeLists.txt)
-    "-B", build_dir,    # Directorio de construcción
-    "-DCMAKE_BUILD_TYPE=Release",  # Puedes cambiar entre Debug/Release
-    "-DBUILD_TESTS=ON", # Asegúrate de construir los tests
-]
+def configure_cmake(selected_tests):
+    """Configura CMake con los grupos de tests seleccionados."""
+    cmake_cmd = ["cmake", "-B", "build", "-S", ".", "-DBUILD_TESTS=ON"]
 
-# Función para ejecutar CMake y compilar
-def run_cmake():
-    print("Ejecutando CMake para configurar el proyecto...")
-    subprocess.check_call(cmake_command)
-    print("CMake configurado con éxito.")
+    for test in TEST_GROUPS:
+        flag = "ON" if test in selected_tests else "OFF"
+        cmake_cmd.append(f"-D{TEST_GROUPS[test]}={flag}")
 
-# Función para ejecutar los tests con un filtro específico (si se proporciona)
-def run_tests(test_filter=None):
-    ctest_command = ["ctest", "--build-dir", build_dir]
+    print("Configuring CMake with:", " ".join(cmake_cmd))
+    subprocess.run(cmake_cmd, check=True)
 
-    if test_filter:
-        ctest_command += ["-D", f"TEST_FILTER={test_filter}"]
+def build_tests():
+    """Compila los tests seleccionados."""
+    subprocess.run(["cmake", "--build", "build"], check=True)
 
-    print(f"Ejecutando los tests con el filtro: {test_filter if test_filter else 'todos'}...")
-    subprocess.check_call(ctest_command)
+def run_tests(filter_pattern=""):
+    """Ejecuta los tests con `ctest` y opcionalmente un filtro."""
+    ctest_cmd = ["ctest", "--test-dir", "build", "--output-on-failure"]
 
-# Función para ejecutar el script completo
-def main(test_filter=None):
-    # Primero, configurar CMake
-    if not os.path.exists(build_dir):
-        os.makedirs(build_dir)
-    
-    # Ejecutar CMake solo si no fue previamente configurado o si es necesario
-    if not os.path.exists(os.path.join(build_dir, "CMakeCache.txt")):
-        run_cmake()
-    
-    # Luego, compilar el proyecto (esto puede tomar un poco de tiempo)
-    print("Compilando el proyecto...")
-    subprocess.check_call(["cmake", "--build", build_dir])
+    if filter_pattern:
+        ctest_cmd.extend(["-R", filter_pattern])
 
-    # Ejecutar los tests
-    run_tests(test_filter)
+    print("Running tests with:", " ".join(ctest_cmd))
+    subprocess.run(ctest_cmd, check=True)
 
 if __name__ == "__main__":
-    # Permitir que el usuario pase un filtro como argumento (si lo necesita)
-    test_filter = None
-    if len(sys.argv) > 1:
-        test_filter = sys.argv[1]
+    parser = argparse.ArgumentParser(description="Run selected test groups.")
+    parser.add_argument("--tests", nargs="+", choices=TEST_GROUPS.keys(), help="Select test groups to run")
+    parser.add_argument("--filter", type=str, help="Regex pattern to filter tests")
+
+    args = parser.parse_args()
+
+    selected_tests = args.tests if args.tests else TEST_GROUPS.keys()
     
-    # Ejecutar todo
-    main(test_filter)
+    configure_cmake(selected_tests)
+    build_tests()
+    run_tests(args.filter)

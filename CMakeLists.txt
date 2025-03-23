@@ -8,6 +8,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(BUILD_TESTS "Build the tests" )
+option(ENABLE_SVEC_TESTS "Enable static vector tests" OFF)
+option(ENABLE_DVEC_TESTS "Enable dynamic vector tests" OFF)
 
 if(BUILD_TESTS)
     enable_testing()

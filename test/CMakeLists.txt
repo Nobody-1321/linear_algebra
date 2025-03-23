@@ -9,6 +9,20 @@ option(TEST_FILTER "Specify test filter (default: run all tests)" "")
 # Agrupar todos los archivos de pruebas
 file(GLOB TEST_SOURCES "*.cpp")
 
+# Incluir archivos de prueba de subdirectorios
+if(ENABLE_SVEC_TESTS)
+    file(GLOB SVEC_TEST_SOURCES "static_vector/*.cpp")
+    list(APPEND TEST_SOURCES ${SVEC_TEST_SOURCES})
+endif()
+
+if(ENABLE_DVEC_TESTS)
+    file(GLOB DVEC_TEST_SOURCES "dynamic_vector/*.cpp")
+    list(APPEND TEST_SOURCES ${DVEC_TEST_SOURCES})
+endif()
+
+#print all test sources
+message(STATUS "Test sources: ${TEST_SOURCES}")
+
 # Ejecutable de tests
 add_executable(tests ${TEST_SOURCES})
 

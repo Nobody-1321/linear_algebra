@@ -1,14 +1,12 @@
 namespace line
 {
-    namespace structs{
-
-
-
+    namespace structs{    
+        
         // constructors for smart pointers
 
         template <nsp_types::length_t L, nsp_concepts::is_numeric T>
         SVec<L, T>::SVec() : data_v{std::make_unique<array_type>()}
-        {
+        { 
             data_v->fill(0);
         }
 

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../src/vector/SVec.hpp"
+#include "../../src/vector/SVec.hpp"
 
 template<typename U>
 struct TestValues {
