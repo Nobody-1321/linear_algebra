@@ -192,7 +192,9 @@ namespace line
        */
       SVec<L, T> &operator/=(const T &scalar);
 
-      // comparison operators
+      // +---------------------------------------------+
+      // |           comparison operators              |
+      // +---------------------------------------------+
 
       /**
        * @brief Equality comparison operator.

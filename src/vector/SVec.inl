@@ -3,13 +3,13 @@ namespace line
   namespace structs
   {
 
-    // constructors for smart pointers
+    // +---------------------------------------------+
+    // |                 Constructors                |
+    // +---------------------------------------------+
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T>::SVec() : data_v{std::make_unique<array_type>()}
-    {
-      data_v->fill(0);
-    }
+    {}
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T>::SVec(const SVec<L, T> &vec_)
@@ -32,7 +32,6 @@ namespace line
        ...);
     }
 
-    // list initialization
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T>::SVec(std::initializer_list<T> init_list)
         : data_v{std::make_unique<array_type>()}
@@ -52,7 +51,10 @@ namespace line
       data_v->fill(fill_value);
     }
 
-    // assignment operators
+    // +---------------------------------------------+
+    // |           assignment operators              |
+    // +---------------------------------------------+
+
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T> &SVec<L, T>::operator=(const SVec<L, T> &vec_)
     {
@@ -74,6 +76,10 @@ namespace line
 
       return *this;
     }
+
+    // +---------------------------------------------+
+    // |           arithmetic operators              |
+    // +---------------------------------------------+
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T> SVec<L, T>::operator+(const SVec<L, T> &vec_) const
@@ -134,20 +140,6 @@ namespace line
       return result;
     }
 
-    // comparison operators
-    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
-    bool SVec<L, T>::operator==(const SVec<L, T> &vec_) const
-    {
-      return std::equal(this->cbegin(), this->cend(), vec_.cbegin());
-    }
-
-    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
-    bool SVec<L, T>::operator!=(const SVec<L, T> &vec_) const
-    {
-      return !(*this == vec_);
-    }
-
-    // compound assignment operators
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T> &SVec<L, T>::operator+=(const SVec<L, T> &vec_)
     {
@@ -195,7 +187,26 @@ namespace line
       return *this;
     }
 
-    // access to elements
+    // +---------------------------------------------+
+    // |           comparison operators              |
+    // +---------------------------------------------+
+
+    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
+    bool SVec<L, T>::operator==(const SVec<L, T> &vec_) const
+    {
+      return std::equal(this->cbegin(), this->cend(), vec_.cbegin());
+    }
+
+    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
+    bool SVec<L, T>::operator!=(const SVec<L, T> &vec_) const
+    {
+      return !(*this == vec_);
+    }
+
+    // +---------------------------------------------+
+    // |           element access operators          |
+    // +---------------------------------------------+
+
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     typename SVec<L, T>::value_type &
     SVec<L, T>::operator[](const std::size_t &idx) noexcept
@@ -216,7 +227,9 @@ namespace line
       return data_v->data();
     }
 
-    // functions
+    // +---------------------------------------------+
+    // |              functions                      |
+    // +---------------------------------------------+
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     constexpr std::size_t SVec<L, T>::max_size() const noexcept
@@ -242,7 +255,9 @@ namespace line
       return data_v != nullptr;
     }
 
-    // iterators
+    // +---------------------------------------------+
+    // |               iterators                     |
+    // +---------------------------------------------+
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     typename SVec<L, T>::iterator SVec<L, T>::begin() noexcept
@@ -268,6 +283,7 @@ namespace line
       return const_iterator(data_v->data() + L);
     }
 
+    // destructor
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T>::~SVec()
     {}
