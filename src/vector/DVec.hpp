@@ -33,31 +33,60 @@ namespace line
       using iterator = ranges::iterator<value_type>;
       using const_iterator = ranges::const_iterator<value_type>;
 
-      // constructors
+      // +---------------------------------------------+
+      // |                 Constructors                |
+      // +---------------------------------------------+
+
       DVec();
       DVec(std::size_t size_);
       DVec(const DVec<T> &vec_);
+      DVec(DVec<T> &&vec_) noexcept;
+      DVec(std::size_t size_, const value_type &value);
+      // DVec(std::size_t size_);
+      // DVec(std::initializer_list<T> list);
 
-      // arithmetic operators
+      // +---------------------------------------------+
+      // |           assignment operators              |
+      // +---------------------------------------------+
 
-      // access to elements
+      // DVec &operator=(const DVec<T> &vec_);
+      // DVec &operator=(DVec<T> &&vec_) noexcept;
+
+      // +---------------------------------------------+
+      // |           arithmetic operators              |
+      // +---------------------------------------------+
+
+      // +---------------------------------------------+
+      // |           comparison operators              |
+      // +---------------------------------------------+
+
+      // +---------------------------------------------+
+      // |           element access operators          |
+      // +---------------------------------------------+
+
       value_type &operator[](std::size_t index);
       const value_type &operator[](std::size_t index) const;
       value_type *data() noexcept;
 
-      // iterators
+      // +---------------------------------------------+
+      // |               iterators                     |
+      // +---------------------------------------------+
+
       iterator begin();
       iterator end();
       const_iterator begin() const;
       const_iterator end() const;
 
-      // functions
+      // +---------------------------------------------+
+      // |               functions                     |
+      // +---------------------------------------------+
+
       void fill(T fill_value);
-      void push_back(T value);
-      void pop_back();
       std::size_t size();
       std::size_t capacity();
       void reserve(std::size_t new_capacity);
+      void push_back(T value);
+      void pop_back();
       void clear();
       // void resize(std::size_t new_size);
 

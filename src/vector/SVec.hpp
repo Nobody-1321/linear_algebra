@@ -98,7 +98,7 @@ namespace line
        * @brief Constructor that fills the vector with a specific value.
        * @param fill_value The value to initialize the vector with.
        */
-      SVec(T fill_value);
+      explicit SVec(T fill_value);
 
       // +---------------------------------------------+
       // |           assignment operators              |
