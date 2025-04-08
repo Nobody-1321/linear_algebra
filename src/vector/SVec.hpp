@@ -130,39 +130,25 @@ namespace line
       SVec<L, T> operator+(const SVec<L, T> &vec_) const;
 
       /**
-       * @brief Vector subtraction.
-       * @param vec_ The vector to subtract.
-       * @return A new vector representing the difference of the two vectors.
-       */
-      SVec<L, T> operator-(const SVec<L, T> &vec_) const;
-
-      /**
-       * @brief Vector multiplication.
-       * @param vec_ The vector to multiply.
-       * @return A new vector representing the product of the two vectors.
-       */
-      SVec<L, T> operator*(const SVec<L, T> &vec_) const;
-
-      /**
-       * @brief Scalar multiplication.
-       * @param scalar The scalar value to multiply by.
-       * @return A new vector representing the scaled vector.
-       */
-      SVec<L, T> operator*(const T &scalar) const;
-
-      /**
-       * @brief Scalar division.
-       * @param scalar The scalar value to divide by.
-       * @return A new vector representing the scaled vector.
-       */
-      SVec<L, T> operator/(const T &scalar) const;
-
-      /**
        * @brief Vector addition assignment.
        * @param vec_ The vector to add.
        * @return A reference to the current vector.
        */
       SVec<L, T> &operator+=(const SVec<L, T> &vec_);
+
+      /**
+       * @brief Scalar addition.
+       * @param scalar The scalar value to add.
+       * @return A new vector representing the sum of the vector and the scalar.
+       */
+      SVec<L, T> operator+(const T &scalar) const;
+
+      /**
+       * @brief Vector subtraction.
+       * @param vec_ The vector to subtract.
+       * @return A new vector representing the difference of the two vectors.
+       */
+      SVec<L, T> operator-(const SVec<L, T> &vec_) const;
 
       /**
        * @brief Vector subtraction assignment.
@@ -172,11 +158,33 @@ namespace line
       SVec<L, T> &operator-=(const SVec<L, T> &vec_);
 
       /**
+       * @brief Scalar subtraction.
+       * @param scalar The scalar value to subtract.
+       * @return A new vector representing the difference of the vector and the
+       * scalar.
+       */
+      SVec<L, T> operator-(const T &scalar) const;
+
+      /**
+       * @brief Vector multiplication.
+       * @param vec_ The vector to multiply.
+       * @return A new vector representing the product of the two vectors.
+       */
+      SVec<L, T> operator*(const SVec<L, T> &vec_) const;
+
+      /**
        * @brief Vector multiplication assignment.
        * @param vec_ The vector to multiply.
        * @return A reference to the current vector.
        */
       SVec<L, T> &operator*=(const SVec<L, T> &vec_);
+
+      /**
+       * @brief Scalar multiplication.
+       * @param scalar The scalar value to multiply by.
+       * @return A new vector representing the scaled vector.
+       */
+      SVec<L, T> operator*(const T &scalar) const;
 
       /**
        * @brief Scalar multiplication assignment.
@@ -191,6 +199,13 @@ namespace line
        * @return A reference to the current vector.
        */
       SVec<L, T> &operator/=(const T &scalar);
+
+      /**
+       * @brief Scalar division.
+       * @param scalar The scalar value to divide by.
+       * @return A new vector representing the scaled vector.
+       */
+      SVec<L, T> operator/(const T &scalar) const;
 
       // +---------------------------------------------+
       // |           comparison operators              |

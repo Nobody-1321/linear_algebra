@@ -100,6 +100,17 @@ namespace line
     }
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
+    SVec<L, T> SVec<L, T>::operator+(const T &scalar) const
+    {
+      SVec<L, T> result;
+
+      std::transform(this->cbegin(), this->cend(), result.begin(),
+                     [scalar](const T &val) { return val + scalar; });
+
+      return result;
+    }
+
+    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T> SVec<L, T>::operator-(const SVec<L, T> &vec_) const
     {
       SVec<L, T> result;

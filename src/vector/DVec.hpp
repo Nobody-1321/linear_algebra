@@ -41,24 +41,46 @@ namespace line
       DVec(std::size_t size_);
       DVec(const DVec<T> &vec_);
       DVec(DVec<T> &&vec_) noexcept;
-      DVec(std::size_t size_, const value_type &value);
-      // DVec(std::size_t size_);
-      // DVec(std::initializer_list<T> list);
+      DVec(std::size_t size_, const T &value);
+      DVec(std::initializer_list<T> list);
 
       // +---------------------------------------------+
       // |           assignment operators              |
       // +---------------------------------------------+
 
-      // DVec &operator=(const DVec<T> &vec_);
-      // DVec &operator=(DVec<T> &&vec_) noexcept;
+      DVec &operator=(const DVec<T> &vec_);
+      DVec &operator=(DVec<T> &&vec_) noexcept;
 
       // +---------------------------------------------+
       // |           arithmetic operators              |
       // +---------------------------------------------+
 
+      DVec operator+(const DVec<T> &vec_) const;
+      DVec &operator+=(const DVec<T> &vec_);
+      DVec operator+(const T &scalar_) const;
+      DVec &operator+=(const T &scalar_);
+
+      DVec operator-(const DVec<T> &vec_) const;
+      DVec &operator-=(const DVec<T> &vec_);
+      DVec operator-(const T &scalar_) const;
+      DVec &operator-=(const T &scalar_);
+
+      DVec operator*(const DVec<T> &vec_) const;
+      DVec &operator*=(const DVec<T> &vec_);
+      DVec operator*(const T &scalar_) const;
+      DVec &operator*=(const T &scalar_);
+
+      DVec operator/(const DVec<T> &vec_) const;
+      DVec &operator/=(const DVec<T> &vec_);
+      DVec operator/(const T &scalar_) const;
+      DVec &operator/=(const T &scalar_);
+
       // +---------------------------------------------+
       // |           comparison operators              |
       // +---------------------------------------------+
+
+      bool operator==(const DVec<T> &vec_) const;
+      bool operator!=(const DVec<T> &vec_) const;
 
       // +---------------------------------------------+
       // |           element access operators          |
@@ -82,12 +104,14 @@ namespace line
       // +---------------------------------------------+
 
       void fill(T fill_value);
-      std::size_t size();
+      std::size_t size() const;
       std::size_t capacity();
       void reserve(std::size_t new_capacity);
       void push_back(T value);
       void pop_back();
       void clear();
+      bool is_valid();
+      void swap(DVec<T> &vec_);
       // void resize(std::size_t new_size);
 
     private:
