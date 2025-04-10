@@ -62,12 +62,12 @@ namespace line
     template <nsp_concepts::is_numeric T>
     DVec<T> DVec<T>::operator+(const DVec<T> &vec_) const
     {
-      DVec<T> result(data_v.size());
-
       if(data_v.size() != vec_.data_v.size())
         {
           throw std::length_error("Vectors must be of the same size");
         }
+
+      DVec<T> result(data_v.size());
 
       std::transform(data_v.begin(), data_v.end(), vec_.data_v.begin(),
                      result.data_v.begin(),
@@ -114,12 +114,12 @@ namespace line
     template <nsp_concepts::is_numeric T>
     DVec<T> DVec<T>::operator-(const DVec<T> &vec_) const
     {
-      DVec<T> result(data_v.size());
-
       if(data_v.size() != vec_.data_v.size())
         {
           throw std::length_error("Vectors must be of the same size");
         }
+
+      DVec<T> result(data_v.size());
 
       std::transform(data_v.begin(), data_v.end(), vec_.data_v.begin(),
                      result.data_v.begin(),
@@ -166,12 +166,12 @@ namespace line
     template <nsp_concepts::is_numeric T>
     DVec<T> DVec<T>::operator*(const DVec<T> &vec_) const
     {
-      DVec<T> result(data_v.size());
-
       if(data_v.size() != vec_.data_v.size())
         {
           throw std::length_error("Vectors must be of the same size");
         }
+
+      DVec<T> result(data_v.size());
 
       std::transform(data_v.begin(), data_v.end(), vec_.data_v.begin(),
                      result.data_v.begin(),
@@ -218,12 +218,12 @@ namespace line
     template <nsp_concepts::is_numeric T>
     DVec<T> DVec<T>::operator/(const DVec<T> &vec_) const
     {
-      DVec<T> result(data_v.size());
-
       if(data_v.size() != vec_.data_v.size())
         {
           throw std::length_error("Vectors must be of the same size");
         }
+
+      DVec<T> result(data_v.size());
 
       std::transform(data_v.begin(), data_v.end(), vec_.data_v.begin(),
                      result.data_v.begin(),
@@ -322,13 +322,13 @@ namespace line
     }
 
     template <nsp_concepts::is_numeric T>
-    typename DVec<T>::const_iterator DVec<T>::begin() const
+    typename DVec<T>::const_iterator DVec<T>::cbegin() const
     {
       return const_iterator(data_v.data());
     }
 
     template <nsp_concepts::is_numeric T>
-    typename DVec<T>::const_iterator DVec<T>::end() const
+    typename DVec<T>::const_iterator DVec<T>::cend() const
     {
       return const_iterator(data_v.data() + data_v.size());
     }

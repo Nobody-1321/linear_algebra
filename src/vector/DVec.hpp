@@ -8,8 +8,8 @@
 #include <memory>
 #include "../detail/concepts_det.hpp"
 #include "../detail/types_det.hpp"
-#include "../ranges/iterator_.hpp"
-#include "../ranges/iterator_const.hpp"
+#include "../ranges/const_random_access_iterator.hpp"
+#include "../ranges/random_access_iterator.hpp"
 
 namespace line
 {
@@ -30,8 +30,8 @@ namespace line
       using value_type = T;
       using type = DVec<T>;
       using array_type = std::vector<value_type>;
-      using iterator = ranges::iterator<value_type>;
-      using const_iterator = ranges::const_iterator<value_type>;
+      using iterator = ranges::RandomAccessIterator<value_type>;
+      using const_iterator = ranges::ConstRandomAccessIterator<value_type>;
 
       // +---------------------------------------------+
       // |                 Constructors                |
@@ -96,8 +96,8 @@ namespace line
 
       iterator begin();
       iterator end();
-      const_iterator begin() const;
-      const_iterator end() const;
+      const_iterator cbegin() const;
+      const_iterator cend() const;
 
       // +---------------------------------------------+
       // |               functions                     |

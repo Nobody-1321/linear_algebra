@@ -7,8 +7,8 @@
 #include <assert.h>
 #include <execution>
 #include <iostream>
-#include "../ranges/iterator_.hpp"
-#include "../ranges/iterator_const.hpp"
+#include "../ranges/const_random_access_iterator.hpp"
+#include "../ranges/random_access_iterator.hpp"
 #include "../detail/types_det.hpp"
 #include "../detail/concepts_det.hpp"
 
@@ -51,10 +51,10 @@ namespace line
       using array_type = std::array<value_type, L>;
 
       /// Iterator type for the vector.
-      using iterator = ranges::iterator<value_type>;
+      using iterator = ranges::RandomAccessIterator<value_type>;
 
       /// Constant iterator type for the vector.
-      using const_iterator = ranges::const_iterator<value_type>;
+      using const_iterator = ranges::ConstRandomAccessIterator<value_type>;
 
       // +---------------------------------------------+
       // |                 Constructors                |
