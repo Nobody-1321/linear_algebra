@@ -26,7 +26,7 @@ public:
   using Vec = typename VecType::type;
 };
 
-template <typename VecType> class Fixture_VecN_1MV : public ::testing::Test
+template <typename VecType> class Fixture_VecN : public ::testing::Test
 {
 public:
   using Vec = typename VecType::type;

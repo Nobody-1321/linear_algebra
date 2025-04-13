@@ -99,6 +99,29 @@ TYPED_TEST(Fixture_DVec, InitializerListConstructor)
       << "value at position " << i << " does not match";
 }
 
+// args constructor
+TYPED_TEST(Fixture_DVec, ArgsConstructor)
+{
+  using Vec = typename TestFixture::Vec;
+  using U = typename Vec::value_type;
+
+  Vec u(static_cast<U>(1), static_cast<U>(2), static_cast<U>(3),
+        static_cast<U>(4), static_cast<U>(5), static_cast<U>(6),
+        static_cast<U>(7), static_cast<U>(8), static_cast<U>(9),
+        static_cast<U>(10));
+
+  // capacity
+
+  ASSERT_EQ(u.capacity(), static_cast<std::size_t>(10))
+    << "capacity does not match";
+
+  ASSERT_EQ(u.size(), static_cast<std::size_t>(10)) << "size does not match";
+
+  for(std::size_t i = 0; i < u.size(); ++i)
+    EXPECT_EQ(u[i], static_cast<U>(i + 1))
+      << "value at position " << i << " does not match";
+}
+
 // +---------------------------------------------+
 // |           assignment operators              |
 // +---------------------------------------------+
@@ -323,16 +346,6 @@ TYPED_TEST(Fixture_DVec, DivisionOperator)
       v[i] = static_cast<U>(i + 1);
     }
 
-  Vec w = u / v;
-
-  ASSERT_EQ(w.size(), u.size()) << "Vector / Vector: size mismatch";
-  for(std::size_t i = 0; i < w.size(); ++i)
-    {
-      EXPECT_EQ(w[i],
-                static_cast<U>(static_cast<U>(i + 2) / static_cast<U>(i + 1)))
-        << "Vector / Vector: incorrect value at index " << i;
-    }
-
   // Case 2: Division of vector by scalar
   Vec z{2, 4, 6, 8, 10};
   Vec w2 = z / static_cast<U>(2);
@@ -351,17 +364,6 @@ TYPED_TEST(Fixture_DVec, DivisionOperator)
     {
       EXPECT_EQ(z[i], static_cast<U>(static_cast<U>(i + 1)))
         << "Vector /= Scalar: incorrect value at index " << i;
-    }
-
-  // Case 4: Compound assignment with another vector (/= vector)
-  Vec a = u;
-  a /= v;
-  ASSERT_EQ(a.size(), u.size()) << "Vector /= Vector: size mismatch";
-  for(std::size_t i = 0; i < a.size(); ++i)
-    {
-      EXPECT_EQ(a[i],
-                static_cast<U>(static_cast<U>(i + 2) / static_cast<U>(i + 1)))
-        << "Vector /= Vector: incorrect value at index " << i;
     }
 }
 
@@ -489,7 +491,7 @@ TYPED_TEST(Fixture_DVec, BeginMethodConst)
   using U = typename Vec::value_type;
 
   const Vec u{0, 1, 2, 3, 4};
-  auto it = u.begin();
+  auto it = u.cbegin();
 
   for(std::size_t i = 0; i < u.size(); ++i)
     EXPECT_EQ((*it) + i, static_cast<U>(i))
@@ -502,10 +504,14 @@ TYPED_TEST(Fixture_DVec, EndMethodConst)
   using U = typename Vec::value_type;
 
   const Vec u{0, 1, 2, 3, 4};
-  auto it = u.end();
+  auto it = u.cend();
 
   --it; // Move to the last element
 
   EXPECT_EQ(*it, static_cast<U>(u.size() - 1))
     << "value at last position does not match";
 }
+
+// +---------------------------------------------+
+// |           non-member operators              |
+// +---------------------------------------------+

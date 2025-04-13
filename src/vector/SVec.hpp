@@ -79,7 +79,8 @@ namespace line
        * @param args The values used to initialize the vector.
        */
       template <typename... Args>
-        requires nsp_concepts::same_numeric_type<T, Args...>
+        requires(sizeof...(Args) > 1)
+                && nsp_concepts::same_numeric_type<T, Args...>
       SVec(Args &&...args);
 
       /**
@@ -144,6 +145,13 @@ namespace line
       SVec<L, T> operator+(const T &scalar) const;
 
       /**
+       * @brief Scalar addition assignment.
+       * @param scalar The scalar value to add.
+       * @return A reference to the current vector.
+       */
+      SVec<L, T> &operator+=(const T &scalar);
+
+      /**
        * @brief Vector subtraction.
        * @param vec_ The vector to subtract.
        * @return A new vector representing the difference of the two vectors.
@@ -164,6 +172,13 @@ namespace line
        * scalar.
        */
       SVec<L, T> operator-(const T &scalar) const;
+
+      /**
+       * @brief Scalar subtraction assignment.
+       * @param scalar The scalar value to subtract.
+       * @return A reference to the current vector.
+       */
+      SVec<L, T> &operator-=(const T &scalar);
 
       /**
        * @brief Vector multiplication.
@@ -317,6 +332,10 @@ namespace line
       /// Flag indicating whether the vector is empty.
     };
 
+    // +---------------------------------------------+
+    // |           non-member operators              |
+    // +---------------------------------------------+
+
     /**
      * @brief Scalar multiplication for `SVec`.
      * @param scalar The scalar to multiply by.
@@ -325,6 +344,12 @@ namespace line
      */
     template <nsp_types::length_t U, nsp_concepts::is_numeric R>
     SVec<U, R> operator*(const R &scalar, const SVec<U, R> &vec_);
+    // scalar + vector
+    template <nsp_types::length_t U, nsp_concepts::is_numeric R>
+    SVec<U, R> operator+(const R &scalar, const SVec<U, R> &vec_);
+    // scalar - vector
+    template <nsp_types::length_t U, nsp_concepts::is_numeric R>
+    SVec<U, R> operator-(const R &scalar, const SVec<U, R> &vec_);
 
   }
 };

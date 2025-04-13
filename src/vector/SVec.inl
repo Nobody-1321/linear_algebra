@@ -20,7 +20,8 @@ namespace line
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     template <typename... Args>
-      requires nsp_concepts::same_numeric_type<T, Args...>
+      requires(sizeof...(Args) > 1)
+              && nsp_concepts::same_numeric_type<T, Args...>
     SVec<L, T>::SVec(Args &&...args) : data_v{std::make_unique<array_type>()}
     {
       static_assert(
@@ -100,6 +101,15 @@ namespace line
     }
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
+    SVec<L, T> &SVec<L, T>::operator+=(const SVec<L, T> &vec_)
+    {
+      std::transform(this->begin(), this->end(), vec_.cbegin(), this->begin(),
+                     std::plus<T>());
+
+      return *this;
+    }
+
+    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T> SVec<L, T>::operator+(const T &scalar) const
     {
       SVec<L, T> result;
@@ -108,6 +118,15 @@ namespace line
                      [scalar](const T &val) { return val + scalar; });
 
       return result;
+    }
+
+    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
+    SVec<L, T> &SVec<L, T>::operator+=(const T &scalar)
+    {
+      std::transform(this->begin(), this->end(), this->begin(),
+                     [scalar](const T &val) { return val + scalar; });
+
+      return *this;
     }
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
@@ -120,6 +139,35 @@ namespace line
         [](const T &valL, const T &valR) -> T { return valL - valR; });
 
       return result;
+    }
+
+    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
+    SVec<L, T> &SVec<L, T>::operator-=(const SVec<L, T> &vec_)
+    {
+      std::transform(this->begin(), this->end(), vec_.cbegin(), this->begin(),
+                     std::minus<T>());
+
+      return *this;
+    }
+
+    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
+    SVec<L, T> SVec<L, T>::operator-(const T &scalar) const
+    {
+      SVec<L, T> result;
+
+      std::transform(this->cbegin(), this->cend(), result.begin(),
+                     [scalar](const T &val) { return val - scalar; });
+
+      return result;
+    }
+
+    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
+    SVec<L, T> &SVec<L, T>::operator-=(const T &scalar)
+    {
+      std::transform(this->begin(), this->end(), this->begin(),
+                     [scalar](const T &val) { return val - scalar; });
+
+      return *this;
     }
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
@@ -146,36 +194,6 @@ namespace line
     }
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
-    SVec<L, T> SVec<L, T>::operator/(const T &scalar) const
-    {
-      SVec<L, T> result;
-
-      assert(scalar != 0 && "Division by zero");
-      std::transform(this->cbegin(), this->cend(), result.begin(),
-                     [scalar](const T &val) { return val / scalar; });
-
-      return result;
-    }
-
-    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
-    SVec<L, T> &SVec<L, T>::operator+=(const SVec<L, T> &vec_)
-    {
-      std::transform(this->begin(), this->end(), vec_.cbegin(), this->begin(),
-                     std::plus<T>());
-
-      return *this;
-    }
-
-    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
-    SVec<L, T> &SVec<L, T>::operator-=(const SVec<L, T> &vec_)
-    {
-      std::transform(this->begin(), this->end(), vec_.cbegin(), this->begin(),
-                     std::minus<T>());
-
-      return *this;
-    }
-
-    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T> &SVec<L, T>::operator*=(const SVec<L, T> &vec_)
     {
       std::transform(this->begin(), this->end(), vec_.cbegin(), this->begin(),
@@ -194,9 +212,21 @@ namespace line
     }
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
+    SVec<L, T> SVec<L, T>::operator/(const T &scalar) const
+    {
+      assert(scalar != 0 && "Division by zero");
+
+      SVec<L, T> result;
+      std::transform(this->cbegin(), this->cend(), result.begin(),
+                     [scalar](const T &val) { return val / scalar; });
+
+      return result;
+    }
+
+    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T> &SVec<L, T>::operator/=(const T &scalar)
     {
-      // division by zero is undefined
+      assert(scalar != 0 && "Division by zero");
 
       std::transform(this->begin(), this->end(), this->begin(),
                      [scalar](const T &val) { return val / scalar; });
@@ -305,6 +335,10 @@ namespace line
     SVec<L, T>::~SVec()
     {}
 
+    // +---------------------------------------------+
+    // |           non-member operators              |
+    // +---------------------------------------------+
+
     // scalar * vector
     template <nsp_types::length_t U, nsp_concepts::is_numeric R>
     SVec<U, R> operator*(const R &scalar, const SVec<U, R> &vec_)
@@ -316,5 +350,30 @@ namespace line
 
       return result;
     }
+
+    // scalar + vector
+    template <nsp_types::length_t U, nsp_concepts::is_numeric R>
+    SVec<U, R> operator+(const R &scalar, const SVec<U, R> &vec_)
+    {
+      SVec<U, R> result;
+
+      std::transform(vec_.cbegin(), vec_.cend(), result.begin(),
+                     [scalar](const R &val) { return val + scalar; });
+
+      return result;
+    }
+
+    // scalar - vector
+    template <nsp_types::length_t U, nsp_concepts::is_numeric R>
+    SVec<U, R> operator-(const R &scalar, const SVec<U, R> &vec_)
+    {
+      SVec<U, R> result;
+
+      std::transform(vec_.cbegin(), vec_.cend(), result.begin(),
+                     [scalar](const R &val) { return scalar - val; });
+
+      return result;
+    }
+
   }
 };

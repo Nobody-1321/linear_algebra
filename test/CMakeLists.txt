@@ -20,6 +20,11 @@ if(ENABLE_DVEC_TESTS)
     list(APPEND TEST_SOURCES ${DVEC_TEST_SOURCES})
 endif()
 
+if(ENABLE_SMAT_TESTS)
+    file(GLOB SMAT_TEST_SOURCES "static_matrix/*.cpp")
+    list(APPEND TEST_SOURCES ${SMAT_TEST_SOURCES})
+endif()
+
 #print all test sources
 message(STATUS "Test sources: ${TEST_SOURCES}")
 

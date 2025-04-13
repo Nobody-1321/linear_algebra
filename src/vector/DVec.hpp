@@ -43,6 +43,16 @@ namespace line
       DVec(DVec<T> &&vec_) noexcept;
       DVec(std::size_t size_, const T &value);
       DVec(std::initializer_list<T> list);
+      template <typename... Args>
+        requires(sizeof...(Args) > 2)
+                && nsp_concepts::same_numeric_type<T, Args...>
+      DVec(Args &&...args);
+
+      /*
+      template <typename... Args>
+        requires nsp_concepts::same_numeric_type<T, Args...>
+      DVec(Args &&...args);
+      */
 
       // +---------------------------------------------+
       // |           assignment operators              |
@@ -70,8 +80,6 @@ namespace line
       DVec operator*(const T &scalar_) const;
       DVec &operator*=(const T &scalar_);
 
-      DVec operator/(const DVec<T> &vec_) const;
-      DVec &operator/=(const DVec<T> &vec_);
       DVec operator/(const T &scalar_) const;
       DVec &operator/=(const T &scalar_);
 
@@ -117,6 +125,23 @@ namespace line
     private:
       array_type data_v;
     };
+
+    // +---------------------------------------------+
+    // |           non-member operators              |
+    // +---------------------------------------------+
+
+    // scalar + vector
+    template <nsp_concepts::is_numeric T>
+    DVec<T> operator+(const T &scalar_, const DVec<T> &vec_);
+
+    // scalar - vector
+    template <nsp_concepts::is_numeric T>
+    DVec<T> operator-(const T &scalar_, const DVec<T> &vec_);
+
+    // scalar * vector
+    template <nsp_concepts::is_numeric T>
+    DVec<T> operator*(const T &scalar_, const DVec<T> &vec_);
+
   } // namespace structs
 } // namespace line
 

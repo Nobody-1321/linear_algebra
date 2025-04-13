@@ -29,6 +29,16 @@ namespace line
     DVec<T>::DVec(std::initializer_list<T> list) : data_v(list)
     {}
 
+    template <nsp_concepts::is_numeric T>
+    template <typename... Args>
+      requires(sizeof...(Args) > 2)
+              && nsp_concepts::same_numeric_type<T, Args...>
+    DVec<T>::DVec(Args &&...args) : data_v{std::forward<Args>(args)...}
+    {
+      static_assert(sizeof...(Args) > 0,
+                    " Number of arguments must be greater than zero");
+    }
+
     // +---------------------------------------------+
     // |           assignment operators              |
     // +---------------------------------------------+
@@ -62,15 +72,13 @@ namespace line
     template <nsp_concepts::is_numeric T>
     DVec<T> DVec<T>::operator+(const DVec<T> &vec_) const
     {
-      if(data_v.size() != vec_.data_v.size())
-        {
-          throw std::length_error("Vectors must be of the same size");
-        }
+      assert(data_v.size() == vec_.data_v.size()
+             && "Vector size mismatch in operator+");
 
       DVec<T> result(data_v.size());
 
-      std::transform(data_v.begin(), data_v.end(), vec_.data_v.begin(),
-                     result.data_v.begin(),
+      std::transform(this->cbegin(), this->cend(), vec_.cbegin(),
+                     result.begin(),
                      [](const T &a, const T &b) { return a + b; });
 
       return result;
@@ -79,13 +87,10 @@ namespace line
     template <nsp_concepts::is_numeric T>
     DVec<T> &DVec<T>::operator+=(const DVec<T> &vec_)
     {
-      if(data_v.size() != vec_.data_v.size())
-        {
-          throw std::length_error("Vectors must be of the same size");
-        }
+      assert(data_v.size() == vec_.data_v.size()
+             && "Vector size mismatch in operator+=");
 
-      std::transform(data_v.begin(), data_v.end(), vec_.data_v.begin(),
-                     data_v.begin(),
+      std::transform(this->begin(), this->end(), vec_.cbegin(), this->begin(),
                      [](const T &a, const T &b) { return a + b; });
 
       return *this;
@@ -96,7 +101,7 @@ namespace line
     {
       DVec<T> result(data_v.size());
 
-      std::transform(data_v.begin(), data_v.end(), result.data_v.begin(),
+      std::transform(this->cbegin(), this->cend(), result.begin(),
                      [scalar_](const T &a) { return a + scalar_; });
 
       return result;
@@ -105,7 +110,7 @@ namespace line
     template <nsp_concepts::is_numeric T>
     DVec<T> &DVec<T>::operator+=(const T &scalar_)
     {
-      std::transform(data_v.begin(), data_v.end(), data_v.begin(),
+      std::transform(this->begin(), this->end(), this->begin(),
                      [scalar_](const T &a) { return a + scalar_; });
 
       return *this;
@@ -114,15 +119,13 @@ namespace line
     template <nsp_concepts::is_numeric T>
     DVec<T> DVec<T>::operator-(const DVec<T> &vec_) const
     {
-      if(data_v.size() != vec_.data_v.size())
-        {
-          throw std::length_error("Vectors must be of the same size");
-        }
+      assert(data_v.size() == vec_.data_v.size()
+             && "Vector size mismatch in operator-");
 
       DVec<T> result(data_v.size());
 
-      std::transform(data_v.begin(), data_v.end(), vec_.data_v.begin(),
-                     result.data_v.begin(),
+      std::transform(this->cbegin(), this->cend(), vec_.cbegin(),
+                     result.begin(),
                      [](const T &a, const T &b) { return a - b; });
 
       return result;
@@ -131,13 +134,10 @@ namespace line
     template <nsp_concepts::is_numeric T>
     DVec<T> &DVec<T>::operator-=(const DVec<T> &vec_)
     {
-      if(data_v.size() != vec_.data_v.size())
-        {
-          throw std::length_error("Vectors must be of the same size");
-        }
+      assert(data_v.size() == vec_.data_v.size()
+             && "Vector size mismatch in operator-=");
 
-      std::transform(data_v.begin(), data_v.end(), vec_.data_v.begin(),
-                     data_v.begin(),
+      std::transform(this->begin(), this->end(), vec_.cbegin(), this->begin(),
                      [](const T &a, const T &b) { return a - b; });
 
       return *this;
@@ -148,7 +148,7 @@ namespace line
     {
       DVec<T> result(data_v.size());
 
-      std::transform(data_v.begin(), data_v.end(), result.data_v.begin(),
+      std::transform(this->cbegin(), this->cend(), result.begin(),
                      [scalar_](const T &a) { return a - scalar_; });
 
       return result;
@@ -157,7 +157,7 @@ namespace line
     template <nsp_concepts::is_numeric T>
     DVec<T> &DVec<T>::operator-=(const T &scalar_)
     {
-      std::transform(data_v.begin(), data_v.end(), data_v.begin(),
+      std::transform(this->begin(), this->end(), this->begin(),
                      [scalar_](const T &a) { return a - scalar_; });
 
       return *this;
@@ -166,15 +166,13 @@ namespace line
     template <nsp_concepts::is_numeric T>
     DVec<T> DVec<T>::operator*(const DVec<T> &vec_) const
     {
-      if(data_v.size() != vec_.data_v.size())
-        {
-          throw std::length_error("Vectors must be of the same size");
-        }
+      assert(data_v.size() == vec_.data_v.size()
+             && "Vector size mismatch in operator*");
 
       DVec<T> result(data_v.size());
 
-      std::transform(data_v.begin(), data_v.end(), vec_.data_v.begin(),
-                     result.data_v.begin(),
+      std::transform(this->cbegin(), this->cend(), vec_.cbegin(),
+                     result.begin(),
                      [](const T &a, const T &b) { return a * b; });
 
       return result;
@@ -183,13 +181,10 @@ namespace line
     template <nsp_concepts::is_numeric T>
     DVec<T> &DVec<T>::operator*=(const DVec<T> &vec_)
     {
-      if(data_v.size() != vec_.data_v.size())
-        {
-          throw std::length_error("Vectors must be of the same size");
-        }
+      assert(data_v.size() == vec_.data_v.size()
+             && "Vector size mismatch in operator*=");
 
-      std::transform(data_v.begin(), data_v.end(), vec_.data_v.begin(),
-                     data_v.begin(),
+      std::transform(this->begin(), this->end(), vec_.cbegin(), this->begin(),
                      [](const T &a, const T &b) { return a * b; });
 
       return *this;
@@ -200,7 +195,7 @@ namespace line
     {
       DVec<T> result(data_v.size());
 
-      std::transform(data_v.begin(), data_v.end(), result.data_v.begin(),
+      std::transform(this->cbegin(), this->cend(), result.begin(),
                      [scalar_](const T &a) { return a * scalar_; });
 
       return result;
@@ -209,40 +204,8 @@ namespace line
     template <nsp_concepts::is_numeric T>
     DVec<T> &DVec<T>::operator*=(const T &scalar_)
     {
-      std::transform(data_v.begin(), data_v.end(), data_v.begin(),
+      std::transform(this->begin(), this->end(), this->begin(),
                      [scalar_](const T &a) { return a * scalar_; });
-
-      return *this;
-    }
-
-    template <nsp_concepts::is_numeric T>
-    DVec<T> DVec<T>::operator/(const DVec<T> &vec_) const
-    {
-      if(data_v.size() != vec_.data_v.size())
-        {
-          throw std::length_error("Vectors must be of the same size");
-        }
-
-      DVec<T> result(data_v.size());
-
-      std::transform(data_v.begin(), data_v.end(), vec_.data_v.begin(),
-                     result.data_v.begin(),
-                     [](const T &a, const T &b) { return a / b; });
-
-      return result;
-    }
-
-    template <nsp_concepts::is_numeric T>
-    DVec<T> &DVec<T>::operator/=(const DVec<T> &vec_)
-    {
-      if(data_v.size() != vec_.data_v.size())
-        {
-          throw std::length_error("Vectors must be of the same size");
-        }
-
-      std::transform(data_v.begin(), data_v.end(), vec_.data_v.begin(),
-                     data_v.begin(),
-                     [](const T &a, const T &b) { return a / b; });
 
       return *this;
     }
@@ -250,9 +213,11 @@ namespace line
     template <nsp_concepts::is_numeric T>
     DVec<T> DVec<T>::operator/(const T &scalar_) const
     {
+      assert(scalar_ != 0 && "Division by zero in operator/");
+
       DVec<T> result(data_v.size());
 
-      std::transform(data_v.begin(), data_v.end(), result.data_v.begin(),
+      std::transform(this->cbegin(), this->cend(), result.begin(),
                      [scalar_](const T &a) { return a / scalar_; });
 
       return result;
@@ -261,7 +226,9 @@ namespace line
     template <nsp_concepts::is_numeric T>
     DVec<T> &DVec<T>::operator/=(const T &scalar_)
     {
-      std::transform(data_v.begin(), data_v.end(), data_v.begin(),
+      assert(scalar_ != 0 && "Division by zero in operator/=");
+
+      std::transform(this->cbegin(), this->cend(), this->begin(),
                      [scalar_](const T &a) { return a / scalar_; });
 
       return *this;
@@ -390,6 +357,43 @@ namespace line
       data_v.resize(new_size);
     }
     */
+
+    // +---------------------------------------------+
+    // |           non-member operators              |
+    // +---------------------------------------------+
+
+    template <nsp_concepts::is_numeric T>
+    DVec<T> operator*(const T &scalar_, const DVec<T> &vec_)
+    {
+      DVec<T> result(vec_.size());
+
+      std::transform(vec_.cbegin(), vec_.cend(), result.begin(),
+                     [scalar_](const T &a) { return scalar_ * a; });
+
+      return result;
+    }
+
+    template <nsp_concepts::is_numeric T>
+    DVec<T> operator+(const T &scalar_, const DVec<T> &vec_)
+    {
+      DVec<T> result(vec_.size());
+
+      std::transform(vec_.cbegin(), vec_.cend(), result.begin(),
+                     [scalar_](const T &a) { return scalar_ + a; });
+
+      return result;
+    }
+
+    template <nsp_concepts::is_numeric T>
+    DVec<T> operator-(const T &scalar_, const DVec<T> &vec_)
+    {
+      DVec<T> result(vec_.size());
+
+      std::transform(vec_.cbegin(), vec_.cend(), result.begin(),
+                     [scalar_](const T &a) { return scalar_ - a; });
+
+      return result;
+    }
 
   } // namespace structs
 } // namespace line
