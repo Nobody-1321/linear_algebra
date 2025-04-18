@@ -16,6 +16,17 @@ if(BUILD_TESTS)
     add_subdirectory(test)
 endif()
 
+if(WIN32)
+    message(STATUS "Configuring for Windows")
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+    add_definitions(-DWIN32_LEAN_AND_MEAN)
+
+    # Solo establece el prefijo si el usuario no ha dado uno explícito
+    if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+        set(CMAKE_INSTALL_PREFIX "C:/line-lib" CACHE PATH "Default install path" FORCE)
+    endif()
+endif()
+
 # Crear una biblioteca de interfaz (INTERFACE library)
 add_library(line INTERFACE)
 
