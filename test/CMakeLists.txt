@@ -38,6 +38,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Desactivar warnings como errores
 target_compile_options(tests PRIVATE -Wno-error)
+add_compile_definitions(LINE_FORCE_SCALAR)
 
 # Enlazar con GoogleTest y tu propia biblioteca
 target_link_libraries(tests 

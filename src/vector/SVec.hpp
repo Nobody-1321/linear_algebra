@@ -7,6 +7,8 @@
 #include <assert.h>
 #include <execution>
 #include <iostream>
+#include <cmath>
+#include "../math/vector_math.hpp"
 #include "../ranges/const_random_access_iterator.hpp"
 #include "../ranges/random_access_iterator.hpp"
 #include "../detail/types_det.hpp"
@@ -264,15 +266,24 @@ namespace line
        */
       value_type *data() noexcept;
 
+      // const data
+      /**
+       * @brief Returns a pointer to the underlying data array (const version).
+       * @return A pointer to the data array.
+       */
+      const value_type *data() const noexcept;
+
       // +---------------------------------------------+
       // |              functions                      |
       // +---------------------------------------------+
 
       /**
-       * @brief Returns the maximum size of the vector.
-       * @return The maximum size of the vector.
+       * @brief Returns the size of the vector.
+       * @return The size of the vector.
        */
-      constexpr std::size_t max_size() const noexcept;
+      constexpr std::size_t size() const noexcept;
+
+      constexpr std::size_t capacity() const noexcept;
 
       /**
        * @brief Fills the vector with a specified value.
@@ -291,6 +302,21 @@ namespace line
        * @return `true` if the vector is valid, `false` otherwise.
        */
       bool is_valid() const noexcept;
+
+      /// magnitude
+
+      /**
+       * @brief Returns the magnitude of the vector.
+       * @return The magnitude of the vector.
+       */
+      T magnitude() const noexcept;
+
+      // square sum
+      /**
+       * @brief Returns the square sum of the vector.
+       * @return The square sum of the vector.
+       */
+      T square_sum() const noexcept;
 
       // +---------------------------------------------+
       // |               iterators                     |

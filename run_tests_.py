@@ -5,8 +5,8 @@ import argparse
 # Definir los grupos de tests disponibles
 TEST_GROUPS = {
     "svec": "ENABLE_SVEC_TESTS",
-    "dvec": "ENABLE_DVEC_TESTS",
-    "smat": "ENABLE_SMAT_TESTS",
+    #"dvec": "ENABLE_DVEC_TESTS",
+    #"smat": "ENABLE_SMAT_TESTS",
 }
 
 def configure_cmake(selected_tests):

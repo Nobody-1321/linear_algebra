@@ -513,5 +513,70 @@ TYPED_TEST(Fixture_DVec, EndMethodConst)
 }
 
 // +---------------------------------------------+
+// |               functions                     |
+// +---------------------------------------------+
+
+// Fill method
+TYPED_TEST(Fixture_DVec, FillMethod)
+{
+  using Vec = typename TestFixture::Vec;
+  using U = typename Vec::value_type;
+
+  Vec u(10);
+  u.fill(static_cast<U>(5));
+
+  for(std::size_t i = 0; i < u.size(); ++i)
+    EXPECT_EQ(u[i], static_cast<U>(5))
+      << "value at position " << i << " does not match";
+}
+
+// Swap method
+TYPED_TEST(Fixture_DVec, SwapMethod)
+{
+  using Vec = typename TestFixture::Vec;
+  using U = typename Vec::value_type;
+
+  Vec u(10);
+  for(std::size_t i = 0; i < u.size(); ++i)
+    u[i] = static_cast<U>(i);
+
+  Vec v(10);
+  for(std::size_t i = 0; i < v.size(); ++i)
+    v[i] = static_cast<U>(i + 1);
+
+  u.swap(v);
+
+  for(std::size_t i = 0; i < u.size(); ++i)
+    EXPECT_EQ(u[i], static_cast<U>(i + 1))
+      << "value at position " << i << " does not match";
+}
+
+// Is valid method
+TYPED_TEST(Fixture_DVec, IsValidMethod)
+{
+  using Vec = typename TestFixture::Vec;
+
+  Vec u(10);
+  ASSERT_TRUE(u.is_valid()) << "u should be valid";
+
+  Vec v(std::move(u));
+  ASSERT_FALSE(u.is_valid()) << "u should be invalid after move";
+  ASSERT_TRUE(v.is_valid()) << "v should be valid after move";
+}
+
+// Magnitude method
+TYPED_TEST(Fixture_DVec, MagnitudeMethod)
+{
+  using Vec = typename TestFixture::Vec;
+  using U = typename Vec::value_type;
+
+  Vec u{1, 2, 3, 4, 5};
+  U val = 1 * 1 + 2 * 2 + 3 * 3 + 4 * 4 + 5 * 5;
+
+  ASSERT_EQ(u.magnitude(), static_cast<U>(std::sqrt(val)))
+    << "magnitude does not match";
+}
+
+// +---------------------------------------------+
 // |           non-member operators              |
 // +---------------------------------------------+

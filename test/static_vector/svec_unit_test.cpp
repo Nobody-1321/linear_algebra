@@ -97,7 +97,7 @@ TYPED_TEST(Fixture_VecN_15V, ListInitialization)
       k++;
     }
 
-  ASSERT_EQ(15, u.max_size());
+  ASSERT_EQ(15, u.size());
 }
 
 // Argument initialization
@@ -112,7 +112,7 @@ TYPED_TEST(Fixture_VecN_15V, ArgumentInitialization)
       k++;
     }
 
-  ASSERT_EQ(15, u.max_size());
+  ASSERT_EQ(15, u.size());
 }
 
 // +---------------------------------------------+
@@ -344,6 +344,56 @@ TYPED_TEST(Fixture_VecN_15V, CendMethod)
   typename TestFixture::Vec u(1);
   auto it = u.cend();
   ASSERT_EQ(*(it - 1), 1);
+}
+
+// +---------------------------------------------+
+// |              functions                      |
+// +---------------------------------------------+
+
+// Fill method
+TYPED_TEST(Fixture_VecN_15V, FillMethod)
+{
+  typename TestFixture::Vec u(1);
+  u.fill(5);
+  for(auto i = u.begin(); i != u.end(); ++i)
+    {
+      EXPECT_EQ(*i, 5);
+    }
+}
+// Swap method
+TYPED_TEST(Fixture_VecN_15V, SwapMethod)
+{
+  typename TestFixture::Vec u(1);
+  typename TestFixture::Vec v(2);
+  u.swap(v);
+  ASSERT_EQ(u[0], 2);
+  ASSERT_EQ(v[0], 1);
+}
+
+// Is valid method
+TYPED_TEST(Fixture_VecN_15V, IsValidMethod)
+{
+  using Vec = typename TestFixture::Vec;
+
+  Vec u(1);
+  ASSERT_TRUE(u.is_valid());
+
+  Vec v(std::move(u));
+  ASSERT_FALSE(u.is_valid());
+}
+
+// Magnitude method
+
+TYPED_TEST(Fixture_VecN_2V, MagnitudeMethod)
+{
+  using Vec = typename TestFixture::Vec;
+  using T = typename Vec::value_type;
+
+  Vec u(3);
+
+  T val_ex = 3 * 3 + 3 * 3;
+
+  ASSERT_EQ(u.magnitude(), static_cast<T>(std::sqrt(val_ex)));
 }
 
 // +---------------------------------------------+

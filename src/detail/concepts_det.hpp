@@ -39,6 +39,18 @@ namespace line
       concept same_numeric_type
         = (is_numeric<Args> && ...) && (std::is_same_v<T, Args> && ...);
 
+      template <typename T>
+      concept vector = requires(T a) {
+        typename T::value_type;
+
+        { a.size() } -> std::convertible_to<std::size_t>;
+        { a.data() } -> std::convertible_to<typename T::value_type *>;
+
+        {
+          std::as_const(a).data()
+        } -> std::convertible_to<const typename T::value_type *>;
+      };
+
     }
   }
 }

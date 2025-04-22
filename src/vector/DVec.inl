@@ -257,17 +257,26 @@ namespace line
     template <nsp_concepts::is_numeric T>
     T &DVec<T>::operator[](std::size_t index)
     {
+      assert(index < data_v.size() && "Index out of bounds in operator[]");
       return data_v[index];
     }
 
     template <nsp_concepts::is_numeric T>
     const T &DVec<T>::operator[](std::size_t index) const
     {
+      assert(index < data_v.size() && "Index out of bounds in operator[]");
       return data_v[index];
     }
 
     // data pointer
     template <nsp_concepts::is_numeric T> T *DVec<T>::data() noexcept
+    {
+      return data_v.data();
+    }
+
+    // const data
+    template <nsp_concepts::is_numeric T>
+    const T *DVec<T>::data() const noexcept
     {
       return data_v.data();
     }
@@ -348,6 +357,14 @@ namespace line
     template <nsp_concepts::is_numeric T> void DVec<T>::swap(DVec<T> &vec_)
     {
       data_v.swap(vec_.data_v);
+    }
+
+    template <nsp_concepts::is_numeric T> T DVec<T>::magnitude() const noexcept
+    {
+      T sum = std::accumulate(
+        this->cbegin(), this->cend(), static_cast<T>(0),
+        [](const T &acc, const T &val) { return acc + val * val; });
+      return std::sqrt(sum);
     }
 
     /*

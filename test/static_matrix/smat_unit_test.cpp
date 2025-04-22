@@ -524,7 +524,7 @@ TYPED_TEST(Fixture_MatN22, Iterators)
     {
       // Si *it es un SVec, accede a sus elementos
       const auto &vec = *it; // Suponiendo que *it devuelve un SVec
-      for(std::size_t j = 0; j < vec.max_size(); ++j)
+      for(std::size_t j = 0; j < vec.size(); ++j)
         {
           ASSERT_EQ(vec[j], static_cast<T>(i + 1));
           ++i;
@@ -545,7 +545,7 @@ TYPED_TEST(Fixture_MatN22, ConstIterators)
     {
       // Si *it es un SVec, accede a sus elementos
       const auto &vec = *it; // Suponiendo que *it devuelve un SVec
-      for(std::size_t j = 0; j < vec.max_size(); ++j)
+      for(std::size_t j = 0; j < vec.size(); ++j)
         {
           ASSERT_EQ(vec[j], static_cast<T>(i + 1));
           ++i;

@@ -93,9 +93,11 @@ namespace line
     {
       SVec<L, T> result;
 
-      std::transform(
+      line::math::AddVector(*this, vec_, result);
+
+      /*std::transform(
         this->cbegin(), this->cend(), vec_.cbegin(), result.begin(),
-        [](const T &valL, const T &valR) -> T { return valL + valR; });
+        [](const T &valL, const T &valR) -> T { return valL + valR; });*/
 
       return result;
     }
@@ -258,6 +260,7 @@ namespace line
     typename SVec<L, T>::value_type &
     SVec<L, T>::operator[](const std::size_t &idx) noexcept
     {
+      assert(idx < L && "Index out of bounds");
       return (*data_v)[idx];
     }
 
@@ -265,6 +268,7 @@ namespace line
     const typename SVec<L, T>::value_type &
     SVec<L, T>::operator[](const std::size_t &idx) const noexcept
     {
+      assert(idx < L && "Index out of bounds");
       return (*data_v)[idx];
     }
 
@@ -274,12 +278,24 @@ namespace line
       return data_v->data();
     }
 
+    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
+    const typename SVec<L, T>::value_type *SVec<L, T>::data() const noexcept
+    {
+      return data_v->data();
+    }
+
     // +---------------------------------------------+
     // |              functions                      |
     // +---------------------------------------------+
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
-    constexpr std::size_t SVec<L, T>::max_size() const noexcept
+    constexpr std::size_t SVec<L, T>::size() const noexcept
+    {
+      return SVec<L, T>::length::value;
+    }
+
+    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
+    constexpr std::size_t SVec<L, T>::capacity() const noexcept
     {
       return SVec<L, T>::length::value;
     }
@@ -300,6 +316,24 @@ namespace line
     bool SVec<L, T>::is_valid() const noexcept
     {
       return data_v != nullptr;
+    }
+
+    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
+    T SVec<L, T>::magnitude() const noexcept
+    {
+      T sum = std::accumulate(
+        this->cbegin(), this->cend(), static_cast<T>(0),
+        [](const T &acc, const T &val) { return acc + val * val; });
+
+      return std::sqrt(sum);
+    }
+
+    template <nsp_types::length_t L, nsp_concepts::is_numeric T>
+    T SVec<L, T>::square_sum() const noexcept
+    {
+      return std::accumulate(
+        this->cbegin(), this->cend(), static_cast<T>(0),
+        [](const T &acc, const T &val) { return acc + val * val; });
     }
 
     // +---------------------------------------------+

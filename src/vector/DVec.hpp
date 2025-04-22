@@ -5,6 +5,7 @@
 #include <array>
 #include <execution>
 #include <iostream>
+#include <cmath>
 #include <memory>
 #include "../detail/concepts_det.hpp"
 #include "../detail/types_det.hpp"
@@ -97,6 +98,8 @@ namespace line
       value_type &operator[](std::size_t index);
       const value_type &operator[](std::size_t index) const;
       value_type *data() noexcept;
+      // const data
+      const value_type *data() const noexcept;
 
       // +---------------------------------------------+
       // |               iterators                     |
@@ -120,6 +123,7 @@ namespace line
       void clear();
       bool is_valid();
       void swap(DVec<T> &vec_);
+      T magnitude() const noexcept;
       // void resize(std::size_t new_size);
 
     private:
