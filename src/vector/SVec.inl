@@ -92,22 +92,14 @@ namespace line
     SVec<L, T> SVec<L, T>::operator+(const SVec<L, T> &vec_) const
     {
       SVec<L, T> result;
-
       line::math::AddVector(*this, vec_, result);
-
-      /*std::transform(
-        this->cbegin(), this->cend(), vec_.cbegin(), result.begin(),
-        [](const T &valL, const T &valR) -> T { return valL + valR; });*/
-
       return result;
     }
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T> &SVec<L, T>::operator+=(const SVec<L, T> &vec_)
     {
-      std::transform(this->begin(), this->end(), vec_.cbegin(), this->begin(),
-                     std::plus<T>());
-
+      line::math::AddVector(*this, vec_);
       return *this;
     }
 
@@ -115,19 +107,14 @@ namespace line
     SVec<L, T> SVec<L, T>::operator+(const T &scalar) const
     {
       SVec<L, T> result;
-
-      std::transform(this->cbegin(), this->cend(), result.begin(),
-                     [scalar](const T &val) { return val + scalar; });
-
+      line::math::AddVector(*this, result, scalar);
       return result;
     }
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T> &SVec<L, T>::operator+=(const T &scalar)
     {
-      std::transform(this->begin(), this->end(), this->begin(),
-                     [scalar](const T &val) { return val + scalar; });
-
+      line::math::AddVector(*this, scalar);
       return *this;
     }
 
@@ -135,20 +122,14 @@ namespace line
     SVec<L, T> SVec<L, T>::operator-(const SVec<L, T> &vec_) const
     {
       SVec<L, T> result;
-
-      std::transform(
-        this->cbegin(), this->cend(), vec_.cbegin(), result.begin(),
-        [](const T &valL, const T &valR) -> T { return valL - valR; });
-
+      line::math::SubVector(*this, vec_, result);
       return result;
     }
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T> &SVec<L, T>::operator-=(const SVec<L, T> &vec_)
     {
-      std::transform(this->begin(), this->end(), vec_.cbegin(), this->begin(),
-                     std::minus<T>());
-
+      line::math::SubVector(*this, vec_);
       return *this;
     }
 
@@ -156,19 +137,14 @@ namespace line
     SVec<L, T> SVec<L, T>::operator-(const T &scalar) const
     {
       SVec<L, T> result;
-
-      std::transform(this->cbegin(), this->cend(), result.begin(),
-                     [scalar](const T &val) { return val - scalar; });
-
+      line::math::SubVector(*this, result, scalar);
       return result;
     }
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T> &SVec<L, T>::operator-=(const T &scalar)
     {
-      std::transform(this->begin(), this->end(), this->begin(),
-                     [scalar](const T &val) { return val - scalar; });
-
+      line::math::SubVector(*this, scalar);
       return *this;
     }
 
@@ -177,10 +153,7 @@ namespace line
     {
       SVec<L, T> result;
 
-      std::transform(
-        this->cbegin(), this->cend(), vec_.cbegin(), result.begin(),
-        [](const T &valL, const T &valR) -> T { return valL * valR; });
-
+      line::math::MulVector(*this, vec_, result);
       return result;
     }
 
@@ -188,28 +161,21 @@ namespace line
     SVec<L, T> SVec<L, T>::operator*(const T &scalar) const
     {
       SVec<L, T> result;
-
-      std::transform(this->cbegin(), this->cend(), result.begin(),
-                     [scalar](const T &val) { return val * scalar; });
-
+      line::math::MulVector(*this, result, scalar);
       return result;
     }
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T> &SVec<L, T>::operator*=(const SVec<L, T> &vec_)
     {
-      std::transform(this->begin(), this->end(), vec_.cbegin(), this->begin(),
-                     std::multiplies<T>());
-
+      line::math::MulVector(*this, vec_);
       return *this;
     }
 
     template <nsp_types::length_t L, nsp_concepts::is_numeric T>
     SVec<L, T> &SVec<L, T>::operator*=(const T &scalar)
     {
-      std::transform(this->begin(), this->end(), this->begin(),
-                     [scalar](const T &val) { return val * scalar; });
-
+      line::math::MulVector(*this, scalar);
       return *this;
     }
 
@@ -219,9 +185,7 @@ namespace line
       assert(scalar != 0 && "Division by zero");
 
       SVec<L, T> result;
-      std::transform(this->cbegin(), this->cend(), result.begin(),
-                     [scalar](const T &val) { return val / scalar; });
-
+      line::math::DivVector(*this, result, scalar);
       return result;
     }
 
@@ -230,8 +194,7 @@ namespace line
     {
       assert(scalar != 0 && "Division by zero");
 
-      std::transform(this->begin(), this->end(), this->begin(),
-                     [scalar](const T &val) { return val / scalar; });
+      line::math::DivVector(*this, scalar);
 
       return *this;
     }
@@ -390,10 +353,7 @@ namespace line
     SVec<U, R> operator+(const R &scalar, const SVec<U, R> &vec_)
     {
       SVec<U, R> result;
-
-      std::transform(vec_.cbegin(), vec_.cend(), result.begin(),
-                     [scalar](const R &val) { return val + scalar; });
-
+      line::math::AddVector(vec_, result, scalar);
       return result;
     }
 
@@ -403,8 +363,7 @@ namespace line
     {
       SVec<U, R> result;
 
-      std::transform(vec_.cbegin(), vec_.cend(), result.begin(),
-                     [scalar](const R &val) { return scalar - val; });
+      line::math::SubVector(scalar, vec_, result);
 
       return result;
     }

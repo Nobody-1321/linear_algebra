@@ -76,11 +76,7 @@ namespace line
              && "Vector size mismatch in operator+");
 
       DVec<T> result(data_v.size());
-
-      std::transform(this->cbegin(), this->cend(), vec_.cbegin(),
-                     result.begin(),
-                     [](const T &a, const T &b) { return a + b; });
-
+      line::math::AddVector(*this, vec_, result);
       return result;
     }
 
@@ -90,9 +86,7 @@ namespace line
       assert(data_v.size() == vec_.data_v.size()
              && "Vector size mismatch in operator+=");
 
-      std::transform(this->begin(), this->end(), vec_.cbegin(), this->begin(),
-                     [](const T &a, const T &b) { return a + b; });
-
+      line::math::AddVector(*this, vec_);
       return *this;
     }
 
@@ -101,18 +95,14 @@ namespace line
     {
       DVec<T> result(data_v.size());
 
-      std::transform(this->cbegin(), this->cend(), result.begin(),
-                     [scalar_](const T &a) { return a + scalar_; });
-
+      line::math::AddVector(*this, result, scalar_);
       return result;
     }
 
     template <nsp_concepts::is_numeric T>
     DVec<T> &DVec<T>::operator+=(const T &scalar_)
     {
-      std::transform(this->begin(), this->end(), this->begin(),
-                     [scalar_](const T &a) { return a + scalar_; });
-
+      line::math::AddVector(*this, scalar_);
       return *this;
     }
 
@@ -124,10 +114,7 @@ namespace line
 
       DVec<T> result(data_v.size());
 
-      std::transform(this->cbegin(), this->cend(), vec_.cbegin(),
-                     result.begin(),
-                     [](const T &a, const T &b) { return a - b; });
-
+      line::math::SubVector(*this, vec_, result);
       return result;
     }
 
@@ -137,8 +124,7 @@ namespace line
       assert(data_v.size() == vec_.data_v.size()
              && "Vector size mismatch in operator-=");
 
-      std::transform(this->begin(), this->end(), vec_.cbegin(), this->begin(),
-                     [](const T &a, const T &b) { return a - b; });
+      line::math::SubVector(*this, vec_);
 
       return *this;
     }
@@ -148,18 +134,14 @@ namespace line
     {
       DVec<T> result(data_v.size());
 
-      std::transform(this->cbegin(), this->cend(), result.begin(),
-                     [scalar_](const T &a) { return a - scalar_; });
-
+      line::math::SubVector(*this, result, scalar_);
       return result;
     }
 
     template <nsp_concepts::is_numeric T>
     DVec<T> &DVec<T>::operator-=(const T &scalar_)
     {
-      std::transform(this->begin(), this->end(), this->begin(),
-                     [scalar_](const T &a) { return a - scalar_; });
-
+      line::math::SubVector(*this, scalar_);
       return *this;
     }
 
@@ -171,10 +153,7 @@ namespace line
 
       DVec<T> result(data_v.size());
 
-      std::transform(this->cbegin(), this->cend(), vec_.cbegin(),
-                     result.begin(),
-                     [](const T &a, const T &b) { return a * b; });
-
+      line::math::MulVector(*this, vec_, result);
       return result;
     }
 
@@ -184,9 +163,7 @@ namespace line
       assert(data_v.size() == vec_.data_v.size()
              && "Vector size mismatch in operator*=");
 
-      std::transform(this->begin(), this->end(), vec_.cbegin(), this->begin(),
-                     [](const T &a, const T &b) { return a * b; });
-
+      line::math::MulVector(*this, vec_);
       return *this;
     }
 
@@ -195,18 +172,14 @@ namespace line
     {
       DVec<T> result(data_v.size());
 
-      std::transform(this->cbegin(), this->cend(), result.begin(),
-                     [scalar_](const T &a) { return a * scalar_; });
-
+      line::math::MulVector(*this, result, scalar_);
       return result;
     }
 
     template <nsp_concepts::is_numeric T>
     DVec<T> &DVec<T>::operator*=(const T &scalar_)
     {
-      std::transform(this->begin(), this->end(), this->begin(),
-                     [scalar_](const T &a) { return a * scalar_; });
-
+      line::math::MulVector(*this, scalar_);
       return *this;
     }
 
@@ -217,9 +190,7 @@ namespace line
 
       DVec<T> result(data_v.size());
 
-      std::transform(this->cbegin(), this->cend(), result.begin(),
-                     [scalar_](const T &a) { return a / scalar_; });
-
+      line::math::DivVector(*this, result, scalar_);
       return result;
     }
 
@@ -228,9 +199,7 @@ namespace line
     {
       assert(scalar_ != 0 && "Division by zero in operator/=");
 
-      std::transform(this->cbegin(), this->cend(), this->begin(),
-                     [scalar_](const T &a) { return a / scalar_; });
-
+      line::math::DivVector(*this, scalar_);
       return *this;
     }
 
@@ -383,10 +352,7 @@ namespace line
     DVec<T> operator*(const T &scalar_, const DVec<T> &vec_)
     {
       DVec<T> result(vec_.size());
-
-      std::transform(vec_.cbegin(), vec_.cend(), result.begin(),
-                     [scalar_](const T &a) { return scalar_ * a; });
-
+      line::math::MulVector(vec_, result, scalar_);
       return result;
     }
 
@@ -394,10 +360,7 @@ namespace line
     DVec<T> operator+(const T &scalar_, const DVec<T> &vec_)
     {
       DVec<T> result(vec_.size());
-
-      std::transform(vec_.cbegin(), vec_.cend(), result.begin(),
-                     [scalar_](const T &a) { return scalar_ + a; });
-
+      line::math::AddVector(vec_, result, scalar_);
       return result;
     }
 
@@ -406,8 +369,7 @@ namespace line
     {
       DVec<T> result(vec_.size());
 
-      std::transform(vec_.cbegin(), vec_.cend(), result.begin(),
-                     [scalar_](const T &a) { return scalar_ - a; });
+      line::math::SubVector(vec_, result, scalar_);
 
       return result;
     }
