@@ -1,5 +1,6 @@
 #pragma once
-#include "../detail/config.hpp"
+#include "../detail/simd_config.hpp"
+#include "vector_arithmetic_dispatch.hpp"
 #include <iostream>
 #include <assert.h>
 #include "../detail/concepts_det.hpp"
