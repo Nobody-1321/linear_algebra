@@ -74,9 +74,9 @@ namespace line
     {
       assert(data_v.size() == vec_.data_v.size()
              && "Vector size mismatch in operator+");
-
       DVec<T> result(data_v.size());
-      line::math::AddVector(*this, vec_, result);
+      vector::math::AddVector(*this, vec_, result);
+
       return result;
     }
 
@@ -86,7 +86,7 @@ namespace line
       assert(data_v.size() == vec_.data_v.size()
              && "Vector size mismatch in operator+=");
 
-      line::math::AddVector(*this, vec_);
+      vector::math::AddVector(*this, vec_);
       return *this;
     }
 
@@ -95,14 +95,17 @@ namespace line
     {
       DVec<T> result(data_v.size());
 
-      line::math::AddVector(*this, result, scalar_);
+      vector::math::AddVector(*this, result, scalar_, [scalar_](const T &val) {
+        return val + scalar_;
+      });
       return result;
     }
 
     template <nsp_concepts::is_numeric T>
     DVec<T> &DVec<T>::operator+=(const T &scalar_)
     {
-      line::math::AddVector(*this, scalar_);
+      vector::math::AddVector(
+        *this, scalar_, [scalar_](const T &val) { return val + scalar_; });
       return *this;
     }
 
@@ -114,7 +117,7 @@ namespace line
 
       DVec<T> result(data_v.size());
 
-      line::math::SubVector(*this, vec_, result);
+      vector::math::SubVector(*this, vec_, result);
       return result;
     }
 
@@ -124,7 +127,7 @@ namespace line
       assert(data_v.size() == vec_.data_v.size()
              && "Vector size mismatch in operator-=");
 
-      line::math::SubVector(*this, vec_);
+      vector::math::SubVector(*this, vec_);
 
       return *this;
     }
@@ -134,14 +137,17 @@ namespace line
     {
       DVec<T> result(data_v.size());
 
-      line::math::SubVector(*this, result, scalar_);
+      vector::math::SubVector(*this, result, scalar_, [scalar_](const T &val) {
+        return val - scalar_;
+      });
       return result;
     }
 
     template <nsp_concepts::is_numeric T>
     DVec<T> &DVec<T>::operator-=(const T &scalar_)
     {
-      line::math::SubVector(*this, scalar_);
+      vector::math::SubVector(
+        *this, scalar_, [scalar_](const T &val) { return val - scalar_; });
       return *this;
     }
 
@@ -153,7 +159,7 @@ namespace line
 
       DVec<T> result(data_v.size());
 
-      line::math::MulVector(*this, vec_, result);
+      vector::math::MulVector(*this, vec_, result);
       return result;
     }
 
@@ -163,7 +169,7 @@ namespace line
       assert(data_v.size() == vec_.data_v.size()
              && "Vector size mismatch in operator*=");
 
-      line::math::MulVector(*this, vec_);
+      vector::math::MulVector(*this, vec_);
       return *this;
     }
 
@@ -172,14 +178,17 @@ namespace line
     {
       DVec<T> result(data_v.size());
 
-      line::math::MulVector(*this, result, scalar_);
+      vector::math::MulVector(*this, result, scalar_, [scalar_](const T &val) {
+        return val * scalar_;
+      });
       return result;
     }
 
     template <nsp_concepts::is_numeric T>
     DVec<T> &DVec<T>::operator*=(const T &scalar_)
     {
-      line::math::MulVector(*this, scalar_);
+      vector::math::MulVector(
+        *this, scalar_, [scalar_](const T &val) { return val * scalar_; });
       return *this;
     }
 
@@ -190,7 +199,9 @@ namespace line
 
       DVec<T> result(data_v.size());
 
-      line::math::DivVector(*this, result, scalar_);
+      vector::math::DivVector(*this, result, scalar_, [scalar_](const T &val) {
+        return val / scalar_;
+      });
       return result;
     }
 
@@ -199,7 +210,8 @@ namespace line
     {
       assert(scalar_ != 0 && "Division by zero in operator/=");
 
-      line::math::DivVector(*this, scalar_);
+      vector::math::DivVector(
+        *this, scalar_, [scalar_](const T &val) { return val / scalar_; });
       return *this;
     }
 
@@ -352,7 +364,9 @@ namespace line
     DVec<T> operator*(const T &scalar_, const DVec<T> &vec_)
     {
       DVec<T> result(vec_.size());
-      line::math::MulVector(vec_, result, scalar_);
+      vector::math::MulVector(vec_, result, scalar_, [scalar_](const T &val) {
+        return val * scalar_;
+      });
       return result;
     }
 
@@ -360,7 +374,9 @@ namespace line
     DVec<T> operator+(const T &scalar_, const DVec<T> &vec_)
     {
       DVec<T> result(vec_.size());
-      line::math::AddVector(vec_, result, scalar_);
+      vector::math::AddVector(vec_, result, scalar_, [scalar_](const T &val) {
+        return val + scalar_;
+      });
       return result;
     }
 
@@ -369,7 +385,9 @@ namespace line
     {
       DVec<T> result(vec_.size());
 
-      line::math::SubVector(vec_, result, scalar_);
+      vector::math::SubVector(vec_, result, scalar_, [scalar_](const T &val) {
+        return scalar_ - val;
+      });
 
       return result;
     }

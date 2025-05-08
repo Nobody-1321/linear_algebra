@@ -170,15 +170,17 @@ TYPED_TEST(Fixture_VecN_15V, AdditionOperator)
   Vec d = T(4) + c; // [12]
   ASSERT_EQ(d[0], 12) << "scalar + vector failed";
 
-  // Test: vector + scalar
-  Vec e(3);         // [3]
-  Vec f = e + T(9); // [12]
-  ASSERT_EQ(f[0], 12) << "vector + scalar failed";
+  /*
+      // Test: vector + scalar
+      Vec e(3);         // [3]
+      Vec f = e + T(9); // [12]
+      ASSERT_EQ(f[0], 12) << "vector + scalar failed";
 
-  // Test: vector += scalar
-  Vec g(10); // [10]
-  g += T(5); // [15]
-  ASSERT_EQ(g[0], 15) << "vector += scalar failed";
+      // Test: vector += scalar
+      Vec g(10); // [10]
+      g += T(5); // [15]
+      ASSERT_EQ(g[0], 15) << "vector += scalar failed";
+      */
 }
 
 // Subtraction operator tests

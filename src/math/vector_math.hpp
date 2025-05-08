@@ -1,5 +1,5 @@
 #pragma once
-#include "config.hpp"
+#include "../detail/config.hpp"
 #include <iostream>
 #include <assert.h>
 #include "../detail/concepts_det.hpp"
@@ -10,74 +10,93 @@
 #elif defined(SIMD_USE_SSE)
 #include "sse_ope.hpp"
 #elif defined(SIMD_USE_SCALAR)
-#include "scalar_ope.hpp"
+#include "binary_ope.hpp"
 #endif
 
 namespace line
 {
-  namespace math
+  namespace vector
   {
-    namespace concepts = line::detail::concepts;
+    namespace math
+    {
+      namespace concepts = line::detail::concepts;
 
-    template <concepts::vector T>
-    void AddVector(const T &vecA, const T &vecB, T &vecR);
+      template <concepts::vector T,
+                typename BinaryOp = std::plus<typename T::value_type>>
+      void AddVector(const T &vecA, const T &vecB, T &vecR, BinaryOp op = {});
 
-    // operacion para vector mutable vec A y vecB
-    template <concepts::vector T> void AddVector(T &vecR, const T &vecB);
+      // operacion para vector mutable vec A y vecB
+      template <concepts::vector T,
+                typename BinaryOp = std::plus<typename T::value_type>>
+      void AddVector(T &vecR, const T &vecB, BinaryOp op = {});
 
-    // vector + scalar
-    template <concepts::vector T, typename U>
-    void AddVector(const T &vecA, T &vecR, const U &scalar);
+      // vector + scalar
+      template <concepts::vector T, typename U,
+                typename BinaryOp = std::plus<typename T::value_type>>
+      void
+      AddVector(const T &vecA, T &vecR, const U &scalar, BinaryOp op = {});
 
-    // vector + scalar
-    template <concepts::vector T, typename U>
-    void AddVector(const T &vecR, const U &scalar);
+      // vector + scalar
+      template <concepts::vector T, typename U,
+                typename BinaryOp = std::plus<typename T::value_type>>
+      void AddVector(const T &vecR, const U &scalar, BinaryOp op = {});
 
-    // vector - vector
-    template <concepts::vector T>
-    void SubVector(const T &vecA, const T &vecB, T &vecR);
+      //------------------------------------------------
+      // vector - vector
+      template <concepts::vector T,
+                typename BinaryOp = std::minus<typename T::value_type>>
+      void SubVector(const T &vecA, const T &vecB, T &vecR, BinaryOp op = {});
 
-    template <concepts::vector T> void SubVector(T &vecR, const T &vecB);
+      template <concepts::vector T,
+                typename BinaryOp = std::minus<typename T::value_type>>
+      void SubVector(T &vecR, const T &vecB, BinaryOp op = {});
 
-    // vector - scalar
-    template <concepts::vector T, typename U>
-    void SubVector(const T &vecA, T &vecR, const U &scalar);
+      // vector - scalar
+      template <concepts::vector T, typename U,
+                typename BinaryOp = std::minus<typename T::value_type>>
+      void
+      SubVector(const T &vecA, T &vecR, const U &scalar, BinaryOp op = {});
 
-    // scalar - vector
-    template <concepts::vector T, typename U>
-    void SubVector(const U &scalar, const T &vecA, T &vecR);
+      template <concepts::vector T, typename U,
+                typename BinaryOp = std::minus<typename T::value_type>>
+      void SubVector(T &vecR, const U &scalar, BinaryOp op = {});
 
-    template <concepts::vector T, typename U>
-    void SubVector(T &vecR, const U &scalar);
+      // vector * vector
+      template <concepts::vector T,
+                typename BinaryOp = std::multiplies<typename T::value_type>>
+      void MulVector(const T &vecA, const T &vecB, T &vecR, BinaryOp op = {});
 
-    // vector * vector
-    template <concepts::vector T>
-    void MulVector(const T &vecA, const T &vecB, T &vecR);
+      // vector * scalar
+      template <concepts::vector T, typename U,
+                typename BinaryOp = std::multiplies<typename T::value_type>>
+      void
+      MulVector(const T &vecA, T &vecR, const U &scalar, BinaryOp op = {});
 
-    // vector * scalar
-    template <concepts::vector T, typename U>
-    void MulVector(const T &vecA, T &vecR, const U &scalar);
-    // vector * vector
-    template <concepts::vector T> void MulVector(T &vecR, const T &vecA);
+      // vector * vector
+      template <concepts::vector T,
+                typename BinaryOp = std::multiplies<typename T::value_type>>
+      void MulVector(T &vecR, const T &vecA, BinaryOp op = {});
 
-    // vector * scalar
-    template <concepts::vector T, typename U>
-    void MulVector(const T &vecA, T &vecR, const U &scalar);
+      //************************************ */
 
-    // vector * scalar
-    template <concepts::vector T, typename U>
-    void MulVector(T &vecR, const U &scalar);
+      // vector * scalar
+      template <concepts::vector T, typename U,
+                typename BinaryOp = std::multiplies<typename T::value_type>>
+      void MulVector(T &vecR, const U &scalar, BinaryOp op = {});
 
-    // vector / scalar
-    template <concepts::vector T, typename U>
-    void DivVector(const T &vecA, T &vecR, const U &scalar);
+      // vector / scalar
+      template <concepts::vector T, typename U,
+                typename BinaryOp = std::divides<typename T::value_type>>
+      void
+      DivVector(const T &vecA, T &vecR, const U &scalar, BinaryOp op = {});
 
-    // vector / scalar
-    template <concepts::vector T, typename U>
-    void DivVector(T &vecR, const U &scalar);
+      // vector / scalar
+      template <concepts::vector T, typename U,
+                typename BinaryOp = std::divides<typename T::value_type>>
+      void DivVector(T &vecR, const U &scalar, BinaryOp op = {});
 
+    }
   }
-
 }
 
 #include "vector_math.inl"

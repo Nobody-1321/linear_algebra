@@ -28,3 +28,21 @@
 #define SIMD_USE_SCALAR
 #endif
 #endif
+
+// ================================================
+// Etiquetas (Tags) para dispatch
+// ================================================
+struct ScalarImpl
+{};
+struct SSEImpl
+{};
+struct AVX2Impl
+{};
+
+#if defined(SIMD_USE_AVX2)
+using SimdImpl = AVX2Impl;
+#elif defined(SIMD_USE_SSE)
+using SimdImpl = SSEImpl;
+#else
+using SimdImpl = ScalarImpl;
+#endif

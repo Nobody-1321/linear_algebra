@@ -142,6 +142,7 @@ TYPED_TEST(Fixture_DVec, CopyAssignmentOperator)
 
   for(std::size_t i = 0; i < u.size(); ++i)
     EXPECT_EQ(u[i], v[i]) << "value at position " << i << " does not match";
+  // left side scalar + right side vector
 }
 
 TYPED_TEST(Fixture_DVec, MoveAssignmentOperator)
@@ -224,6 +225,14 @@ TYPED_TEST(Fixture_DVec, AdditionOperator)
       EXPECT_EQ(a[i], static_cast<U>(2 * i + 1))
         << "Vector += Vector: incorrect value at index " << i;
     }
+
+  Vec M(10, 10);
+  Vec R = U(10) + M;
+  ASSERT_EQ(R.size(), u.size()) << "size does not match";
+
+  for(std::size_t i = 0; i < u.size(); ++i)
+    EXPECT_EQ(R[i], static_cast<U>(20))
+      << "value at position " << i << " does not match";
 }
 
 TYPED_TEST(Fixture_DVec, SubtractionOperator)
@@ -276,6 +285,17 @@ TYPED_TEST(Fixture_DVec, SubtractionOperator)
     {
       EXPECT_EQ(a[i], static_cast<U>(1))
         << "Vector -= Vector: incorrect value at index " << i;
+    }
+  // scalar - vector
+
+  Vec b{1, 2, 3, 4, 5};
+  Vec c = static_cast<U>(10) - b;
+  ASSERT_EQ(c.size(), b.size()) << "Scalar - Vector: size mismatch";
+
+  for(std::size_t i = 0; i < c.size(); ++i)
+    {
+      EXPECT_EQ(c[i], static_cast<U>(10 - (i + 1)))
+        << "Scalar - Vector: incorrect value at index " << i;
     }
 }
 
