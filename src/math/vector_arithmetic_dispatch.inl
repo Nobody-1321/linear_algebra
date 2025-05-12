@@ -98,6 +98,22 @@ namespace line
           utils::ApplyElementwiseScalarOpInplace(vecR, scalar, op);
         }
 
+        /// div operaciones ******************************
+
+        // vector / scalar = vectorR
+        template <concepts::vector T, typename U, typename F>
+        void div(const T &vecA, T &vecR, const U &scalar, F &&op, ScalarImpl)
+        {
+          utils::ApplyElementwiseScalarOp(vecA, vecR, scalar, op);
+        }
+
+        // vector /= scalar
+        template <concepts::vector T, typename U, typename F>
+        void div(T &vecR, const U &scalar, F &&op, ScalarImpl)
+        {
+          utils::ApplyElementwiseScalarOpInplace(vecR, scalar, op);
+        }
+
         // +---------------------------------------------+
         // |                 SSEImpl                     |
         // +---------------------------------------------+

@@ -4,6 +4,7 @@ namespace line
   {
     namespace math
     {
+
       // vector + vector = vectorR
       template <concepts::vector T, typename BinaryOp>
       void AddVector(const T &vecA, const T &vecB, T &vecR, BinaryOp op)
@@ -37,7 +38,7 @@ namespace line
         dispatch::arithmetic::add(vecA, vecR, scalar, op, SimdImpl{});
       }
 
-      // scalar += scalar
+      // vector += scalar
       template <concepts::vector T, typename U, typename BinaryOp>
       void AddVector(T &vecR, const U &scalar, BinaryOp op)
       {
@@ -107,6 +108,8 @@ namespace line
       {
         assert(vecR.size() == vecB.size()
                && "Los vectores no tienen el mismo tamaño");
+        assert(vecR.size() == vecR.size()
+               && "Los vectores no tienen el mismo tamaño");
         dispatch::arithmetic::mul(vecR, vecB, op, SimdImpl{});
       }
 
@@ -134,13 +137,9 @@ namespace line
       {
         assert(vecA.size() == vecR.size()
                && "Los vectores no tienen el mismo tamaño");
-#if defined(SIMD_USE_AVX2)
-        // proxima  mente se implementara el uso de avx2
-#elif defined(SIMD_USE_SSE)
-        // simd_sse::mul(vecA.data(), scalar, vecR.data());
-#elif defined(SIMD_USE_SCALAR)
-        utils::ApplyElementwiseScalarOp(vecA, vecR, scalar, op);
-#endif
+        assert(vecA.size() == vecR.size()
+               && "Los vectores no tienen el mismo tamaño");
+        dispatch::arithmetic::div(vecA, vecR, scalar, op, SimdImpl{});
       }
 
       // scalar /= scalar
@@ -149,17 +148,9 @@ namespace line
       {
         assert(vecR.size() == vecR.size()
                && "Los vectores no tienen el mismo tamaño");
-#if defined(SIMD_USE_AVX2)
-        // proxima  mente se implementara el uso de avx2
-#elif defined(SIMD_USE_SSE)
-        // simd_sse::mul(vecR.data(), scalar, vecR.data());
-#elif defined(SIMD_USE_SCALAR)
-        // std::transform(
-        //   vecR.begin(), vecR.end(), vecR.begin(),
-        //   [scalar](const typename T::value_type &val) { return val / scalar;
-        //   });
-        utils::ApplyElementwiseScalarOpInplace(vecR, scalar, op);
-#endif
+        assert(vecR.size() == vecR.size()
+               && "Los vectores no tienen el mismo tamaño");
+        dispatch::arithmetic::div(vecR, scalar, op, SimdImpl{});
       }
 
     }

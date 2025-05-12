@@ -68,6 +68,15 @@ namespace line
         template <concepts::vector T, typename U, typename F>
         void mul(T &vecR, const U &scalar, F &&op, ScalarImpl);
 
+        /// div operaciones ******************************
+        // vector / scalar = vectorR
+        template <concepts::vector T, typename U, typename F>
+        void div(const T &vecA, T &vecR, const U &scalar, F &&op, ScalarImpl);
+
+        // vector /= scalar
+        template <concepts::vector T, typename U, typename F>
+        void div(T &vecR, const U &scalar, F &&op, ScalarImpl);
+
         // +---------------------------------------------+
         // |                 SSEImpl                     |
         // +---------------------------------------------+
