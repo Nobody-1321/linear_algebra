@@ -7,7 +7,6 @@
 #include <iostream>
 #include <cmath>
 #include <memory>
-#include "../math/vector_math.hpp"
 #include "../detail/concepts_det.hpp"
 #include "../detail/types_det.hpp"
 #include "../ranges/const_random_access_iterator.hpp"

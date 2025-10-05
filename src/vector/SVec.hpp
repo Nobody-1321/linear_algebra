@@ -8,7 +8,6 @@
 #include <execution>
 #include <iostream>
 #include <cmath>
-#include "../math/vector_math.hpp"
 #include "../ranges/const_random_access_iterator.hpp"
 #include "../ranges/random_access_iterator.hpp"
 #include "../detail/types_det.hpp"
